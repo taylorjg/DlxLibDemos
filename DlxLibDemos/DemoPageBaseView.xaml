@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="DlxLibDemos.DemoPageBaseView"
+             BackgroundImageSource="pattern_apple_wood.png">
+
+    <ContentPage.ControlTemplate>
+        <ControlTemplate>
+            <Grid RowDefinitions="*, Auto">
+                <Grid x:Name="graphicsViewWrapper" Grid.Row="0" Margin="20">
+                    <GraphicsView
+                        x:Name="graphicsView"
+                        Background="Transparent"
+                        Drawable="{TemplateBinding BindingContext.Drawable}" />
+                </Grid>
+                <Grid Grid.Row="1" Margin="10" ColumnDefinitions="*, Auto">
+                    <HorizontalStackLayout Grid.Column="0" Spacing="10">
+                        <ContentPresenter />
+                        <Label
+                            Margin="25,0,0,0"
+                            VerticalOptions="Center"
+                            Text="Animate Solution:" />
+                        <Switch
+                            VerticalOptions="Center"
+                            IsToggled="{TemplateBinding BindingContext.AnimationEnabled}">
+                            <Switch.IsEnabled>
+                                <TemplateBinding Path="BindingContext.IsSolving">
+                                    <TemplateBinding.Converter>
+                                        <mct:InvertedBoolConverter />
+                                    </TemplateBinding.Converter>
+                                </TemplateBinding>
+                            </Switch.IsEnabled>
+                        </Switch>
+                        <Slider
+                            VerticalOptions="Center"
+                            WidthRequest="200"
+                            Minimum="0"
+                            Maximum="100"
+                            Value="{TemplateBinding BindingContext.AnimationInterval}"
+                            IsEnabled="{TemplateBinding BindingContext.AnimationEnabled}"
+                            />
+                        <Label
+                            Margin="0,0,25,0"
+                            VerticalOptions="Center"
+                            Text="{TemplateBinding BindingContext.AnimationInterval, StringFormat='{0} ms'}"
+                            IsEnabled="{TemplateBinding BindingContext.AnimationEnabled}"
+                            />
+                        <Button
+                            Text="Solve"
+                            Command="{TemplateBinding BindingContext.SolveCommand}" />
+                        <Button
+                            Text="Reset"
+                            Command="{TemplateBinding BindingContext.ResetCommand}" />
+                    </HorizontalStackLayout>
+                </Grid>
+            </Grid>
+        </ControlTemplate>
+    </ContentPage.ControlTemplate>
+
+</ContentPage>

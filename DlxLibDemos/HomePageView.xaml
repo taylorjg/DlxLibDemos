@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="DlxLibDemos.HomePageView"
+             x:Name="page">
+
+    <Grid RowDefinitions="*,Auto,*" ColumnDefinitions="*,Auto,*">
+        <VerticalStackLayout Grid.Row="1" Grid.Column="1" Spacing="50">
+            <VerticalStackLayout BindableLayout.ItemsSource="{Binding AvailableDemos}" Spacing="10">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate>
+                        <Border Stroke="White"
+                                StrokeThickness="4"
+                                Padding="10">
+                            <Grid ColumnDefinitions="Auto,*">
+                                <GraphicsView
+                                    Grid.Column="0"
+                                    WidthRequest="100"
+                                    HeightRequest="100"
+                                    Drawable="{Binding ThumbnailDrawable}" />
+                                <Button
+                                    Grid.Column="1"
+                                    Margin="50,0"
+                                    HorizontalOptions="Center"
+                                    VerticalOptions="Center"
+                                    Text="{Binding Name}"
+                                    Command="{Binding BindingContext.NavigateToDemoCommand, Source={x:Reference page}}"
+                                    CommandParameter="{Binding Route}" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+
+    </Grid>
+
+</ContentPage>
