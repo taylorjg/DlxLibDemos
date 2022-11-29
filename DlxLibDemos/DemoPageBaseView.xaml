@@ -50,6 +50,9 @@
                             Text="Solve"
                             Command="{TemplateBinding BindingContext.SolveCommand}" />
                         <Button
+                            Text="Cancel"
+                            Command="{TemplateBinding BindingContext.CancelCommand}" />
+                        <Button
                             Text="Reset"
                             Command="{TemplateBinding BindingContext.ResetCommand}" />
                     </HorizontalStackLayout>

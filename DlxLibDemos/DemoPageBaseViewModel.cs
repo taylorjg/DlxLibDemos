@@ -22,6 +22,7 @@ public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
   private int _animationInterval;
   private ConcurrentQueue<BaseMessage> _messages = new ConcurrentQueue<BaseMessage>();
   private bool _isSolving;
+  private CancellationTokenSource _cancellationTokenSource;
 
   public DemoPageBaseViewModel(Dependencies dependencies)
   {
@@ -114,8 +115,7 @@ public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
     set
     {
       SetProperty(ref _solutionAvailable, value);
-      SolveCommand.NotifyCanExecuteChanged();
-      ResetCommand.NotifyCanExecuteChanged();
+      UpdateButtonCommands();
     }
   }
 
@@ -150,9 +150,15 @@ public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
     {
       _logger.LogInformation($"IsSolving setter value: {value}");
       SetProperty(ref _isSolving, value);
-      SolveCommand.NotifyCanExecuteChanged();
-      ResetCommand.NotifyCanExecuteChanged();
+      UpdateButtonCommands();
     }
+  }
+
+  private void UpdateButtonCommands()
+  {
+    SolveCommand.NotifyCanExecuteChanged();
+    CancelCommand.NotifyCanExecuteChanged();
+    ResetCommand.NotifyCanExecuteChanged();
   }
 
   private void OnTick()
@@ -195,7 +201,9 @@ public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
     var findSolutionInternalRows = (IEnumerable<int> rowIndices) =>
       rowIndices.Select(rowIndex => internalRows[rowIndex]).ToArray();
 
-    var dlx = new DlxLib.Dlx();
+    _cancellationTokenSource = new CancellationTokenSource();
+
+    var dlx = new DlxLib.Dlx(_cancellationTokenSource.Token);
 
     StartTimer();
 
@@ -232,6 +240,18 @@ public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
   private bool CanReset()
   {
     return !IsSolving && SolutionAvailable;
+  }
+
+  [RelayCommand(CanExecute = nameof(CanCancel))]
+  private void Cancel()
+  {
+    _cancellationTokenSource.Cancel();
+    StopTimer();
+  }
+
+  private bool CanCancel()
+  {
+    return IsSolving;
   }
 
   private void StartTimer()
