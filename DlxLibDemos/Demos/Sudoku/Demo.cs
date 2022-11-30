@@ -30,9 +30,10 @@ public class SudokuDemo : IDemo
     }).ToArray();
   }
 
-  public int[][] BuildMatrix(object[] internalRows)
+  public int[] InternalRowToMatrixRow(object internalRow)
   {
-    return (internalRows as SudokuInternalRow[]).Select(BuildMatrixRow).ToArray();
+    var sudokuInternalRow = internalRow as SudokuInternalRow;
+    return BuildMatrixRow(sudokuInternalRow);
   }
 
   public int? GetNumPrimaryColumns(object demoSettings)
@@ -62,8 +63,11 @@ public class SudokuDemo : IDemo
     var rowColumns = OneHot(row, zeroBasedValue);
     var colColumns = OneHot(col, zeroBasedValue);
     var boxColumns = OneHot(box, zeroBasedValue);
-    var combinedColumns = new[] { posColumns, rowColumns, colColumns, boxColumns }.SelectMany(cols => cols);
-    return combinedColumns.ToArray();
+    return posColumns
+      .Concat(rowColumns)
+      .Concat(colColumns)
+      .Concat(boxColumns)
+      .ToArray();
   }
 
   private int RowColToBox(int row, int col)

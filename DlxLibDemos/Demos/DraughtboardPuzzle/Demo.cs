@@ -22,14 +22,12 @@ public class DraughtboardPuzzleDemo : IDemo
     return AllPossiblePiecePlacements().Where(IsValidPiecePlacement).ToArray();
   }
 
-  public int[][] BuildMatrix(object[] internalRows)
+  public int[] InternalRowToMatrixRow(object internalRow)
   {
-    return (internalRows as DraughtboardPuzzleInternalRow[]).Select(internalRow =>
-    {
-      var pieceColumns = MakePieceColumns(internalRow);
-      var locationColumns = MakeLocationColumns(internalRow);
-      return pieceColumns.Concat(locationColumns).ToArray();
-    }).ToArray();
+    var draughtboardPuzzleInternalRow = internalRow as DraughtboardPuzzleInternalRow;
+    var pieceColumns = MakePieceColumns(draughtboardPuzzleInternalRow);
+    var locationColumns = MakeLocationColumns(draughtboardPuzzleInternalRow);
+    return pieceColumns.Concat(locationColumns).ToArray();
   }
 
   public int? GetNumPrimaryColumns(object demoSettings)

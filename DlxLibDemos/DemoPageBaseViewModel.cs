@@ -192,8 +192,8 @@ public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
     _logger.LogInformation($"Solve DemoOptionalSettings: {DemoOptionalSettings}");
 
     var internalRows = _demo.BuildInternalRows(DemoSettings);
+    var matrix = internalRows.Select(_demo.InternalRowToMatrixRow).ToArray();
     var maybeNumPrimaryColumns = _demo.GetNumPrimaryColumns(DemoSettings);
-    var matrix = _demo.BuildMatrix(internalRows);
 
     _logger.LogInformation($"internalRows.Length: {internalRows.Length}");
     _logger.LogInformation($"maybeNumPrimaryColumns: {(maybeNumPrimaryColumns.HasValue ? maybeNumPrimaryColumns.Value : "null")}");

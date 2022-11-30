@@ -27,8 +27,8 @@ public class ThumbnailWhatToDraw : IWhatToDraw
     get
     {
       var internalRows = _demo.BuildInternalRows(DemoSettings);
+      var matrix = internalRows.Select(_demo.InternalRowToMatrixRow).ToArray();
       var maybeNumPrimaryColumns = _demo.GetNumPrimaryColumns(DemoSettings);
-      var matrix = _demo.BuildMatrix(internalRows);
       var dlx = new DlxLib.Dlx();
       var solutions = maybeNumPrimaryColumns.HasValue
         ? dlx.Solve(matrix, row => row, col => col, maybeNumPrimaryColumns.Value)

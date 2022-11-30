@@ -22,14 +22,12 @@ public class PentominoesDemo : IDemo
     return AllPossiblePiecePlacements().Where(IsValidPiecePlacement).ToArray();
   }
 
-  public int[][] BuildMatrix(object[] internalRows)
+  public int[] InternalRowToMatrixRow(object internalRow)
   {
-    return (internalRows as PentominoesInternalRow[]).Select(internalRow =>
-    {
-      var pieceColumns = MakePieceColumns(internalRow);
-      var locationColumns = MakeLocationColumns(internalRow);
-      return pieceColumns.Concat(locationColumns).ToArray();
-    }).ToArray();
+    var pentominoesInternalRow = internalRow as PentominoesInternalRow;
+    var pieceColumns = MakePieceColumns(pentominoesInternalRow);
+    var locationColumns = MakeLocationColumns(pentominoesInternalRow);
+    return pieceColumns.Concat(locationColumns).ToArray();
   }
 
   public int? GetNumPrimaryColumns(object demoSettings)

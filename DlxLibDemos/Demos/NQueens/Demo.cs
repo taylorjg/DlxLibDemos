@@ -28,9 +28,10 @@ public class NQueensDemo : IDemo
     return locations.Select(coords => new NQueensInternalRow(coords)).ToArray();
   }
 
-  public int[][] BuildMatrix(object[] internalRows)
+  public int[] InternalRowToMatrixRow(object internalRow)
   {
-    return (internalRows as NQueensInternalRow[]).Select(BuildMatrixRow).ToArray();
+    var nQueensInternalRow = internalRow as NQueensInternalRow;
+    return BuildMatrixRow(nQueensInternalRow);
   }
 
   public int? GetNumPrimaryColumns(object demoSettings)
@@ -59,7 +60,10 @@ public class NQueensDemo : IDemo
     var diagonal2 = N - 1 - col + row - 1;
     if (diagonal2 >= 0 && diagonal2 < diagonalColumnCount) diagonal2Columns[diagonal2] = 1;
 
-    var combinedColumns = new[] { rowColumns, colColumns, diagonal1Columns, diagonal2Columns }.SelectMany(col => col);
-    return combinedColumns.ToArray();
+    return rowColumns
+      .Concat(colColumns)
+      .Concat(diagonal1Columns)
+      .Concat(diagonal2Columns)
+      .ToArray();
   }
 }
