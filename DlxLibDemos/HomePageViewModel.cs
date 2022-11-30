@@ -70,4 +70,9 @@ public partial class HomePageViewModel : ObservableObject
     _logger.LogInformation($"NavigateToDemo route: {route}");
     return _navigationService.GoToAsync(route);
   }
+
+  public string Version
+  {
+    get => AppInfo.VersionString;
+  }
 }

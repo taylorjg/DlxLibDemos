@@ -40,6 +40,14 @@
                 </BindableLayout.ItemTemplate>
             </VerticalStackLayout>
         </VerticalStackLayout>
+        <Label
+            Grid.Row="2"
+            Grid.Column="2"
+            Margin="5"
+            VerticalOptions="End"
+            HorizontalOptions="End"
+            Text="{Binding Version, StringFormat='v{0}'}"
+            FontSize="12" />
     </Grid>
 
 </ContentPage>
