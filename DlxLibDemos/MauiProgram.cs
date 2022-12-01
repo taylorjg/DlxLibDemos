@@ -4,6 +4,7 @@ using DlxLibDemos.Demos.Sudoku;
 using DlxLibDemos.Demos.Pentominoes;
 using DlxLibDemos.Demos.NQueens;
 using DlxLibDemos.Demos.DraughtboardPuzzle;
+using DlxLibDemos.Demos.TetraSticks;
 
 namespace DlxLibDemos;
 
@@ -47,20 +48,26 @@ public static class MauiProgram
     builder.Services.AddTransient<DraughtboardPuzzleDemoPageView>();
     builder.Services.AddTransient<DraughtboardPuzzleDemoPageViewModel>();
 
+    builder.Services.AddTransient<TetraSticksDemoPageView>();
+    builder.Services.AddTransient<TetraSticksDemoPageViewModel>();
+
     builder.Services.AddTransient<SudokuThumbnailDrawable>();
     builder.Services.AddTransient<PentominoesThumbnailDrawable>();
     builder.Services.AddTransient<NQueensThumbnailDrawable>();
     builder.Services.AddTransient<DraughtboardPuzzleThumbnailDrawable>();
+    builder.Services.AddTransient<TetraSticksThumbnailDrawable>();
 
     builder.Services.AddTransient<SudokuDemo>();
     builder.Services.AddTransient<PentominoesDemo>();
     builder.Services.AddTransient<NQueensDemo>();
     builder.Services.AddTransient<DraughtboardPuzzleDemo>();
+    builder.Services.AddTransient<TetraSticksDemo>();
 
     Routing.RegisterRoute("SudokuDemoPage", typeof(SudokuDemoPageView));
     Routing.RegisterRoute("PentominoesDemoPage", typeof(PentominoesDemoPageView));
     Routing.RegisterRoute("NQueensDemoPage", typeof(NQueensDemoPageView));
     Routing.RegisterRoute("DraughtboardPuzzleDemoPage", typeof(DraughtboardPuzzleDemoPageView));
+    Routing.RegisterRoute("TetraSticksDemoPage", typeof(TetraSticksDemoPageView));
 
     return builder.Build();
   }

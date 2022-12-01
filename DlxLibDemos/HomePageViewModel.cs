@@ -7,6 +7,7 @@ using DlxLibDemos.Demos.Sudoku;
 using DlxLibDemos.Demos.Pentominoes;
 using DlxLibDemos.Demos.NQueens;
 using DlxLibDemos.Demos.DraughtboardPuzzle;
+using DlxLibDemos.Demos.TetraSticks;
 
 namespace DlxLibDemos;
 
@@ -59,6 +60,12 @@ public partial class HomePageViewModel : ObservableObject
           DemoNames.DraughtboardPuzzle,
           "DraughtboardPuzzleDemoPage",
           _serviceProvider.GetService<DraughtboardPuzzleThumbnailDrawable>()
+        ),
+        new AvailableDemo(
+          DemoNames.TetraSticks,
+          "TetraSticksDemoPage",
+          // _serviceProvider.GetService<TetraSticksThumbnailDrawable>()
+          _serviceProvider.GetService<NQueensThumbnailDrawable>()
         )
       };
     }
