@@ -182,6 +182,7 @@ public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
 
   private void OnMessage(NoSolutionFoundMessage message)
   {
+    SolutionInternalRows = new object[0];
     StopTimer();
   }
 
