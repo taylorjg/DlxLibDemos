@@ -42,19 +42,11 @@ public class TetraSticksDrawable : IDrawable
     _height = dirtyRect.Height;
     _gridLineFullThickness = dirtyRect.Width / 100;
     _gridLineHalfThickness = _gridLineFullThickness / 2;
-    _squareWidth = (dirtyRect.Width - _gridLineFullThickness) / 8;
-    _squareHeight = (dirtyRect.Height - _gridLineFullThickness) / 8;
+    _squareWidth = (dirtyRect.Width - _gridLineFullThickness) / 5;
+    _squareHeight = (dirtyRect.Height - _gridLineFullThickness) / 5;
 
     DrawGrid(canvas);
     DrawPieces(canvas);
-
-    // var pieceWithVariations = PiecesWithVariations.ThePiecesWithVariations[8];
-    // var label = pieceWithVariations.Label;
-    // var variation1 = pieceWithVariations.Variations[0];
-    // var variation2 = pieceWithVariations.Variations[1];
-
-    // DrawPiece(canvas, new TetraSticksInternalRow(label, variation1, new Coords(0, 0)));
-    // DrawPiece(canvas, new TetraSticksInternalRow(label, variation2, new Coords(0, 4)));
   }
 
   private void DrawGrid(ICanvas canvas)
@@ -68,7 +60,7 @@ public class TetraSticksDrawable : IDrawable
 
   private void DrawHorizontalGridLines(ICanvas canvas)
   {
-    foreach (var row in Enumerable.Range(0, 9))
+    foreach (var row in Enumerable.Range(0, 6))
     {
       var x1 = 0;
       var y1 = CalculateY(row);
@@ -82,7 +74,7 @@ public class TetraSticksDrawable : IDrawable
 
   private void DrawVerticalGridLines(ICanvas canvas)
   {
-    foreach (var col in Enumerable.Range(0, 9))
+    foreach (var col in Enumerable.Range(0, 6))
     {
       var x1 = CalculateX(col);
       var y1 = 0;
