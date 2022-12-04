@@ -44,18 +44,31 @@ public class TetraSticksDemo : IDemo
   }
 
   private static readonly Coords[] Locations =
-    Enumerable.Range(0, 5).SelectMany(row =>
-        Enumerable.Range(0, 5).Select(col =>
+    Enumerable.Range(0, 6).SelectMany(row =>
+        Enumerable.Range(0, 6).Select(col =>
           new Coords(row, col))).ToArray();
 
   private bool IsValidPiecePlacement(TetraSticksInternalRow internalRow)
   {
-    var width = internalRow.Variation.Horizontals.Any() ? internalRow.Variation.Horizontals.Max(h => h.Col) + 1 : 0;
-    var height = internalRow.Variation.Verticals.Any() ? internalRow.Variation.Verticals.Max(v => v.Row) + 1 : 0;
-
     var location = internalRow.Location;
 
-    return location.Row + height <= 5 && location.Col + width <= 5;
+    foreach (var horizontal in internalRow.Variation.Horizontals)
+    {
+      var row = location.Row + horizontal.Row;
+      var col = location.Col + horizontal.Col;
+      if (row > 5) return false; // valid rows for horizontal line segments: 0..5
+      if (col > 4) return false; // valid cols for horizontal line segments: 0..4
+    }
+
+    foreach (var vertical in internalRow.Variation.Verticals)
+    {
+      var row = location.Row + vertical.Row;
+      var col = location.Col + vertical.Col;
+      if (row > 4) return false; // valid rows for vertical line segments: 0..4
+      if (col > 5) return false; // valid cols for vertical line segments: 0..5
+    }
+
+    return true;
   }
 
   private IEnumerable<TetraSticksInternalRow> AllPossiblePiecePlacements()
