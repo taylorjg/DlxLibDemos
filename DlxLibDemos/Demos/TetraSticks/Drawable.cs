@@ -46,14 +46,15 @@ public class TetraSticksDrawable : IDrawable
     _squareHeight = (dirtyRect.Height - _gridLineFullThickness) / 8;
 
     DrawGrid(canvas);
+    DrawPieces(canvas);
 
-    var pieceWithVariations = PiecesWithVariations.ThePiecesWithVariations[8];
-    var label = pieceWithVariations.Label;
-    var variation1 = pieceWithVariations.Variations[0];
-    var variation2 = pieceWithVariations.Variations[1];
+    // var pieceWithVariations = PiecesWithVariations.ThePiecesWithVariations[8];
+    // var label = pieceWithVariations.Label;
+    // var variation1 = pieceWithVariations.Variations[0];
+    // var variation2 = pieceWithVariations.Variations[1];
 
-    DrawPiece(canvas, new TetraSticksInternalRow(label, variation1, new Coords(0, 0)));
-    DrawPiece(canvas, new TetraSticksInternalRow(label, variation2, new Coords(0, 4)));
+    // DrawPiece(canvas, new TetraSticksInternalRow(label, variation1, new Coords(0, 0)));
+    // DrawPiece(canvas, new TetraSticksInternalRow(label, variation2, new Coords(0, 4)));
   }
 
   private void DrawGrid(ICanvas canvas)
@@ -90,6 +91,16 @@ public class TetraSticksDrawable : IDrawable
       canvas.StrokeColor = _gridColour;
       canvas.StrokeSize = _gridLineFullThickness;
       canvas.DrawLine(x1, y1, x2, y2);
+    }
+  }
+
+  private void DrawPieces(ICanvas canvas)
+  {
+    var solutionInternalRows = _whatToDraw.SolutionInternalRows.Cast<TetraSticksInternalRow>();
+
+    foreach (var internalRow in solutionInternalRows)
+    {
+      DrawPiece(canvas, internalRow);
     }
   }
 

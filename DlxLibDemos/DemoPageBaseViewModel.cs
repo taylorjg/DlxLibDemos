@@ -189,41 +189,49 @@ public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
   [RelayCommand(CanExecute = nameof(CanSolve))]
   private void Solve()
   {
-    _logger.LogInformation($"Solve DemoSettings: {DemoSettings}");
-    _logger.LogInformation($"Solve DemoOptionalSettings: {DemoOptionalSettings}");
-
-    var internalRows = _demo.BuildInternalRows(DemoSettings);
-    var matrix = internalRows.Select(_demo.InternalRowToMatrixRow).ToArray();
-    var maybeNumPrimaryColumns = _demo.GetNumPrimaryColumns(DemoSettings);
-
-    _logger.LogInformation($"internalRows.Length: {internalRows.Length}");
-    _logger.LogInformation($"maybeNumPrimaryColumns: {(maybeNumPrimaryColumns.HasValue ? maybeNumPrimaryColumns.Value : "null")}");
-
-    var findSolutionInternalRows = (IEnumerable<int> rowIndices) =>
-      rowIndices.Select(rowIndex => internalRows[rowIndex]).ToArray();
-
-    _cancellationTokenSource = new CancellationTokenSource();
-
-    var dlx = new DlxLib.Dlx(_cancellationTokenSource.Token);
-
-    StartTimer();
-
-    if (AnimationEnabled)
+    try
     {
-      dlx.SearchStep += (_, e) => _messages.Enqueue(new SearchStepMessage(findSolutionInternalRows(e.RowIndexes)));
+      _logger.LogInformation($"Solve DemoSettings: {DemoSettings}");
+      _logger.LogInformation($"Solve DemoOptionalSettings: {DemoOptionalSettings}");
+
+      var internalRows = _demo.BuildInternalRows(DemoSettings);
+      var matrix = internalRows.Select(_demo.InternalRowToMatrixRow).ToArray();
+      var maybeNumPrimaryColumns = _demo.GetNumPrimaryColumns(DemoSettings);
+
+      _logger.LogInformation($"internalRows.Length: {internalRows.Length}");
+      _logger.LogInformation($"maybeNumPrimaryColumns: {(maybeNumPrimaryColumns.HasValue ? maybeNumPrimaryColumns.Value : "null")}");
+
+      var findSolutionInternalRows = (IEnumerable<int> rowIndices) =>
+        rowIndices.Select(rowIndex => internalRows[rowIndex]).ToArray();
+
+      _cancellationTokenSource = new CancellationTokenSource();
+
+      var dlx = new DlxLib.Dlx(_cancellationTokenSource.Token);
+
+      StartTimer();
+
+      if (AnimationEnabled)
+      {
+        dlx.SearchStep += (_, e) => _messages.Enqueue(new SearchStepMessage(findSolutionInternalRows(e.RowIndexes)));
+      }
+
+      dlx.SolutionFound += (_, e) => _messages.Enqueue(new SolutionFoundMessage(findSolutionInternalRows(e.Solution.RowIndexes)));
+
+      var solutions = maybeNumPrimaryColumns.HasValue
+       ? dlx.Solve(matrix, row => row, col => col, maybeNumPrimaryColumns.Value)
+       : dlx.Solve(matrix, row => row, col => col);
+
+      var solution = solutions.FirstOrDefault();
+
+      if (solution == null)
+      {
+        _messages.Enqueue(new NoSolutionFoundMessage());
+      }
     }
-
-    dlx.SolutionFound += (_, e) => _messages.Enqueue(new SolutionFoundMessage(findSolutionInternalRows(e.Solution.RowIndexes)));
-
-    var solutions = maybeNumPrimaryColumns.HasValue
-     ? dlx.Solve(matrix, row => row, col => col, maybeNumPrimaryColumns.Value)
-     : dlx.Solve(matrix, row => row, col => col);
-
-    var solution = solutions.FirstOrDefault();
-
-    if (solution == null)
+    catch (Exception ex)
     {
-      _messages.Enqueue(new NoSolutionFoundMessage());
+      _logger.LogInformation("Solve Exception");
+      _logger.LogInformation(ex.ToString());
     }
   }
 
