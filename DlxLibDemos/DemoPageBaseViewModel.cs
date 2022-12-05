@@ -199,6 +199,7 @@ public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
       var maybeNumPrimaryColumns = _demo.GetNumPrimaryColumns(DemoSettings);
 
       _logger.LogInformation($"internalRows.Length: {internalRows.Length}");
+      _logger.LogInformation($"matrix size: {matrix.Length} rows by {matrix[0].Length} cols");
       _logger.LogInformation($"maybeNumPrimaryColumns: {(maybeNumPrimaryColumns.HasValue ? maybeNumPrimaryColumns.Value : "null")}");
 
       var findSolutionInternalRows = (IEnumerable<int> rowIndices) =>

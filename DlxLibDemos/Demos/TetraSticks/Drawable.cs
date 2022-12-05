@@ -123,14 +123,14 @@ public class TetraSticksDrawable : IDrawable
       canvas.FillRectangle(x, y, w, h);
     }
 
-    foreach (var junction in variation.Junctions)
-    {
-      var cx = CalculateX(location.Col + junction.Col);
-      var cy = CalculateY(location.Row + junction.Row);
-      var r = _squareWidth * 0.05f;
-      canvas.FillColor = Colors.Purple;
-      canvas.FillCircle(cx, cy, r);
-    }
+    // foreach (var junction in variation.Junctions)
+    // {
+    //   var cx = CalculateX(location.Col + junction.Col);
+    //   var cy = CalculateY(location.Row + junction.Row);
+    //   var r = _squareWidth * 0.05f;
+    //   canvas.FillColor = Colors.Purple;
+    //   canvas.FillCircle(cx, cy, r);
+    // }
   }
 
   private float CalculateX(int col) => col * _squareWidth + _gridLineHalfThickness;

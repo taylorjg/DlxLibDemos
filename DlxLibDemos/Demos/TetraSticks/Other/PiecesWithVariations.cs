@@ -22,14 +22,16 @@ public static class PiecesWithVariations
     var west = south.RotateCW();
     var westReflected = west.Reflect();
 
-    var variations = new[] {
+    var allVariations = new[] {
         north, northReflected,
         east, eastReflected,
         south, southReflected,
         west, westReflected
     };
 
-    return new PieceWithVariations(piece.Label, variations);
+    var uniqueVariations = allVariations.DistinctBy(v => v.NormalisedRepresentation()).ToArray();
+
+    return new PieceWithVariations(piece.Label, uniqueVariations);
   }
 
   public static readonly PieceWithVariations[] ThePiecesWithVariations =

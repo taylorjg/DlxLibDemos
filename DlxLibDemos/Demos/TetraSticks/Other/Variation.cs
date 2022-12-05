@@ -43,4 +43,24 @@ public record Variation(
       newJunctions
     );
   }
-};
+
+  private class CoordsComparer : IComparer<Coords>
+  {
+    public int Compare(Coords coords1, Coords coords2)
+    {
+      var rowDiff = coords1.Row - coords2.Row;
+      var colDiff = coords1.Col - coords2.Col;
+      return rowDiff != 0 ? rowDiff : colDiff;
+    }
+  }
+
+  public string NormalisedRepresentation()
+  {
+    var comparer = new CoordsComparer();
+    var sortedHorizontals = Horizontals.OrderBy(coords => coords, comparer);
+    var sortedVerticals = Verticals.OrderBy(coords => coords, comparer);
+    var hs = sortedHorizontals.Select(coords => $"H{coords.Row}{coords.Col}");
+    var vs = sortedVerticals.Select(coords => $"V{coords.Row}{coords.Col}");
+    return string.Join("-", hs.Concat(vs));
+  }
+}

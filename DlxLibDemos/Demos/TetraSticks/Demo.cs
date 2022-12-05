@@ -14,6 +14,7 @@ public class TetraSticksDemo : IDemo
     _logger = logger;
     _logger.LogInformation("constructor");
   }
+
   public IDrawable CreateDrawable(IWhatToDraw whatToDraw)
   {
     return new TetraSticksDrawable(whatToDraw);
