@@ -64,8 +64,7 @@ public partial class HomePageViewModel : ObservableObject
         new AvailableDemo(
           DemoNames.TetraSticks,
           "TetraSticksDemoPage",
-          // _serviceProvider.GetService<TetraSticksThumbnailDrawable>()
-          _serviceProvider.GetService<NQueensThumbnailDrawable>()
+          _serviceProvider.GetService<TetraSticksThumbnailDrawable>()
         )
       };
     }

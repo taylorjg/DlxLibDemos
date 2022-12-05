@@ -5,4 +5,15 @@
                         x:Class="DlxLibDemos.Demos.TetraSticks.TetraSticksDemoPageView"
                         Title="{x:Static local:DemoNames.TetraSticks}">
 
+  <HorizontalStackLayout Spacing="10">
+    <Label
+      Text="Letter to omit:"
+      VerticalOptions="Center" />
+    <Picker
+      WidthRequest="50"
+      Title="Select a letter to omit"
+      ItemsSource="{Binding MissingLetters}"
+      SelectedItem="{Binding SelectedMissingLetter}" />
+  </HorizontalStackLayout>
+
 </local:DemoPageBaseView>

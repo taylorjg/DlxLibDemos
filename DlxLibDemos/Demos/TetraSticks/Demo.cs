@@ -5,9 +5,7 @@ namespace DlxLibDemos.Demos.TetraSticks;
 public class TetraSticksDemo : IDemo
 {
   private ILogger<TetraSticksDemo> _logger;
-
-  // TEMPORARY - this will come from DemoSettings eventually
-  private const string LeavingOutPieceLabel = "L";
+  private PieceWithVariations[] _piecesInPlay;
 
   public TetraSticksDemo(ILogger<TetraSticksDemo> logger)
   {
@@ -22,6 +20,9 @@ public class TetraSticksDemo : IDemo
 
   public object[] BuildInternalRows(object demoSettings)
   {
+    var missingLetter = (string)demoSettings;
+    _piecesInPlay = PiecesWithVariations.ThePiecesWithVariations.Where(p => p.Label != missingLetter).ToArray();
+
     return AllPossiblePiecePlacements().Where(IsValidPiecePlacement).ToArray();
   }
 
@@ -74,9 +75,7 @@ public class TetraSticksDemo : IDemo
 
   private IEnumerable<TetraSticksInternalRow> AllPossiblePiecePlacements()
   {
-    var piecesInPlay = PiecesWithVariations.ThePiecesWithVariations.Where(p => p.Label != LeavingOutPieceLabel);
-
-    foreach (var pieceWithVariations in piecesInPlay)
+    foreach (var pieceWithVariations in _piecesInPlay)
     {
       foreach (var variation in pieceWithVariations.Variations)
       {
@@ -93,9 +92,8 @@ public class TetraSticksDemo : IDemo
 
   private int[] MakePieceColumns(TetraSticksInternalRow internalRow)
   {
-    var piecesInPlay = Pieces.ThePieces.Where(piece => piece.Label != LeavingOutPieceLabel).ToArray();
-    var columns = Enumerable.Repeat(0, piecesInPlay.Length).ToArray();
-    var pieceIndex = Array.FindIndex(piecesInPlay, p => p.Label == internalRow.Label);
+    var columns = Enumerable.Repeat(0, _piecesInPlay.Length).ToArray();
+    var pieceIndex = Array.FindIndex(_piecesInPlay, p => p.Label == internalRow.Label);
     columns[pieceIndex] = 1;
     return columns;
   }
