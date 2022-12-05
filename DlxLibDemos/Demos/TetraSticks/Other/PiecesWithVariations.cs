@@ -4,20 +4,29 @@ public static class PiecesWithVariations
 {
   private static PieceWithVariations FindUniqueVariations(Piece piece)
   {
-    var makeBaseVariation = (Orientation orientation) =>
-      new Variation(
-        orientation,
+    var north = new Variation(
+        Orientation.North,
         false,
         piece.Horizontals,
         piece.Verticals,
         piece.Junctions
       );
-
-    var north = makeBaseVariation(Orientation.North);
     var northReflected = north.Reflect();
 
+    var east = north.RotateCW();
+    var eastReflected = east.Reflect();
+
+    var south = east.RotateCW();
+    var southReflected = south.Reflect();
+
+    var west = south.RotateCW();
+    var westReflected = west.Reflect();
+
     var variations = new[] {
-        north, northReflected
+        north, northReflected,
+        east, eastReflected,
+        south, southReflected,
+        west, westReflected
     };
 
     return new PieceWithVariations(piece.Label, variations);
