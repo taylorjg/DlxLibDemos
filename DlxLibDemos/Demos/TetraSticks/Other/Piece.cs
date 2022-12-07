@@ -5,7 +5,5 @@ public record Piece(
   Coords[] Horizontals,
   Coords[] Verticals,
   Coords[] Junctions,
-  LineSegment[] LineSegments,
-  int[][] Lines,
   Coords[][] PolyLines
 );
