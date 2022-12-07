@@ -66,9 +66,10 @@ public class TetraSticksDrawable : IDrawable
   {
     foreach (var row in Enumerable.Range(0, 6))
     {
-      var x1 = 0;
+      var gap = _polyLineHalfThickness - _gridLineHalfThickness;
+      var x1 = gap;
       var y1 = CalculateY(row);
-      var x2 = _width;
+      var x2 = _width - (2 * gap);
       var y2 = y1;
       canvas.StrokeColor = _gridColour;
       canvas.StrokeSize = _gridLineFullThickness;
@@ -80,10 +81,11 @@ public class TetraSticksDrawable : IDrawable
   {
     foreach (var col in Enumerable.Range(0, 6))
     {
+      var gap = _polyLineHalfThickness - _gridLineHalfThickness;
       var x1 = CalculateX(col);
-      var y1 = 0;
+      var y1 = gap;
       var x2 = x1;
-      var y2 = _height;
+      var y2 = _height - (2 * gap);
       canvas.StrokeColor = _gridColour;
       canvas.StrokeSize = _gridLineFullThickness;
       canvas.DrawLine(x1, y1, x2, y2);
