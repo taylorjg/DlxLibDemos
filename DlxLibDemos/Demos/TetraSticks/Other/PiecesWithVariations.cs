@@ -9,7 +9,8 @@ public static class PiecesWithVariations
         false,
         piece.Horizontals,
         piece.Verticals,
-        piece.Junctions
+        piece.Junctions,
+        piece.PolyLines
       );
     var northReflected = north.Reflect();
 

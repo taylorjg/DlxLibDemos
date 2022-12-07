@@ -5,7 +5,8 @@ public record Variation(
   bool Reflected,
   Coords[] Horizontals,
   Coords[] Verticals,
-  Coords[] Junctions
+  Coords[] Junctions,
+  Coords[][] PolyLines
 )
 {
   private readonly int _width = Horizontals.Any() ? Horizontals.Max(h => h.Col) + 1 : 0;
@@ -19,13 +20,16 @@ public record Variation(
     var newHorizontals = Horizontals.Select(c => new Coords(c.Row, Width - c.Col - 1)).ToArray();
     var newVerticals = Verticals.Select(c => new Coords(c.Row, Width - c.Col)).ToArray();
     var newJunctions = Junctions.Select(c => new Coords(c.Row, Width - c.Col)).ToArray();
+    var newPolyLines = PolyLines.Select(polyLine =>
+      polyLine.Select(c => new Coords(c.Row, Width - c.Col)).ToArray()).ToArray();
 
     return new Variation(
       Orientation,
       !Reflected,
       newHorizontals,
       newVerticals,
-      newJunctions
+      newJunctions,
+      newPolyLines
     );
   }
 
@@ -34,13 +38,16 @@ public record Variation(
     var newHorizontals = Verticals.Select(c => new Coords(c.Col, Height - c.Row - 1)).ToArray();
     var newVerticals = Horizontals.Select(c => new Coords(c.Col, Height - c.Row)).ToArray();
     var newJunctions = Junctions.Select(c => new Coords(c.Col, Height - c.Row)).ToArray();
+    var newPolyLines = PolyLines.Select(polyLine =>
+      polyLine.Select(c => new Coords(c.Col, Height - c.Row)).ToArray()).ToArray();
 
     return new Variation(
       Orientation.RotateCW(),
       Reflected,
       newHorizontals,
       newVerticals,
-      newJunctions
+      newJunctions,
+      newPolyLines
     );
   }
 

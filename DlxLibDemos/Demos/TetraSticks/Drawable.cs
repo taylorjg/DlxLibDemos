@@ -96,6 +96,81 @@ public class TetraSticksDrawable : IDrawable
     }
   }
 
+  // private void DrawPiece(ICanvas canvas, TetraSticksInternalRow internalRow)
+  // {
+  //   var colour = PieceColours[internalRow.Label];
+
+  //   var location = internalRow.Location;
+  //   var variation = internalRow.Variation;
+
+  //   var horizontalPaths = variation.Horizontals.Select(horizontal =>
+  //   {
+  //     var x1 = CalculateX(location.Col + horizontal.Col) + _squareWidth * 0.1f;
+  //     var x2 = CalculateX(location.Col + horizontal.Col + 1) - _squareWidth * 0.1f;
+  //     var y = CalculateY(location.Row + horizontal.Row);
+  //     var path = new PathF();
+  //     path.MoveTo(x1, y);
+  //     path.LineTo(x2, y);
+  //     return path;
+  //   }).ToList();
+
+  //   horizontalPaths.ForEach(path =>
+  //   {
+  //     canvas.StrokeColor = Colors.Black;
+  //     canvas.StrokeSize = _squareWidth * 0.1f;
+  //     canvas.StrokeLineJoin = LineJoin.Round;
+  //     canvas.StrokeLineCap = LineCap.Round;
+  //     canvas.DrawPath(path);
+  //   });
+
+  //   horizontalPaths.ForEach(path =>
+  //   {
+  //     canvas.StrokeColor = colour;
+  //     canvas.StrokeSize = _squareWidth * 0.08f;
+  //     canvas.StrokeLineJoin = LineJoin.Round;
+  //     canvas.StrokeLineCap = LineCap.Round;
+  //     canvas.DrawPath(path);
+  //   });
+
+  //   var verticalPaths = variation.Verticals.Select(vertical =>
+  //   {
+  //     var x = CalculateX(location.Col + vertical.Col);
+  //     var y1 = CalculateY(location.Row + vertical.Row) + _squareHeight * 0.1f;
+  //     var y2 = CalculateY(location.Row + vertical.Row + 1) - _squareHeight * 0.1f;
+  //     var path = new PathF();
+  //     path.MoveTo(x, y1);
+  //     path.LineTo(x, y2);
+  //     return path;
+  //   }).ToList();
+
+  //   verticalPaths.ForEach(path =>
+  //   {
+  //     canvas.StrokeColor = Colors.Black;
+  //     canvas.StrokeSize = _squareHeight * 0.1f;
+  //     canvas.StrokeLineJoin = LineJoin.Round;
+  //     canvas.StrokeLineCap = LineCap.Round;
+  //     canvas.DrawPath(path);
+  //   });
+
+  //   verticalPaths.ForEach(path =>
+  //   {
+  //     canvas.StrokeColor = colour;
+  //     canvas.StrokeSize = _squareHeight * 0.08f;
+  //     canvas.StrokeLineJoin = LineJoin.Round;
+  //     canvas.StrokeLineCap = LineCap.Round;
+  //     canvas.DrawPath(path);
+  //   });
+
+  //   // foreach (var junction in variation.Junctions)
+  //   // {
+  //   //   var cx = CalculateX(location.Col + junction.Col);
+  //   //   var cy = CalculateY(location.Row + junction.Row);
+  //   //   var r = _squareWidth * 0.02f;
+  //   //   canvas.FillColor = Colors.Magenta;
+  //   //   canvas.FillCircle(cx, cy, r);
+  //   // }
+  // }
+
   private void DrawPiece(ICanvas canvas, TetraSticksInternalRow internalRow)
   {
     var colour = PieceColours[internalRow.Label];
@@ -103,81 +178,63 @@ public class TetraSticksDrawable : IDrawable
     var location = internalRow.Location;
     var variation = internalRow.Variation;
 
-    var lineEndings = FindLineEndings(internalRow);
+    var addLocation = (Coords coords) =>
+      new Coords(
+        location.Row + coords.Row,
+        location.Col + coords.Col
+      );
 
-    var isLineEnding = (Coords coords) => lineEndings.Exists(c => c == coords);
-
-    foreach (var horizontal in variation.Horizontals)
+    var insetLineEnding = (Coords coords1, Coords coords2, Point point) =>
     {
-      var startCoords = horizontal;
-      var endCoords = new Coords(startCoords.Row, startCoords.Col + 1);
+      var rowDiff = coords2.Row - coords1.Row;
+      var colDiff = coords2.Col - coords1.Col;
 
-      var w = _squareWidth;
-      var h = _squareHeight * 0.1f;
-      var x = CalculateX(location.Col + horizontal.Col);
-      var y = CalculateY(location.Row + horizontal.Row) - h / 2;
+      var verticalInset = _squareHeight * 0.15f;
+      var horizontalInset = _squareWidth * 0.15f;
 
-      if (isLineEnding(startCoords) || isLineEnding(endCoords)) w -= _squareWidth * 0.1f;
-      if (isLineEnding(startCoords)) x += _squareWidth * 0.1f;
-
-      canvas.FillColor = colour;
-      canvas.FillRectangle(x, y, w, h);
-    }
-
-    foreach (var vertical in variation.Verticals)
-    {
-      var startCoords = vertical;
-      var endCoords = new Coords(startCoords.Row + 1, startCoords.Col);
-
-      var w = _squareWidth * 0.1f;
-      var h = _squareHeight;
-      var x = CalculateX(location.Col + vertical.Col) - w / 2;
-      var y = CalculateY(location.Row + vertical.Row);
-
-      if (isLineEnding(startCoords) || isLineEnding(endCoords)) h -= _squareHeight * 0.1f;
-      if (isLineEnding(startCoords)) y += _squareHeight * 0.1f;
-
-      canvas.FillColor = colour;
-      canvas.FillRectangle(x, y, w, h);
-    }
-
-    // foreach (var junction in variation.Junctions)
-    // {
-    //   var cx = CalculateX(location.Col + junction.Col);
-    //   var cy = CalculateY(location.Row + junction.Row);
-    //   var r = _squareWidth * 0.05f;
-    //   canvas.FillColor = Colors.Purple;
-    //   canvas.FillCircle(cx, cy, r);
-    // }
-  }
-
-  private List<Coords> FindLineEndings(TetraSticksInternalRow internalRow)
-  {
-    var allCoords = new List<Coords>();
-
-    foreach (var horizontal in internalRow.Variation.Horizontals)
-    {
-      allCoords.Add(horizontal);
-      allCoords.Add(new Coords(horizontal.Row, horizontal.Col + 1));
-    }
-
-    foreach (var vertical in internalRow.Variation.Verticals)
-    {
-      allCoords.Add(vertical);
-      allCoords.Add(new Coords(vertical.Row + 1, vertical.Col));
-    }
-
-    var lineEndings = new List<Coords>();
-
-    foreach (var coords in allCoords)
-    {
-      if (allCoords.Count(c => c == coords) == 1)
+      return (rowDiff, colDiff) switch
       {
-        lineEndings.Add(coords);
-      }
-    }
+        (1, 0) => new Point(point.X, point.Y + verticalInset), // Down
+        (-1, 0) => new Point(point.X, point.Y - verticalInset), // Up
+        (0, 1) => new Point(point.X + horizontalInset, point.Y), // Right
+        (0, -1) => new Point(point.X - horizontalInset, point.Y), // Left
+        _ => point
+      };
+    };
 
-    return lineEndings;
+    var paths = variation.PolyLines.Select(polyLine =>
+    {
+      var path = new PathF();
+
+      path.MoveTo(insetLineEnding(polyLine[0], polyLine[1], CalculatePoint(addLocation(polyLine.First()))));
+
+      foreach (var coords in polyLine[1..^1])
+      {
+        path.LineTo(CalculatePoint(addLocation(coords)));
+      }
+
+      path.LineTo(insetLineEnding(polyLine[^1], polyLine[^2], CalculatePoint(addLocation(polyLine.Last()))));
+
+      return path;
+    }).ToList();
+
+    paths.ForEach(path =>
+    {
+      canvas.StrokeColor = Colors.Black;
+      canvas.StrokeSize = _squareHeight * 0.1f;
+      canvas.StrokeLineJoin = LineJoin.Round;
+      canvas.StrokeLineCap = LineCap.Round;
+      canvas.DrawPath(path);
+    });
+
+    paths.ForEach(path =>
+    {
+      canvas.StrokeColor = colour;
+      canvas.StrokeSize = _squareHeight * 0.08f;
+      canvas.StrokeLineJoin = LineJoin.Round;
+      canvas.StrokeLineCap = LineCap.Round;
+      canvas.DrawPath(path);
+    });
   }
 
   private float CalculateX(int col) => col * _squareWidth + _gridLineHalfThickness;
