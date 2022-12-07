@@ -7,6 +7,8 @@ public class TetraSticksDrawable : IDrawable
   private float _height;
   private float _gridLineFullThickness;
   private float _gridLineHalfThickness;
+  private float _polyLineFullThickness;
+  private float _polyLineHalfThickness;
   private float _squareWidth;
   private float _squareHeight;
   private readonly Color _gridColour = Color.FromRgba("#CD853F80");
@@ -42,8 +44,10 @@ public class TetraSticksDrawable : IDrawable
     _height = dirtyRect.Height;
     _gridLineFullThickness = dirtyRect.Width / 100;
     _gridLineHalfThickness = _gridLineFullThickness / 2;
-    _squareWidth = (dirtyRect.Width - _gridLineFullThickness) / 5;
-    _squareHeight = (dirtyRect.Height - _gridLineFullThickness) / 5;
+    _polyLineFullThickness = _gridLineFullThickness * 2;
+    _polyLineHalfThickness = _polyLineFullThickness / 2;
+    _squareWidth = (dirtyRect.Width - _polyLineFullThickness) / 5;
+    _squareHeight = (dirtyRect.Height - _polyLineFullThickness) / 5;
 
     DrawGrid(canvas);
     DrawPieces(canvas);
@@ -114,8 +118,8 @@ public class TetraSticksDrawable : IDrawable
       var rowDiff = coords2.Row - coords1.Row;
       var colDiff = coords2.Col - coords1.Col;
 
-      var verticalInset = _squareHeight * 0.15f;
-      var horizontalInset = _squareWidth * 0.15f;
+      var verticalInset = _polyLineHalfThickness * 3;
+      var horizontalInset = _polyLineHalfThickness * 3;
 
       return (rowDiff, colDiff) switch
       {
@@ -144,7 +148,8 @@ public class TetraSticksDrawable : IDrawable
 
       path.LineTo(insetLineEnding(polyLine[^1], polyLine[^2], CalculatePoint(addLocation(polyLine.Last()))));
 
-      if (polyLine.First() == polyLine.Last()) {
+      if (polyLine.First() == polyLine.Last())
+      {
         path.LineTo(insetLineEnding(polyLine[0], polyLine[1], CalculatePoint(addLocation(polyLine.First()))));
       }
 
@@ -154,8 +159,7 @@ public class TetraSticksDrawable : IDrawable
     paths.ForEach(path =>
     {
       canvas.StrokeColor = Colors.Black;
-      canvas.StrokeSize = _squareHeight * 0.1f;
-      canvas.StrokeLineJoin = LineJoin.Round;
+      canvas.StrokeSize = _polyLineFullThickness;
       canvas.StrokeLineCap = LineCap.Round;
       canvas.DrawPath(path);
     });
@@ -163,15 +167,14 @@ public class TetraSticksDrawable : IDrawable
     paths.ForEach(path =>
     {
       canvas.StrokeColor = colour;
-      canvas.StrokeSize = _squareHeight * 0.08f;
-      canvas.StrokeLineJoin = LineJoin.Round;
+      canvas.StrokeSize = _polyLineFullThickness * 0.75f;
       canvas.StrokeLineCap = LineCap.Round;
       canvas.DrawPath(path);
     });
   }
 
-  private float CalculateX(int col) => col * _squareWidth + _gridLineHalfThickness;
-  private float CalculateY(int row) => row * _squareHeight + _gridLineHalfThickness;
+  private float CalculateX(int col) => col * _squareWidth + _polyLineHalfThickness;
+  private float CalculateY(int row) => row * _squareHeight + _polyLineHalfThickness;
 
   private PointF CalculatePoint(Coords coords) =>
     new PointF(CalculateX(coords.Col), CalculateY(coords.Row));
