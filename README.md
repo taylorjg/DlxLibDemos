@@ -33,11 +33,11 @@ Here are links to the existing WPF demo apps:
   * ~~Pentominoes~~ (new - no old WPF counterpart - but I do have a web version [here](https://github.com/taylorjg/pentominoes))
   * ~~N Queens~~ (new - no old WPF counterpart)
   * ~~Draughtboard Puzzle~~
-  * Tetra Sticks
+  * ~~Tetra Sticks~~
   * Ripple Effect
   * Flow Free
   * Self Visualisation (new - no old WPF counterpart - but I do have a web version [here](https://github.com/taylorjg/dlxlib-self-visualisation))
-* Display version information  
+* ~~Display version information~~
 * Do the solving on a background thread
 * Find all solutions and provide a mechanism to navigate between them
 * Add an About page
