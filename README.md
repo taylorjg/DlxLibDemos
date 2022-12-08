@@ -22,9 +22,15 @@ Here are links to the existing WPF demo apps:
 
 ![Home Page](screenshots/home-page.png)
 
+![Sudoku](screenshots/sudoku.png)
+
 ![Pentominoes](screenshots/pentominoes.png)
 
+![N Queens](screenshots/nqueens.png)
+
 ![Draughtboard Puzzle](screenshots/draughtboard-puzzle.png)
+
+![Tetra Sticks](screenshots/tetrasticks.png)
 
 # TODO
 
