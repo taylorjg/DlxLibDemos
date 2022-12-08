@@ -133,6 +133,37 @@ public class TetraSticksDrawable : IDrawable
       };
     };
 
+    var joinTo = (Coords coords, Coords coordsPrev, Coords coordsNext, PathF path, PointF point) =>
+    {
+      if (coordsPrev.Row == coordsNext.Row || coordsPrev.Col == coordsNext.Col)
+      {
+        path.LineTo(point);
+        return;
+      }
+
+      // https://stackoverflow.com/a/40444735
+      // const angle = ([a,b],[c,d],[e,f]) => (Math.atan2(f-d,e-c)-Math.atan2(b-d,a-c)+3*pi)%(2*pi)-pi;
+      // const sweepFl = (S,V,E) => angle(E,S,V) > 0 ? 0 : 1;
+      var angle = (Coords E, Coords S, Coords V) =>
+      {
+        var (b, a) = E;
+        var (d, c) = S;
+        var (f, e) = V;
+        return (Math.Atan2(f - d, e - c) - Math.Atan2(b - d, a - c) + 3 * Math.PI) % (2 * Math.PI) - Math.PI;
+      };
+
+      var rx = _polyLineHalfThickness * 3;
+      var ry = _polyLineHalfThickness * 3;
+      var largeArcFlag = false;
+      var sweepFlag = angle(coordsNext, coordsPrev, coords) < 0;
+      var x = point.X;
+      var y = point.Y;
+      var lastPointX = path.LastPoint.X;
+      var lastPointY = path.LastPoint.Y;
+
+      path.SVGArcTo(rx, ry, 0f, largeArcFlag, sweepFlag, x, y, lastPointX, lastPointY);
+    };
+
     var paths = variation.PolyLines.Select(polyLine =>
     {
       var path = new PathF();
@@ -144,15 +175,25 @@ public class TetraSticksDrawable : IDrawable
       foreach (var index in indices[1..^1])
       {
         var coords = polyLine[index];
-        path.LineTo(insetLineEnding(polyLine[index], polyLine[index - 1], CalculatePoint(addLocation(coords))));
-        path.LineTo(insetLineEnding(polyLine[index], polyLine[index + 1], CalculatePoint(addLocation(coords))));
+        var coordsPrev = polyLine[index - 1];
+        var coordsNext = polyLine[index + 1];
+        var point = CalculatePoint(addLocation(coords));
+        var pointInsetPrev = insetLineEnding(coords, coordsPrev, point);
+        var pointInsetNext = insetLineEnding(coords, coordsNext, point);
+        path.LineTo(pointInsetPrev);
+        joinTo(coords, coordsPrev, coordsNext, path, pointInsetNext);
       }
 
       path.LineTo(insetLineEnding(polyLine[^1], polyLine[^2], CalculatePoint(addLocation(polyLine.Last()))));
 
       if (polyLine.First() == polyLine.Last())
       {
-        path.LineTo(insetLineEnding(polyLine[0], polyLine[1], CalculatePoint(addLocation(polyLine.First()))));
+        var coords = polyLine[0];
+        var coordsPrev = polyLine[^2]; // not [^1] because [^1] is the same coords as [0]
+        var coordsNext = polyLine[1];
+        var point = CalculatePoint(addLocation(coords));
+        var pointInsetNext = insetLineEnding(coords, coordsNext, point);
+        joinTo(coords, coordsPrev, coordsNext, path, pointInsetNext);
       }
 
       return path;
