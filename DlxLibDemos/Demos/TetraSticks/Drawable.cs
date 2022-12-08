@@ -109,19 +109,16 @@ public class TetraSticksDrawable : IDrawable
     var location = internalRow.Location;
     var variation = internalRow.Variation;
 
-    var addLocation = (Coords coords) =>
-      new Coords(
-        location.Row + coords.Row,
-        location.Col + coords.Col
-      );
+    const int LINE_END_MULTIPLIER = 3;
+    const int ROUNDED_CORNER_MULTIPLIER = 4;
 
-    var insetLineEnding = (Coords coords1, Coords coords2, Point point) =>
+    var insetPoint = (int multiplier) => (Coords coords1, Coords coords2, Point point) =>
     {
       var rowDiff = coords2.Row - coords1.Row;
       var colDiff = coords2.Col - coords1.Col;
 
-      var verticalInset = _polyLineHalfThickness * 3;
-      var horizontalInset = _polyLineHalfThickness * 3;
+      var verticalInset = _polyLineHalfThickness * multiplier;
+      var horizontalInset = _polyLineHalfThickness * multiplier;
 
       return (rowDiff, colDiff) switch
       {
@@ -132,6 +129,11 @@ public class TetraSticksDrawable : IDrawable
         _ => point
       };
     };
+
+    var insetLineStart = insetPoint(LINE_END_MULTIPLIER);
+    var insetLineEnd = insetPoint(LINE_END_MULTIPLIER);
+    var insetRoundedCornerStart = insetPoint(ROUNDED_CORNER_MULTIPLIER);
+    var insetRoundedCornerEnd = insetPoint(ROUNDED_CORNER_MULTIPLIER);
 
     var roundedCornerTo = (Coords S, Coords V, Coords E, PathF path, PointF point) =>
     {
@@ -146,7 +148,7 @@ public class TetraSticksDrawable : IDrawable
         return (Math.Atan2(f - d, e - c) - Math.Atan2(b - d, a - c) + 3 * Math.PI) % (2 * Math.PI) - Math.PI;
       };
 
-      var r = _polyLineHalfThickness * 3;
+      var r = _polyLineHalfThickness * ROUNDED_CORNER_MULTIPLIER;
       var largeArcFlag = false;
       var sweepFlag = angle() < 0;
       var x = point.X;
@@ -161,7 +163,16 @@ public class TetraSticksDrawable : IDrawable
     {
       var path = new PathF();
 
-      path.MoveTo(insetLineEnding(polyLine[0], polyLine[1], CalculatePoint(addLocation(polyLine.First()))));
+      if (polyLine[0] == polyLine[^1])
+      {
+        var roundedCornerStart = insetRoundedCornerStart(polyLine[0], polyLine[1], CalculatePoint(polyLine[0].Add(location)));
+        path.MoveTo(roundedCornerStart);
+      }
+      else
+      {
+        var lineStart = insetLineStart(polyLine[0], polyLine[1], CalculatePoint(polyLine[0].Add(location)));
+        path.MoveTo(lineStart);
+      }
 
       var indices = Enumerable.Range(0, polyLine.Length).ToArray();
 
@@ -170,7 +181,7 @@ public class TetraSticksDrawable : IDrawable
         var coords = polyLine[index];
         var coordsPrev = polyLine[index - 1];
         var coordsNext = polyLine[index + 1];
-        var point = CalculatePoint(addLocation(coords));
+        var point = CalculatePoint(coords.Add(location));
 
         if (coordsPrev.Row == coordsNext.Row || coordsPrev.Col == coordsNext.Col)
         {
@@ -178,23 +189,30 @@ public class TetraSticksDrawable : IDrawable
         }
         else
         {
-          var pointInsetPrev = insetLineEnding(coords, coordsPrev, point);
-          var pointInsetNext = insetLineEnding(coords, coordsNext, point);
-          path.LineTo(pointInsetPrev);
-          roundedCornerTo(coordsPrev, coords, coordsNext, path, pointInsetNext);
+          var roundedCornerStart = insetRoundedCornerStart(coords, coordsPrev, point);
+          path.LineTo(roundedCornerStart);
+
+          var roundedCornerEnd = insetRoundedCornerEnd(coords, coordsNext, point);
+          roundedCornerTo(coordsPrev, coords, coordsNext, path, roundedCornerEnd);
         }
       }
 
-      path.LineTo(insetLineEnding(polyLine[^1], polyLine[^2], CalculatePoint(addLocation(polyLine.Last()))));
-
-      if (polyLine.First() == polyLine.Last())
+      if (polyLine[0] == polyLine[^1])
       {
         var coords = polyLine[0];
         var coordsPrev = polyLine[^2]; // not [^1] because [^1] is the same coords as [0]
         var coordsNext = polyLine[1];
-        var point = CalculatePoint(addLocation(coords));
-        var pointInsetNext = insetLineEnding(coords, coordsNext, point);
-        roundedCornerTo(coordsPrev, coords, coordsNext, path, pointInsetNext);
+        var point = CalculatePoint(coords.Add(location));
+
+        var roundedCornerStart = insetRoundedCornerStart(coords, coordsPrev, point);
+        path.LineTo(roundedCornerStart);
+
+        roundedCornerTo(coordsPrev, coords, coordsNext, path, path.FirstPoint);
+      }
+      else
+      {
+        var lineEnd = insetLineEnd(polyLine[^1], polyLine[^2], CalculatePoint(polyLine[^1].Add(location)));
+        path.LineTo(lineEnd);
       }
 
       return path;
