@@ -6,7 +6,6 @@
 
     <Grid RowDefinitions="*,8*,*" ColumnDefinitions="*,Auto,*">
         <ScrollView Grid.Row="1" Grid.Column="1">
-        <VerticalStackLayout Spacing="50">
             <VerticalStackLayout BindableLayout.ItemsSource="{Binding AvailableDemos}" Spacing="10">
                 <BindableLayout.ItemTemplate>
                     <DataTemplate>
@@ -40,7 +39,6 @@
                     </DataTemplate>
                 </BindableLayout.ItemTemplate>
             </VerticalStackLayout>
-        </VerticalStackLayout>
         </ScrollView>
         <Label
             Grid.Row="2"
