@@ -77,8 +77,9 @@ public class AztecDiamondDemo : IDemo
 
   private int[] MakePieceColumns(AztecDiamondInternalRow internalRow)
   {
-    var columns = Enumerable.Repeat(0, PiecesWithVariations.ThePiecesWithVariations.Length).ToArray();
-    var index = Array.FindIndex(PiecesWithVariations.ThePiecesWithVariations, p => p.Label == internalRow.Label);
+    var pwvs = PiecesWithVariations.ThePiecesWithVariations;
+    var columns = Enumerable.Repeat(0, pwvs.Length).ToArray();
+    var index = Array.FindIndex(pwvs, pwv => pwv.Variations.Any(v => v == internalRow.Variation));
     if (index >= 0)
     {
       columns[index] = 1;
