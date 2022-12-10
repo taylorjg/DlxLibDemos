@@ -53,38 +53,6 @@ public class AztecDiamondDrawable : IDrawable
     // DrawPieces(canvas);
   }
 
-  private static readonly Coords[] AllHorizontals =
-    Enumerable.Range(0, 10).SelectMany(
-      row => Enumerable.Range(0, 9).Select(col =>
-        new Coords(row, col))
-    )
-    .Where(coords =>
-    {
-      var relativeRow = (float)coords.Row - 4.5f;
-      var relativeCol = (float)coords.Col - 4f;
-      return (Math.Abs(relativeRow) + Math.Abs(relativeCol) <= 5);
-    })
-    .ToArray();
-
-  private static readonly Coords[] AllVerticals =
-    Enumerable.Range(0, 9).SelectMany(
-      row => Enumerable.Range(0, 10).Select(col =>
-        new Coords(row, col))
-    )
-    .Where(coords =>
-    {
-      var relativeRow = (float)coords.Row - 4f;
-      var relativeCol = (float)coords.Col - 4.5f;
-      return (Math.Abs(relativeRow) + Math.Abs(relativeCol) <= 5);
-    })
-    .ToArray();
-
-  private static readonly Coords[] AllJunctions =
-    AllHorizontals
-      .Intersect(AllVerticals)
-      .Where(c1 => AllHorizontals.Any(c2 => c2 == c1.Left()))
-      .ToArray();
-
   private void DrawGrid(ICanvas canvas)
   {
     canvas.SaveState();
@@ -101,17 +69,17 @@ public class AztecDiamondDrawable : IDrawable
 
   private void DrawGridLines(ICanvas canvas)
   {
-    foreach (var horizontal in AllHorizontals)
+    foreach (var horizontal in Locations.AllHorizontals)
     {
       DrawHorizontalGridLine(canvas, horizontal);
     }
 
-    foreach (var vertical in AllVerticals)
+    foreach (var vertical in Locations.AllVerticals)
     {
       DrawVerticalGridLine(canvas, vertical);
     }
 
-    foreach (var junction in AllJunctions)
+    foreach (var junction in Locations.AllJunctions)
     {
       DrawJunction(canvas, junction);
     }
