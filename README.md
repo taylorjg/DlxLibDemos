@@ -14,7 +14,7 @@ Here are links to the existing WPF demo apps:
 
 * [Sudoku](https://github.com/taylorjg/SudokuDlx)
 * [Draughtboard Puzzle](https://github.com/taylorjg/DlxLib/tree/master/DlxLibDemo3)
-* [Tetra Sticks](https://github.com/taylorjg/TetraSticks)
+* [TetraSticks](https://github.com/taylorjg/TetraSticks)
 * [Ripple Effect](https://github.com/taylorjg/RippleEffectDlx)
 * [Flow Free](https://github.com/taylorjg/FlowFreeSolverWpf)
 
@@ -30,7 +30,7 @@ Here are links to the existing WPF demo apps:
 
 ![Draughtboard Puzzle](screenshots/draughtboard-puzzle.png)
 
-![Tetra Sticks](screenshots/tetrasticks.png)
+![TetraSticks](screenshots/tetrasticks.png)
 
 # TODO
 
@@ -39,7 +39,8 @@ Here are links to the existing WPF demo apps:
   * ~~Pentominoes~~ (new - no old WPF counterpart - but I do have a web version [here](https://github.com/taylorjg/pentominoes))
   * ~~N Queens~~ (new - no old WPF counterpart)
   * ~~Draughtboard Puzzle~~
-  * ~~Tetra Sticks~~
+  * ~~TetraSticks~~
+  * Aztec Diamond (new - no old WPF counterpart)
   * Ripple Effect
   * Flow Free
   * Self Visualisation (new - no old WPF counterpart - but I do have a web version [here](https://github.com/taylorjg/dlxlib-self-visualisation))

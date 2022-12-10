@@ -8,6 +8,7 @@ using DlxLibDemos.Demos.Pentominoes;
 using DlxLibDemos.Demos.NQueens;
 using DlxLibDemos.Demos.DraughtboardPuzzle;
 using DlxLibDemos.Demos.TetraSticks;
+using DlxLibDemos.Demos.AztecDiamond;
 
 namespace DlxLibDemos;
 
@@ -64,6 +65,12 @@ public partial class HomePageViewModel : ObservableObject
         new AvailableDemo(
           DemoNames.TetraSticks,
           "TetraSticksDemoPage",
+          _serviceProvider.GetService<TetraSticksThumbnailDrawable>()
+        ),
+        new AvailableDemo(
+          DemoNames.AztecDiamond,
+          "AztecDiamondDemoPage",
+          // _serviceProvider.GetService<AztecDiamondThumbnailDrawable>()
           _serviceProvider.GetService<TetraSticksThumbnailDrawable>()
         )
       };
