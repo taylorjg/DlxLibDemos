@@ -50,7 +50,7 @@ public class AztecDiamondDrawable : IDrawable
     _squareHeight = (_height - _polyLineFullThickness) / 9;
 
     DrawGrid(canvas);
-    // DrawPieces(canvas);
+    DrawPieces(canvas);
   }
 
   private void DrawGrid(ICanvas canvas)

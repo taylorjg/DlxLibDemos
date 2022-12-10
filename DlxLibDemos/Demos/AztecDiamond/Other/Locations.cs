@@ -33,4 +33,7 @@ public static class Locations
       .Intersect(AllVerticals)
       .Where(junction => AllHorizontals.Any(coords => coords == junction.Left()))
       .ToArray();
+
+  public static readonly Coords[] AllLocations =
+    AllHorizontals.Union(AllVerticals).ToArray();
 }

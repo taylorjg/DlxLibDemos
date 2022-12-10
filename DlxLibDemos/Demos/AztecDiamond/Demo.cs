@@ -38,32 +38,21 @@ public class AztecDiamondDemo : IDemo
 
   public int? GetNumPrimaryColumns(object demoSettings)
   {
-    return 15 + 30 + 30;
+    return 25 + 50 + 50;
   }
-
-  private static readonly Coords[] Locations =
-    Enumerable.Range(0, 6).SelectMany(row =>
-        Enumerable.Range(0, 6).Select(col =>
-          new Coords(row, col))).ToArray();
 
   private bool IsValidPiecePlacement(AztecDiamondInternalRow internalRow)
   {
-    var location = internalRow.Location;
-
     foreach (var horizontal in internalRow.Variation.Horizontals)
     {
-      var row = location.Row + horizontal.Row;
-      var col = location.Col + horizontal.Col;
-      if (row > 5) return false; // valid rows for horizontal line segments: 0..5
-      if (col > 4) return false; // valid cols for horizontal line segments: 0..4
+      var coords = horizontal.Add(internalRow.Location);
+      if (!Locations.AllHorizontals.Any(h => h == coords)) return false;
     }
 
     foreach (var vertical in internalRow.Variation.Verticals)
     {
-      var row = location.Row + vertical.Row;
-      var col = location.Col + vertical.Col;
-      if (row > 4) return false; // valid rows for vertical line segments: 0..4
-      if (col > 5) return false; // valid cols for vertical line segments: 0..5
+      var coords = vertical.Add(internalRow.Location);
+      if (!Locations.AllVerticals.Any(v => v == coords)) return false;
     }
 
     return true;
@@ -75,7 +64,7 @@ public class AztecDiamondDemo : IDemo
     {
       foreach (var variation in pieceWithVariations.Variations)
       {
-        foreach (var location in Locations)
+        foreach (var location in Locations.AllLocations)
         {
           yield return new AztecDiamondInternalRow(
             pieceWithVariations.Label,
@@ -89,48 +78,54 @@ public class AztecDiamondDemo : IDemo
   private int[] MakePieceColumns(AztecDiamondInternalRow internalRow)
   {
     var columns = Enumerable.Repeat(0, PiecesWithVariations.ThePiecesWithVariations.Length).ToArray();
-    var pieceIndex = Array.FindIndex(PiecesWithVariations.ThePiecesWithVariations, p => p.Label == internalRow.Label);
-    columns[pieceIndex] = 1;
+    var index = Array.FindIndex(PiecesWithVariations.ThePiecesWithVariations, p => p.Label == internalRow.Label);
+    if (index >= 0)
+    {
+      columns[index] = 1;
+    }
     return columns;
   }
 
   private int[] MakeHorizontalsColumns(AztecDiamondInternalRow internalRow)
   {
-    var location = internalRow.Location;
-    var columns = Enumerable.Repeat(0, 30).ToArray();
+    var columns = Enumerable.Repeat(0, Locations.AllHorizontals.Length).ToArray();
     foreach (var horizontal in internalRow.Variation.Horizontals)
     {
-      var row = location.Row + horizontal.Row;
-      var col = location.Col + horizontal.Col;
-      columns[row * 5 + col] = 1;
+      var coords = horizontal.Add(internalRow.Location);
+      var index = Array.FindIndex(Locations.AllHorizontals, h => h == coords);
+      if (index >= 0)
+      {
+        columns[index] = 1;
+      }
     }
     return columns;
   }
 
   private int[] MakeVerticalsColumns(AztecDiamondInternalRow internalRow)
   {
-    var location = internalRow.Location;
-    var columns = Enumerable.Repeat(0, 30).ToArray();
+    var columns = Enumerable.Repeat(0, Locations.AllVerticals.Length).ToArray();
     foreach (var vertical in internalRow.Variation.Verticals)
     {
-      var row = location.Row + vertical.Row;
-      var col = location.Col + vertical.Col;
-      columns[col * 5 + row] = 1;
+      var coords = vertical.Add(internalRow.Location);
+      var index = Array.FindIndex(Locations.AllVerticals, v => v == coords);
+      if (index >= 0)
+      {
+        columns[index] = 1;
+      }
     }
     return columns;
   }
 
   private int[] MakeJunctionsColumns(AztecDiamondInternalRow internalRow)
   {
-    var location = internalRow.Location;
-    var columns = Enumerable.Repeat(0, 16).ToArray();
+    var columns = Enumerable.Repeat(0, Locations.AllJunctions.Length).ToArray();
     foreach (var junction in internalRow.Variation.Junctions)
     {
-      var row = location.Row + junction.Row;
-      var col = location.Col + junction.Col;
-      if (row > 0 && row < 5 && col > 0 && col < 5)
+      var coords = junction.Add(internalRow.Location);
+      var index = Array.FindIndex(Locations.AllJunctions, j => j == coords);
+      if (index >= 0)
       {
-        columns[(row - 1) * 4 + col - 1] = 1;
+        columns[index] = 1;
       }
     }
     return columns;
