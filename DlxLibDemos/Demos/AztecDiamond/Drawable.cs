@@ -11,7 +11,6 @@ public class AztecDiamondDrawable : IDrawable
   private float _polyLineHalfThickness;
   private float _squareWidth;
   private float _squareHeight;
-  // private readonly Color _gridColour = Color.FromRgba("#CD853F80");
   private readonly Color _gridColour = Color.FromRgba("#80808080");
 
   private static readonly Dictionary<string, Color> PieceColours = new Dictionary<string, Color>
@@ -54,67 +53,98 @@ public class AztecDiamondDrawable : IDrawable
     // DrawPieces(canvas);
   }
 
+  private static readonly Coords[] AllHorizontals =
+    Enumerable.Range(0, 10).SelectMany(
+      row => Enumerable.Range(0, 9).Select(col =>
+        new Coords(row, col))
+    )
+    .Where(coords =>
+    {
+      var relativeRow = (float)coords.Row - 4.5f;
+      var relativeCol = (float)coords.Col - 4f;
+      return (Math.Abs(relativeRow) + Math.Abs(relativeCol) <= 5);
+    })
+    .ToArray();
+
+  private static readonly Coords[] AllVerticals =
+    Enumerable.Range(0, 9).SelectMany(
+      row => Enumerable.Range(0, 10).Select(col =>
+        new Coords(row, col))
+    )
+    .Where(coords =>
+    {
+      var relativeRow = (float)coords.Row - 4f;
+      var relativeCol = (float)coords.Col - 4.5f;
+      return (Math.Abs(relativeRow) + Math.Abs(relativeCol) <= 5);
+    })
+    .ToArray();
+
+  private static readonly Coords[] AllJunctions =
+    AllHorizontals
+      .Intersect(AllVerticals)
+      .Where(c1 => AllHorizontals.Any(c2 => c2 == c1.Left()))
+      .ToArray();
+
   private void DrawGrid(ICanvas canvas)
   {
     canvas.SaveState();
-    canvas.BlendMode = BlendMode.Copy;
+
     canvas.StrokeColor = _gridColour;
     canvas.StrokeSize = _gridLineFullThickness;
     canvas.StrokeLineCap = LineCap.Round;
+    canvas.FillColor = Colors.Pink;
+
     DrawGridLines(canvas);
+
     canvas.RestoreState();
   }
 
   private void DrawGridLines(ICanvas canvas)
   {
-    foreach (var row in Enumerable.Range(0, 9))
+    foreach (var horizontal in AllHorizontals)
     {
-      foreach (var col in Enumerable.Range(0, 9))
-      {
-        var r = row - 4;
-        var c = col - 4;
-        if (Math.Abs(r) + Math.Abs(c) > 4) continue;
-
-        var tl = CalculatePoint(new Coords(row, col));
-        var tr = CalculatePoint(new Coords(row, col + 1));
-        var br = CalculatePoint(new Coords(row + 1, col + 1));
-        var bl = CalculatePoint(new Coords(row + 1, col));
-
-        var gap = _polyLineHalfThickness;
-
-        // top
-        {
-          var x1 = tl.X + gap;
-          var x2 = tr.X - gap;
-          var y = tl.Y;
-          canvas.DrawLine(x1, y, x2, y);
-        }
-
-        // bottom
-        {
-          var x1 = bl.X + gap;
-          var x2 = br.X - gap;
-          var y = bl.Y;
-          canvas.DrawLine(x1, y, x2, y);
-        }
-
-        // left
-        {
-          var x = tl.X;
-          var y1 = tl.Y + gap;
-          var y2 = bl.Y - gap;
-          canvas.DrawLine(x, y1, x, y2);
-        }
-
-        // right
-        {
-          var x = tr.X;
-          var y1 = tr.Y + gap;
-          var y2 = br.Y - gap;
-          canvas.DrawLine(x, y1, x, y2);
-        }
-      }
+      DrawHorizontalGridLine(canvas, horizontal);
     }
+
+    foreach (var vertical in AllVerticals)
+    {
+      DrawVerticalGridLine(canvas, vertical);
+    }
+
+    foreach (var junction in AllJunctions)
+    {
+      DrawJunction(canvas, junction);
+    }
+  }
+
+  private void DrawHorizontalGridLine(ICanvas canvas, Coords coords)
+  {
+    var gap = _polyLineHalfThickness;
+    var pt1 = CalculatePoint(coords);
+    var pt2 = CalculatePoint(coords.Right());
+    var x1 = pt1.X + gap;
+    var x2 = pt2.X - gap;
+    var y = pt1.Y;
+    canvas.DrawLine(x1, y, x2, y);
+  }
+
+  private void DrawVerticalGridLine(ICanvas canvas, Coords coords)
+  {
+    var gap = _polyLineHalfThickness;
+    var pt1 = CalculatePoint(coords);
+    var pt2 = CalculatePoint(coords.Down());
+    var x = pt1.X;
+    var y1 = pt1.Y + gap;
+    var y2 = pt2.Y - gap;
+    canvas.DrawLine(x, y1, x, y2);
+  }
+
+  private void DrawJunction(ICanvas canvas, Coords coords)
+  {
+    var r = _gridLineHalfThickness / 2;
+    var d = r * 2;
+    var pt = CalculatePoint(coords);
+    canvas.FillEllipse(pt.X - r, pt.Y - r, d, d);
   }
 
   private void DrawPieces(ICanvas canvas)
