@@ -45,7 +45,7 @@ Here are links to the existing WPF demo apps:
   * Flow Free
   * Self Visualisation (new - no old WPF counterpart - but I do have a web version [here](https://github.com/taylorjg/dlxlib-self-visualisation))
 * ~~Display version information~~
-* Do the solving on a background thread
+* ~~Do the solving on a background thread~~
 * Find all solutions and provide a mechanism to navigate between them
 * Add an About page
 * Add an app icon

@@ -42,7 +42,7 @@ public class AztecDiamondDrawable : IDrawable
   {
     _width = dirtyRect.Width;
     _height = dirtyRect.Height;
-    _gridLineFullThickness = _width / 100;
+    _gridLineFullThickness = _width / 200;
     _gridLineHalfThickness = _gridLineFullThickness / 2;
     _polyLineFullThickness = _gridLineFullThickness * 2;
     _polyLineHalfThickness = _polyLineFullThickness / 2;

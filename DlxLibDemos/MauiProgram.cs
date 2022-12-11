@@ -37,6 +37,8 @@ public static class MauiProgram
 
     builder.Services.AddTransient<DemoPageBaseViewModel.Dependencies>();
 
+    builder.Services.AddTransient<IBackgroundSolver, BackgroundSolver>();
+
     builder.Services.AddTransient<SudokuDemoPageView>();
     builder.Services.AddTransient<SudokuDemoPageViewModel>();
 

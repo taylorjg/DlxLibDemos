@@ -11,6 +11,7 @@ namespace DlxLibDemos;
 public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
 {
   private ILogger<DemoPageBaseViewModel> _logger;
+  private IBackgroundSolver _backgroundSolver;
   private IDemo _demo;
   private object _demoSettings;
   private object _demoOptionalSettings;
@@ -28,6 +29,7 @@ public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
   {
     _logger = dependencies.Logger;
     _logger.LogInformation("constructor");
+    _backgroundSolver = dependencies.BackgroundSolver;
     var dispatcherProvider = dependencies.DispatcherProvider;
     var dispatcher = dispatcherProvider.GetForCurrentThread();
     _dispatcherTimer = dispatcher.CreateTimer();
@@ -41,14 +43,17 @@ public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
   public sealed class Dependencies
   {
     internal ILogger<DemoPageBaseViewModel> Logger { get; private set; }
+    internal IBackgroundSolver BackgroundSolver { get; private set; }
     internal IDispatcherProvider DispatcherProvider { get; private set; }
 
     public Dependencies(
       ILogger<DemoPageBaseViewModel> logger,
+      IBackgroundSolver backgroundSolver,
       IDispatcherProvider dispatcherProvider
     )
     {
       Logger = logger;
+      BackgroundSolver = backgroundSolver;
       DispatcherProvider = dispatcherProvider;
     }
   }
@@ -189,51 +194,17 @@ public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
   [RelayCommand(CanExecute = nameof(CanSolve))]
   private void Solve()
   {
-    try
-    {
-      _logger.LogInformation($"Solve DemoSettings: {DemoSettings}");
-      _logger.LogInformation($"Solve DemoOptionalSettings: {DemoOptionalSettings}");
+    _cancellationTokenSource = new CancellationTokenSource();
 
-      var internalRows = _demo.BuildInternalRows(DemoSettings);
-      var matrix = internalRows.Select(_demo.InternalRowToMatrixRow).ToArray();
-      var maybeNumPrimaryColumns = _demo.GetNumPrimaryColumns(DemoSettings);
+    _backgroundSolver.Solve(
+      AnimationEnabled,
+      _messages.Enqueue,
+      _cancellationTokenSource.Token,
+      _demo,
+      _demoSettings
+    );
 
-      _logger.LogInformation($"internalRows.Length: {internalRows.Length}");
-      _logger.LogInformation($"matrix size: {matrix.Length} rows by {matrix[0].Length} cols");
-      _logger.LogInformation($"maybeNumPrimaryColumns: {(maybeNumPrimaryColumns.HasValue ? maybeNumPrimaryColumns.Value : "null")}");
-
-      var findSolutionInternalRows = (IEnumerable<int> rowIndices) =>
-        rowIndices.Select(rowIndex => internalRows[rowIndex]).ToArray();
-
-      _cancellationTokenSource = new CancellationTokenSource();
-
-      var dlx = new DlxLib.Dlx(_cancellationTokenSource.Token);
-
-      StartTimer();
-
-      if (AnimationEnabled)
-      {
-        dlx.SearchStep += (_, e) => _messages.Enqueue(new SearchStepMessage(findSolutionInternalRows(e.RowIndexes)));
-      }
-
-      dlx.SolutionFound += (_, e) => _messages.Enqueue(new SolutionFoundMessage(findSolutionInternalRows(e.Solution.RowIndexes)));
-
-      var solutions = maybeNumPrimaryColumns.HasValue
-       ? dlx.Solve(matrix, row => row, col => col, maybeNumPrimaryColumns.Value)
-       : dlx.Solve(matrix, row => row, col => col);
-
-      var solution = solutions.FirstOrDefault();
-
-      if (solution == null)
-      {
-        _messages.Enqueue(new NoSolutionFoundMessage());
-      }
-    }
-    catch (Exception ex)
-    {
-      _logger.LogInformation("Solve Exception");
-      _logger.LogInformation(ex.ToString());
-    }
+    StartTimer();
   }
 
   private bool CanSolve()
