@@ -55,20 +55,30 @@ public class BackgroundSolver : IBackgroundSolver
 
       var dlx = new DlxLib.Dlx(cancellationToken);
 
-      if (enableSearchSteps)
+      var searchStepCount = 0;
+      var solutionCount = 0;
+
+      dlx.SearchStep += (_, e) =>
       {
-        dlx.SearchStep += (_, e) =>
+        searchStepCount++;
+        if (searchStepCount % 1000 == 0)
+        {
+          _logger.LogInformation($"[SearchStep] searchStepCount: {searchStepCount}");
+        }
+        if (enableSearchSteps)
         {
           var solutionInternalRows = findSolutionInternalRows(e.RowIndexes);
-          var message = new SearchStepMessage(solutionInternalRows);
+          var message = new SearchStepMessage(solutionInternalRows, searchStepCount);
           MainThread.BeginInvokeOnMainThread(() => onMessage(message));
-        };
-      }
+        }
+      };
 
       dlx.SolutionFound += (_, e) =>
       {
+        solutionCount++;
+        _logger.LogInformation($"[SolutionFound] solutionCount: {solutionCount}");
         var solutionInternalRows = findSolutionInternalRows(e.Solution.RowIndexes);
-        var message = new SolutionFoundMessage(solutionInternalRows);
+        var message = new SolutionFoundMessage(solutionInternalRows, solutionCount);
         MainThread.BeginInvokeOnMainThread(() => onMessage(message));
       };
 
@@ -78,9 +88,11 @@ public class BackgroundSolver : IBackgroundSolver
 
       var solution = solutions.FirstOrDefault();
 
+      _logger.LogInformation($"Final searchStepCount: {searchStepCount}");
+
       if (solution == null)
       {
-        var message = new NoSolutionFoundMessage();
+        var message = new NoSolutionFoundMessage(searchStepCount);
         MainThread.BeginInvokeOnMainThread(() => onMessage(message));
       }
     }

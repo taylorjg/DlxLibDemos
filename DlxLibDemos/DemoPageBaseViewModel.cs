@@ -24,6 +24,7 @@ public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
   private ConcurrentQueue<BaseMessage> _messages = new ConcurrentQueue<BaseMessage>();
   private bool _isSolving;
   private CancellationTokenSource _cancellationTokenSource;
+  private int _searchStepCount;
 
   public DemoPageBaseViewModel(Dependencies dependencies)
   {
@@ -159,6 +160,12 @@ public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
     }
   }
 
+  public int SearchStepCount
+  {
+    get => _searchStepCount;
+    set => SetProperty(ref _searchStepCount, value);
+  }
+
   private void UpdateButtonCommands()
   {
     SolveCommand.NotifyCanExecuteChanged();
@@ -177,6 +184,7 @@ public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
   private void OnMessage(SearchStepMessage message)
   {
     SolutionInternalRows = message.SolutionInternalRows;
+    SearchStepCount = message.SearchStepCount;
   }
 
   private void OnMessage(SolutionFoundMessage message)
@@ -216,6 +224,7 @@ public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
   private void Reset()
   {
     SolutionInternalRows = new object[0];
+    SearchStepCount = 0;
   }
 
   private bool CanReset()

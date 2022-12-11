@@ -19,7 +19,10 @@ public class AztecDiamondDemo : IDemo
 
   public object[] BuildInternalRows(object demoSettings)
   {
-    return AllPossiblePiecePlacements().Where(IsValidPiecePlacement).ToArray();
+    var internalRows = AllPossiblePiecePlacements().Where(IsValidPiecePlacement).ToArray();
+    var matrixRowToString = (int[] ns) => string.Join("", ns.Select(n => n.ToString()));
+    var makeInternalRowRepresentation = (AztecDiamondInternalRow internalRow) => matrixRowToString(InternalRowToMatrixRow(internalRow));
+    return internalRows.DistinctBy(makeInternalRowRepresentation).ToArray();
   }
 
   public int[] InternalRowToMatrixRow(object internalRow)

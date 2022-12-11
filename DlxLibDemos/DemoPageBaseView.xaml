@@ -17,6 +17,7 @@
                 <Grid Grid.Row="1" Margin="10" ColumnDefinitions="*, Auto">
                     <HorizontalStackLayout Grid.Column="0" Spacing="10">
                         <ContentPresenter />
+
                         <Label
                             Margin="25,0,0,0"
                             VerticalOptions="Center"
@@ -46,6 +47,7 @@
                             Text="{TemplateBinding BindingContext.AnimationInterval, StringFormat='{0} ms'}"
                             IsEnabled="{TemplateBinding BindingContext.AnimationEnabled}"
                             />
+
                         <Button
                             Text="Solve"
                             Command="{TemplateBinding BindingContext.SolveCommand}" />
@@ -55,6 +57,14 @@
                         <Button
                             Text="Reset"
                             Command="{TemplateBinding BindingContext.ResetCommand}" />
+
+                        <Label
+                            VerticalOptions="Center"
+                            Margin="25,0,0,0"
+                            Text="Search steps:" />
+                        <Label
+                            VerticalOptions="Center"
+                            Text="{TemplateBinding BindingContext.SearchStepCount}" />
                     </HorizontalStackLayout>
                 </Grid>
             </Grid>
