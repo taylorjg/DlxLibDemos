@@ -24,6 +24,7 @@
                                         Grid.Column="0"
                                         WidthRequest="100"
                                         HeightRequest="100"
+                                        Background="Transparent"
                                         Drawable="{Binding ThumbnailDrawable}" />
                                     <Button
                                         Grid.Column="1"

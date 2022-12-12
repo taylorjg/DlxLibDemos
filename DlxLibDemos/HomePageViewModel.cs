@@ -70,8 +70,7 @@ public partial class HomePageViewModel : ObservableObject
         new AvailableDemo(
           DemoNames.AztecDiamond,
           "AztecDiamondDemoPage",
-          // _serviceProvider.GetService<AztecDiamondThumbnailDrawable>()
-          _serviceProvider.GetService<TetraSticksThumbnailDrawable>()
+          _serviceProvider.GetService<AztecDiamondThumbnailDrawable>()
         )
       };
     }
