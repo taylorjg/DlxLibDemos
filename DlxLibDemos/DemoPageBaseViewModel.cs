@@ -190,6 +190,7 @@ public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
   private void OnMessage(SolutionFoundMessage message)
   {
     SolutionInternalRows = message.SolutionInternalRows;
+    SearchStepCount = message.SearchStepCount;
     StopTimer();
   }
 

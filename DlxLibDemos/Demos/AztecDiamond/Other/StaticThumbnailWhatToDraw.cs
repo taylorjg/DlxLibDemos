@@ -1,12 +1,12 @@
 namespace DlxLibDemos.Demos.AztecDiamond;
 
-public class StaticThumbnailWhatToDraw : IWhatToDraw
+public class AztecDiamondStaticThumbnailWhatToDraw : IWhatToDraw
 {
   public object DemoSettings { get; private init; }
   public object DemoOptionalSettings { get; private init; }
   public object[] SolutionInternalRows { get; private init; }
 
-  public StaticThumbnailWhatToDraw()
+  public AztecDiamondStaticThumbnailWhatToDraw()
   {
     SolutionInternalRows = new[]
     {
@@ -16,7 +16,7 @@ public class StaticThumbnailWhatToDraw : IWhatToDraw
       MakeSolutionInternalRow("U", Orientation.West, false, 2, 6),
       MakeSolutionInternalRow("V", Orientation.South, false, 1, 4),
       MakeSolutionInternalRow("W", Orientation.East, false, 2, 1),
-      MakeSolutionInternalRow("X", Orientation.South, false, 5, 2),
+      MakeSolutionInternalRow("X", Orientation.North, false, 5, 2),
 
       MakeSolutionInternalRow("F", Orientation.West, false, 5, 6),
       MakeSolutionInternalRow("H", Orientation.South, false, 2, 4),
@@ -26,7 +26,7 @@ public class StaticThumbnailWhatToDraw : IWhatToDraw
       MakeSolutionInternalRow("P", Orientation.North, false, 3, 7),
       MakeSolutionInternalRow("R", Orientation.East, false, 3, 2),
       MakeSolutionInternalRow("Y", Orientation.East, false, 1, 3),
-      MakeSolutionInternalRow("Z", Orientation.West, false, 6, 5),
+      MakeSolutionInternalRow("Z", Orientation.East, false, 6, 5),
 
       MakeSolutionInternalRow("F", Orientation.South, true, 4, 1),
       MakeSolutionInternalRow("H", Orientation.West, true, 7, 2),

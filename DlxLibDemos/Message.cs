@@ -17,11 +17,13 @@ public class SearchStepMessage : BaseMessage
 public class SolutionFoundMessage : BaseMessage
 {
   public object[] SolutionInternalRows { get; private init; }
+  public int SearchStepCount { get; private init; }
   public int SolutionCount { get; private init; }
 
-  public SolutionFoundMessage(object[] solutionInternalRows, int solutionCount)
+  public SolutionFoundMessage(object[] solutionInternalRows, int searchStepCount, int solutionCount)
   {
     SolutionInternalRows = solutionInternalRows;
+    SearchStepCount = searchStepCount;
     SolutionCount = solutionCount;
   }
 }

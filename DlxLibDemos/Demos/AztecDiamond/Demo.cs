@@ -20,9 +20,27 @@ public class AztecDiamondDemo : IDemo
   public object[] BuildInternalRows(object demoSettings)
   {
     var internalRows = AllPossiblePiecePlacements().Where(IsValidPiecePlacement).ToArray();
-    var matrixRowToString = (int[] ns) => string.Join("", ns.Select(n => n.ToString()));
-    var makeInternalRowRepresentation = (AztecDiamondInternalRow internalRow) => matrixRowToString(InternalRowToMatrixRow(internalRow));
-    return internalRows.DistinctBy(makeInternalRowRepresentation).ToArray();
+    var solutionInternalRows = new AztecDiamondStaticThumbnailWhatToDraw().SolutionInternalRows;
+
+    var replaceInternalRowsWithSolutionInternalRow = (int index) =>
+    {
+      var solutionInternalRow = solutionInternalRows[index] as AztecDiamondInternalRow;
+      var newInternalRows = internalRows.Where(internalRow =>
+      {
+        if (internalRow.Label != solutionInternalRow.Label) return true;
+        if (internalRow.Variation.Reflected != solutionInternalRow.Variation.Reflected) return true;
+        return false;
+      }).ToList();
+      newInternalRows.Add(solutionInternalRow);
+      return newInternalRows.ToArray();
+    };
+
+    foreach (var index in Enumerable.Range(0, 5))
+    {
+      internalRows = replaceInternalRowsWithSolutionInternalRow(index);
+    }
+
+    return internalRows;
   }
 
   public int[] InternalRowToMatrixRow(object internalRow)
@@ -63,11 +81,16 @@ public class AztecDiamondDemo : IDemo
 
   private IEnumerable<AztecDiamondInternalRow> AllPossiblePiecePlacements()
   {
+    var allLocations =
+      Enumerable.Range(0, 9).SelectMany(row =>
+        Enumerable.Range(0, 9).Select(col =>
+          new Coords(row, col))).ToArray();
+
     foreach (var pieceWithVariations in PiecesWithVariations.ThePiecesWithVariations)
     {
       foreach (var variation in pieceWithVariations.Variations)
       {
-        foreach (var location in Locations.AllLocations)
+        foreach (var location in allLocations)
         {
           yield return new AztecDiamondInternalRow(
             pieceWithVariations.Label,

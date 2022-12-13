@@ -78,7 +78,7 @@ public class BackgroundSolver : IBackgroundSolver
         solutionCount++;
         _logger.LogInformation($"[SolutionFound] solutionCount: {solutionCount}");
         var solutionInternalRows = findSolutionInternalRows(e.Solution.RowIndexes);
-        var message = new SolutionFoundMessage(solutionInternalRows, solutionCount);
+        var message = new SolutionFoundMessage(solutionInternalRows, searchStepCount, solutionCount);
         MainThread.BeginInvokeOnMainThread(() => onMessage(message));
       };
 

@@ -78,16 +78,11 @@ public class AztecDiamondDrawable : IDrawable
     {
       DrawVerticalGridLine(canvas, vertical);
     }
-
-    foreach (var junction in Locations.AllJunctions)
-    {
-      DrawJunction(canvas, junction);
-    }
   }
 
   private void DrawHorizontalGridLine(ICanvas canvas, Coords coords)
   {
-    var gap = _polyLineHalfThickness;
+    var gap = _polyLineFullThickness;
     var pt1 = CalculatePoint(coords);
     var pt2 = CalculatePoint(coords.Right());
     var x1 = pt1.X + gap;
@@ -98,21 +93,13 @@ public class AztecDiamondDrawable : IDrawable
 
   private void DrawVerticalGridLine(ICanvas canvas, Coords coords)
   {
-    var gap = _polyLineHalfThickness;
+    var gap = _polyLineFullThickness;
     var pt1 = CalculatePoint(coords);
     var pt2 = CalculatePoint(coords.Down());
     var x = pt1.X;
     var y1 = pt1.Y + gap;
     var y2 = pt2.Y - gap;
     canvas.DrawLine(x, y1, x, y2);
-  }
-
-  private void DrawJunction(ICanvas canvas, Coords coords)
-  {
-    var r = _gridLineHalfThickness / 2;
-    var d = r * 2;
-    var pt = CalculatePoint(coords);
-    canvas.FillEllipse(pt.X - r, pt.Y - r, d, d);
   }
 
   private void DrawPieces(ICanvas canvas)
