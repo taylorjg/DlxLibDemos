@@ -8,4 +8,5 @@ public static class DemoNames
   public const string DraughtboardPuzzle = "Draughtboard Puzzle";
   public const string TetraSticks = "TetraSticks";
   public const string AztecDiamond = "Aztec Diamond";
+  public const string RippleEffect = "Ripple Effect";
 }

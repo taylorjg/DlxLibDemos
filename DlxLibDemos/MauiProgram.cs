@@ -6,6 +6,7 @@ using DlxLibDemos.Demos.NQueens;
 using DlxLibDemos.Demos.DraughtboardPuzzle;
 using DlxLibDemos.Demos.TetraSticks;
 using DlxLibDemos.Demos.AztecDiamond;
+using DlxLibDemos.Demos.RippleEffect;
 
 namespace DlxLibDemos;
 
@@ -57,12 +58,16 @@ public static class MauiProgram
     builder.Services.AddTransient<AztecDiamondDemoPageView>();
     builder.Services.AddTransient<AztecDiamondDemoPageViewModel>();
 
+    builder.Services.AddTransient<RippleEffectDemoPageView>();
+    builder.Services.AddTransient<RippleEffectDemoPageViewModel>();
+
     builder.Services.AddTransient<SudokuThumbnailDrawable>();
     builder.Services.AddTransient<PentominoesThumbnailDrawable>();
     builder.Services.AddTransient<NQueensThumbnailDrawable>();
     builder.Services.AddTransient<DraughtboardPuzzleThumbnailDrawable>();
     builder.Services.AddTransient<TetraSticksThumbnailDrawable>();
     builder.Services.AddTransient<AztecDiamondThumbnailDrawable>();
+    builder.Services.AddTransient<RippleEffectThumbnailDrawable>();
 
     builder.Services.AddTransient<SudokuDemo>();
     builder.Services.AddTransient<PentominoesDemo>();
@@ -70,6 +75,7 @@ public static class MauiProgram
     builder.Services.AddTransient<DraughtboardPuzzleDemo>();
     builder.Services.AddTransient<TetraSticksDemo>();
     builder.Services.AddTransient<AztecDiamondDemo>();
+    builder.Services.AddTransient<RippleEffectDemo>();
 
     Routing.RegisterRoute("SudokuDemoPage", typeof(SudokuDemoPageView));
     Routing.RegisterRoute("PentominoesDemoPage", typeof(PentominoesDemoPageView));
@@ -77,6 +83,7 @@ public static class MauiProgram
     Routing.RegisterRoute("DraughtboardPuzzleDemoPage", typeof(DraughtboardPuzzleDemoPageView));
     Routing.RegisterRoute("TetraSticksDemoPage", typeof(TetraSticksDemoPageView));
     Routing.RegisterRoute("AztecDiamondDemoPage", typeof(AztecDiamondDemoPageView));
+    Routing.RegisterRoute("RippleEffectDemoPage", typeof(RippleEffectDemoPageView));
 
     return builder.Build();
   }

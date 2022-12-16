@@ -9,6 +9,7 @@ using DlxLibDemos.Demos.NQueens;
 using DlxLibDemos.Demos.DraughtboardPuzzle;
 using DlxLibDemos.Demos.TetraSticks;
 using DlxLibDemos.Demos.AztecDiamond;
+using DlxLibDemos.Demos.RippleEffect;
 
 namespace DlxLibDemos;
 
@@ -71,6 +72,11 @@ public partial class HomePageViewModel : ObservableObject
           DemoNames.AztecDiamond,
           "AztecDiamondDemoPage",
           _serviceProvider.GetService<AztecDiamondThumbnailDrawable>()
+        ),
+        new AvailableDemo(
+          DemoNames.RippleEffect,
+          "RippleEffectDemoPage",
+          _serviceProvider.GetService<RippleEffectThumbnailDrawable>()
         )
       };
     }
