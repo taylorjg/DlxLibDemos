@@ -9,7 +9,7 @@ public class RippleEffectDrawable : IDrawable
   private float _gridLineHalfThickness;
   private float _squareWidth;
   private float _squareHeight;
-  private readonly Color _gridColour = Color.FromRgba("#CD853F80");
+  private readonly Color _gridColour = Colors.Black;
   private readonly Color _borderColour = Color.FromRgba("#0066CC");
 
   public RippleEffectDrawable(IWhatToDraw whatToDraw)
@@ -21,13 +21,22 @@ public class RippleEffectDrawable : IDrawable
   {
     _width = dirtyRect.Width;
     _height = dirtyRect.Height;
-    _gridLineFullThickness = dirtyRect.Width / 100;
+    _gridLineFullThickness = _width / 400;
     _gridLineHalfThickness = _gridLineFullThickness / 2;
-    _squareWidth = (dirtyRect.Width - _gridLineFullThickness) / 8;
-    _squareHeight = (dirtyRect.Height - _gridLineFullThickness) / 8;
+    _squareWidth = (_width - _gridLineFullThickness) / 8;
+    _squareHeight = (_height - _gridLineFullThickness) / 8;
 
+    DrawBackground(canvas);
     DrawGrid(canvas);
-    DrawPieces(canvas);
+    DrawRooms(canvas);
+    DrawInitialValues(canvas);
+    DrawCalculatedValues(canvas);
+  }
+
+  private void DrawBackground(ICanvas canvas)
+  {
+    canvas.FillColor = Colors.White;
+    canvas.FillRectangle(0, 0, _width, _height);
   }
 
   private void DrawGrid(ICanvas canvas)
@@ -67,17 +76,70 @@ public class RippleEffectDrawable : IDrawable
     }
   }
 
-  private void DrawPieces(ICanvas canvas)
+  private void DrawRooms(ICanvas canvas)
   {
-    var solutionInternalRows = _whatToDraw.SolutionInternalRows.Cast<RippleEffectInternalRow>();
-    foreach (var internalRow in solutionInternalRows)
+    // var puzzle = (Puzzle)_whatToDraw.DemoSettings;
+    var puzzle = Puzzles.ThePuzzles[0];
+
+    foreach (var room in puzzle.Rooms)
     {
-      DrawPiece(canvas, internalRow);
+      DrawRoom(canvas, room);
     }
   }
 
-  private void DrawPiece(ICanvas canvas, RippleEffectInternalRow internalRow)
+  private void DrawRoom(ICanvas canvas, Room room)
   {
+  }
+
+  private void DrawInitialValues(ICanvas canvas)
+  {
+    // var puzzle = (Puzzle)_whatToDraw.DemoSettings;
+    var puzzle = Puzzles.ThePuzzles[0];
+
+    foreach (var initialValue in puzzle.InitialValues)
+    {
+      DrawDigit(
+        canvas,
+        initialValue.Cell,
+        initialValue.Value,
+        true);
+    }
+  }
+
+  private void DrawCalculatedValues(ICanvas canvas)
+  {
+    var internalRows = _whatToDraw.SolutionInternalRows
+      .Cast<RippleEffectInternalRow>()
+      .Where(internalRow => !internalRow.IsInitialValue);
+
+    foreach (var internalRow in internalRows)
+    {
+      DrawDigit(
+        canvas,
+        internalRow.Cell,
+        internalRow.Value,
+        false);
+    }
+  }
+
+  private void DrawDigit(ICanvas canvas, Coords cell, int value, bool isInitialValue)
+  {
+    var valueString = value.ToString();
+    var x = _squareWidth * cell.Col + _gridLineHalfThickness;
+    var y = _squareHeight * cell.Row + _gridLineHalfThickness;
+    var width = _squareWidth;
+    var height = _squareHeight;
+    canvas.FontColor = isInitialValue ? Colors.Magenta : Colors.Black;
+    canvas.FontSize = _squareWidth * 0.6f;
+    canvas.DrawString(
+      valueString,
+      x,
+      y,
+      width,
+      height,
+      HorizontalAlignment.Center,
+      VerticalAlignment.Center
+    );
   }
 
   private float CalculateX(int col) => col * _squareWidth + _gridLineHalfThickness;

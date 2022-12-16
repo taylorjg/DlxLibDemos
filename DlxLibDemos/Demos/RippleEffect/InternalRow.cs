@@ -1,3 +1,3 @@
 namespace DlxLibDemos.Demos.RippleEffect;
 
-public record RippleEffectInternalRow(Coords Coords, int Value, bool IsInitialValue);
+public record RippleEffectInternalRow(Coords Cell, int Value, bool IsInitialValue);
