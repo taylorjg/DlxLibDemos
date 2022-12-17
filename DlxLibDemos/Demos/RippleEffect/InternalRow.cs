@@ -4,5 +4,5 @@ public record RippleEffectInternalRow(
   Coords Cell,
   int Value,
   bool IsInitialValue,
-  int RoomCellIndex
+  int RoomStartIndex
 );
