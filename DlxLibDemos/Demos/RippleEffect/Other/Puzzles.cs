@@ -62,7 +62,7 @@ public static class Puzzles
       var label = entry.Key.ToString();
       var cells = entry.Value.ToArray();
       var initialValuesInThisRoom = initialValues
-        .Where(initialValue => cells.Any(cell => cell == initialValue.Cell))
+        .Where(initialValue => cells.Contains(initialValue.Cell))
         .ToArray();
       var room = new Room(label, cells, initialValuesInThisRoom);
       rooms.Add(room);

@@ -19,21 +19,74 @@ public class RippleEffectDemo : IDemo
 
   public object[] BuildInternalRows(object demoSettings)
   {
-    return new object[0];
+    var puzzle = (Puzzle)demoSettings;
+    var internalRows = new List<RippleEffectInternalRow>();
+
+    foreach (var initialValue in puzzle.InitialValues)
+    {
+      var (cell, value) = initialValue;
+      var internalRow = new RippleEffectInternalRow(cell, value, true);
+      internalRows.Add(internalRow);
+    }
+
+    foreach (var room in puzzle.Rooms)
+    {
+      var givenCells = room.InitialValues.Select(initialValue => initialValue.Cell);
+      var givenValues = room.InitialValues.Select(initialValue => initialValue.Value);
+      var cellsToSolve = room.Cells.Except(givenCells);
+      var values = Enumerable.Range(1, room.Cells.Length);
+      var valuesToSolve = values.Except(givenValues).ToArray();
+
+      foreach (var cell in cellsToSolve)
+      {
+        foreach (var value in valuesToSolve)
+        {
+          var internalRow = new RippleEffectInternalRow(cell, value, false);
+          internalRows.Add(internalRow);
+        }
+      }
+    }
+
+    return internalRows.ToArray();
   }
 
   public int[] InternalRowToMatrixRow(object internalRow)
   {
-    return new int[0];
+    var rippleEffectInternalRow = internalRow as RippleEffectInternalRow;
+    var locationColumns = MakeLocationColumns(rippleEffectInternalRow);
+    var roomColumns = MakeRoomColumns(rippleEffectInternalRow);
+    var rippleColumns = MakeRippleColumns(rippleEffectInternalRow);
+    return locationColumns
+      .Concat(roomColumns)
+      .Concat(rippleColumns)
+      .ToArray();
   }
 
   public int? GetNumPrimaryColumns(object demoSettings)
   {
-    return null;
+    return 2 * 8 * 8;
   }
 
-  private static readonly Coords[] Locations =
+  private static readonly Coords[] AllLocations =
     Enumerable.Range(0, 8).SelectMany(row =>
         Enumerable.Range(0, 8).Select(col =>
           new Coords(row, col))).ToArray();
+
+  private static int[] MakeLocationColumns(RippleEffectInternalRow internalRow)
+  {
+    var columns = Enumerable.Repeat(0, 8 * 8).ToArray();
+    return columns;
+  }
+
+  private static int[] MakeRoomColumns(RippleEffectInternalRow internalRow)
+  {
+    var columns = Enumerable.Repeat(0, 8 * 8).ToArray();
+    return columns;
+  }
+
+  private static int[] MakeRippleColumns(RippleEffectInternalRow internalRow)
+  {
+    var columns = Enumerable.Repeat(0, 4 * 8 * 8).ToArray();
+    return columns;
+  }
 }
