@@ -34,7 +34,7 @@ public class RippleEffectDrawable : IDrawable
     DrawGrid(canvas);
     DrawRooms(canvas);
     DrawInitialValues(canvas);
-    DrawCalculatedValues(canvas);
+    DrawSolvedValues(canvas);
   }
 
   private void DrawBackground(ICanvas canvas)
@@ -125,15 +125,11 @@ public class RippleEffectDrawable : IDrawable
 
     foreach (var initialValue in puzzle.InitialValues)
     {
-      DrawDigit(
-        canvas,
-        initialValue.Cell,
-        initialValue.Value,
-        true);
+      DrawDigit(canvas, initialValue.Cell, initialValue.Value, true);
     }
   }
 
-  private void DrawCalculatedValues(ICanvas canvas)
+  private void DrawSolvedValues(ICanvas canvas)
   {
     var internalRows = _whatToDraw.SolutionInternalRows
       .Cast<RippleEffectInternalRow>()
@@ -141,11 +137,7 @@ public class RippleEffectDrawable : IDrawable
 
     foreach (var internalRow in internalRows)
     {
-      DrawDigit(
-        canvas,
-        internalRow.Cell,
-        internalRow.Value,
-        false);
+      DrawDigit(canvas, internalRow.Cell, internalRow.Value, false);
     }
   }
 

@@ -3,9 +3,10 @@ namespace DlxLibDemos.Demos.Sudoku;
 public class SudokuDrawable : IDrawable
 {
   private IWhatToDraw _whatToDraw;
+  private float _width;
+  private float _height;
   private float _gridLineFullThickness;
   private float _gridLineHalfThickness;
-  private float _gridLineQuarterThickness;
   private float _squareWidth;
   private float _squareHeight;
 
@@ -16,22 +17,59 @@ public class SudokuDrawable : IDrawable
 
   public void Draw(ICanvas canvas, RectF dirtyRect)
   {
-    _gridLineFullThickness = dirtyRect.Width / 100;
+    _width = dirtyRect.Width;
+    _height = dirtyRect.Height;
+    _gridLineFullThickness = _width / 100;
     _gridLineHalfThickness = _gridLineFullThickness / 2;
-    _gridLineQuarterThickness = _gridLineFullThickness / 4;
-    _squareWidth = (dirtyRect.Width - _gridLineFullThickness) / 9;
-    _squareHeight = (dirtyRect.Height - _gridLineFullThickness) / 9;
-    canvas.FillColor = Colors.White;
-    canvas.FillRectangle(0, 0, dirtyRect.Width, dirtyRect.Height);
+    _squareWidth = (_width - _gridLineFullThickness) / 9;
+    _squareHeight = (_height - _gridLineFullThickness) / 9;
+
+    DrawBackground(canvas);
     DrawGrid(canvas);
     DrawInitialValues(canvas);
-    DrawCalculatedValues(canvas);
+    DrawSolvedValues(canvas);
+  }
+
+  private void DrawBackground(ICanvas canvas)
+  {
+    canvas.FillColor = Colors.White;
+    canvas.FillRectangle(0, 0, _width, _height);
   }
 
   private void DrawGrid(ICanvas canvas)
   {
     DrawHorizontalGridLines(canvas);
     DrawVerticalGridLines(canvas);
+  }
+
+  private void DrawHorizontalGridLines(ICanvas canvas)
+  {
+    foreach (var row in Enumerable.Range(0, 10))
+    {
+      var isThickLine = row % 3 == 0;
+      var lineThickness = isThickLine ? _gridLineFullThickness : _gridLineHalfThickness;
+      var x1 = 0;
+      var x2 = _width;
+      var y = CalculateY(row);
+      canvas.StrokeColor = Colors.Black;
+      canvas.StrokeSize = lineThickness;
+      canvas.DrawLine(x1, y, x2, y);
+    }
+  }
+
+  private void DrawVerticalGridLines(ICanvas canvas)
+  {
+    foreach (var col in Enumerable.Range(0, 10))
+    {
+      var isThickLine = col % 3 == 0;
+      var lineThickness = isThickLine ? _gridLineFullThickness : _gridLineHalfThickness;
+      var x = CalculateX(col);
+      var y1 = 0;
+      var y2 = _height;
+      canvas.StrokeColor = Colors.Black;
+      canvas.StrokeSize = lineThickness;
+      canvas.DrawLine(x, y1, x, y2);
+    }
   }
 
   private void DrawInitialValues(ICanvas canvas)
@@ -41,16 +79,11 @@ public class SudokuDrawable : IDrawable
 
     foreach (var internalRow in internalRows)
     {
-      DrawDigit(
-        canvas,
-        internalRow.Coords.Row,
-        internalRow.Coords.Col,
-        internalRow.Value,
-        true);
+      DrawDigit(canvas, internalRow.Coords, internalRow.Value, true);
     }
   }
 
-  private void DrawCalculatedValues(ICanvas canvas)
+  private void DrawSolvedValues(ICanvas canvas)
   {
     var internalRows = _whatToDraw.SolutionInternalRows
       .Cast<SudokuInternalRow>()
@@ -58,20 +91,16 @@ public class SudokuDrawable : IDrawable
 
     foreach (var internalRow in internalRows)
     {
-      DrawDigit(
-        canvas,
-        internalRow.Coords.Row,
-        internalRow.Coords.Col,
-        internalRow.Value,
-        false);
+      DrawDigit(canvas, internalRow.Coords, internalRow.Value, false);
     }
   }
 
-  private void DrawDigit(ICanvas canvas, int row, int col, int value, bool isInitialValue)
+  private void DrawDigit(ICanvas canvas, Coords coords, int value, bool isInitialValue)
   {
+    var (row, col) = coords;
     var valueString = value.ToString();
-    var x = _squareWidth * col + _gridLineHalfThickness;
-    var y = _squareHeight * row + _gridLineHalfThickness;
+    var x = CalculateX(col);
+    var y = CalculateY(row);
     var width = _squareWidth;
     var height = _squareHeight;
     canvas.FontColor = isInitialValue ? Colors.Magenta : Colors.Black;
@@ -87,37 +116,6 @@ public class SudokuDrawable : IDrawable
     );
   }
 
-  private void DrawHorizontalGridLines(ICanvas canvas)
-  {
-    foreach (var row in Enumerable.Range(0, 10))
-    {
-      var isThickLine = row % 3 == 0;
-      var full = isThickLine ? _gridLineFullThickness : _gridLineHalfThickness;
-      var half = isThickLine ? _gridLineHalfThickness : _gridLineQuarterThickness;
-      var x1 = 0;
-      var y1 = _squareHeight * row + half;
-      var x2 = 9 * _squareWidth + _gridLineFullThickness;
-      var y2 = _squareHeight * row + half;
-      canvas.StrokeColor = Colors.Black;
-      canvas.StrokeSize = full;
-      canvas.DrawLine(x1, y1, x2, y2);
-    }
-  }
-
-  private void DrawVerticalGridLines(ICanvas canvas)
-  {
-    foreach (var col in Enumerable.Range(0, 10))
-    {
-      var isThickLine = col % 3 == 0;
-      var full = isThickLine ? _gridLineFullThickness : _gridLineHalfThickness;
-      var half = isThickLine ? _gridLineHalfThickness : _gridLineQuarterThickness;
-      var x1 = _squareWidth * col + half;
-      var y1 = _gridLineHalfThickness;
-      var x2 = _squareWidth * col + half;
-      var y2 = _gridLineHalfThickness + 9 * _squareHeight;
-      canvas.StrokeColor = Colors.Black;
-      canvas.StrokeSize = full;
-      canvas.DrawLine(x1, y1, x2, y2);
-    }
-  }
+  private float CalculateX(int col) => col * _squareWidth + _gridLineHalfThickness;
+  private float CalculateY(int row) => row * _squareHeight + _gridLineHalfThickness;
 }

@@ -31,12 +31,12 @@ public static class Puzzles
 
   private static Puzzle ParsePuzzle(string name, string[] roomLines, string[] initialValueLines)
   {
-    var rooms = ParseRooms(roomLines);
     var initialValues = ParseInitialValues(initialValueLines);
+    var rooms = ParseRooms(roomLines, initialValues);
     return new Puzzle(name, rooms, initialValues);
   }
 
-  private static Room[] ParseRooms(string[] roomLines)
+  private static Room[] ParseRooms(string[] roomLines, InitialValue[] initialValues)
   {
     var rowCount = roomLines.Length;
     var colCount = roomLines[0].Length;
@@ -61,7 +61,10 @@ public static class Puzzles
     {
       var label = entry.Key.ToString();
       var cells = entry.Value.ToArray();
-      var room = new Room(label, cells);
+      var initialValuesInThisRoom = initialValues
+        .Where(initialValue => cells.Any(cell => cell == initialValue.Cell))
+        .ToArray();
+      var room = new Room(label, cells, initialValuesInThisRoom);
       rooms.Add(room);
     }
 
