@@ -56,6 +56,7 @@ public static class Puzzles
     }
 
     var rooms = new List<Room>();
+    var roomStartIndex = 0;
 
     foreach (var entry in dict)
     {
@@ -64,8 +65,9 @@ public static class Puzzles
       var initialValuesInThisRoom = initialValues
         .Where(initialValue => cells.Contains(initialValue.Cell))
         .ToArray();
-      var room = new Room(label, cells, initialValuesInThisRoom);
+      var room = new Room(label, cells, initialValuesInThisRoom, roomStartIndex);
       rooms.Add(room);
+      roomStartIndex += cells.Length;
     }
 
     return rooms.ToArray();
