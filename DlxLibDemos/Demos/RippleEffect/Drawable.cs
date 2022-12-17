@@ -7,10 +7,12 @@ public class RippleEffectDrawable : IDrawable
   private float _height;
   private float _gridLineFullThickness;
   private float _gridLineHalfThickness;
+  private float _borderLineFullThickness;
+  private float _borderLineHalfThickness;
   private float _squareWidth;
   private float _squareHeight;
   private readonly Color _gridColour = Colors.Black;
-  private readonly Color _borderColour = Color.FromRgba("#0066CC");
+  private readonly Color _borderColour = Colors.Black;
 
   public RippleEffectDrawable(IWhatToDraw whatToDraw)
   {
@@ -23,8 +25,10 @@ public class RippleEffectDrawable : IDrawable
     _height = dirtyRect.Height;
     _gridLineFullThickness = _width / 400;
     _gridLineHalfThickness = _gridLineFullThickness / 2;
-    _squareWidth = (_width - _gridLineFullThickness) / 8;
-    _squareHeight = (_height - _gridLineFullThickness) / 8;
+    _borderLineFullThickness = _gridLineFullThickness * 4;
+    _borderLineHalfThickness = _borderLineFullThickness / 2;
+    _squareWidth = (_width - _borderLineFullThickness) / 8;
+    _squareHeight = (_height - _borderLineFullThickness) / 8;
 
     DrawBackground(canvas);
     DrawGrid(canvas);
@@ -35,8 +39,13 @@ public class RippleEffectDrawable : IDrawable
 
   private void DrawBackground(ICanvas canvas)
   {
+    var x = _borderLineHalfThickness;
+    var y = _borderLineHalfThickness;
+    var w = _width - _borderLineFullThickness;
+    var h = _height - _borderLineFullThickness;
+
     canvas.FillColor = Colors.White;
-    canvas.FillRectangle(0, 0, _width, _height);
+    canvas.FillRectangle(x, y, w, h);
   }
 
   private void DrawGrid(ICanvas canvas)
@@ -52,13 +61,12 @@ public class RippleEffectDrawable : IDrawable
   {
     foreach (var row in Enumerable.Range(0, 9))
     {
-      var x1 = 0;
-      var y1 = CalculateY(row);
-      var x2 = _width;
-      var y2 = y1;
+      var x1 = _borderLineHalfThickness;
+      var x2 = _width - _borderLineHalfThickness;
+      var y = CalculateY(row);
       canvas.StrokeColor = _gridColour;
       canvas.StrokeSize = _gridLineFullThickness;
-      canvas.DrawLine(x1, y1, x2, y2);
+      canvas.DrawLine(x1, y, x2, y);
     }
   }
 
@@ -66,20 +74,18 @@ public class RippleEffectDrawable : IDrawable
   {
     foreach (var col in Enumerable.Range(0, 9))
     {
-      var x1 = CalculateX(col);
-      var y1 = 0;
-      var x2 = x1;
-      var y2 = _height;
+      var x = CalculateX(col);
+      var y1 = _borderLineHalfThickness;
+      var y2 = _height - _borderLineHalfThickness;
       canvas.StrokeColor = _gridColour;
       canvas.StrokeSize = _gridLineFullThickness;
-      canvas.DrawLine(x1, y1, x2, y2);
+      canvas.DrawLine(x, y1, x, y2);
     }
   }
 
   private void DrawRooms(ICanvas canvas)
   {
-    // var puzzle = (Puzzle)_whatToDraw.DemoSettings;
-    var puzzle = Puzzles.ThePuzzles[0];
+    var puzzle = (Puzzle)_whatToDraw.DemoSettings;
 
     foreach (var room in puzzle.Rooms)
     {
@@ -89,12 +95,33 @@ public class RippleEffectDrawable : IDrawable
 
   private void DrawRoom(ICanvas canvas, Room room)
   {
+    var outsideEdges = DrawableUtils.GatherOutsideEdges(room);
+    var borderLocations = DrawableUtils.OutsideEdgesToBorderLocations(outsideEdges);
+    var path = CreateBorderPath(borderLocations);
+
+    canvas.SaveState();
+    canvas.StrokeColor = _borderColour;
+    canvas.StrokeSize = _borderLineFullThickness;
+    canvas.StrokeLineJoin = LineJoin.Round;
+    canvas.DrawPath(path);
+    canvas.RestoreState();
+  }
+
+  private PathF CreateBorderPath(List<Coords> borderLocations)
+  {
+    var path = new PathF();
+    path.MoveTo(CalculatePoint(borderLocations.First()));
+    foreach (var location in borderLocations.Skip(1))
+    {
+      path.LineTo(CalculatePoint(location));
+    }
+    path.Close();
+    return path;
   }
 
   private void DrawInitialValues(ICanvas canvas)
   {
-    // var puzzle = (Puzzle)_whatToDraw.DemoSettings;
-    var puzzle = Puzzles.ThePuzzles[0];
+    var puzzle = (Puzzle)_whatToDraw.DemoSettings;
 
     foreach (var initialValue in puzzle.InitialValues)
     {
@@ -125,8 +152,8 @@ public class RippleEffectDrawable : IDrawable
   private void DrawDigit(ICanvas canvas, Coords cell, int value, bool isInitialValue)
   {
     var valueString = value.ToString();
-    var x = _squareWidth * cell.Col + _gridLineHalfThickness;
-    var y = _squareHeight * cell.Row + _gridLineHalfThickness;
+    var x = CalculateX(cell.Col);
+    var y = CalculateY(cell.Row);
     var width = _squareWidth;
     var height = _squareHeight;
     canvas.FontColor = isInitialValue ? Colors.Magenta : Colors.Black;
@@ -142,8 +169,8 @@ public class RippleEffectDrawable : IDrawable
     );
   }
 
-  private float CalculateX(int col) => col * _squareWidth + _gridLineHalfThickness;
-  private float CalculateY(int row) => row * _squareHeight + _gridLineHalfThickness;
+  private float CalculateX(int col) => col * _squareWidth + _borderLineHalfThickness;
+  private float CalculateY(int row) => row * _squareHeight + _borderLineHalfThickness;
 
   private PointF CalculatePoint(Coords coords) =>
     new PointF(CalculateX(coords.Col), CalculateY(coords.Row));

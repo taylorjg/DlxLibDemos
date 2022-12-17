@@ -21,10 +21,10 @@ public class DraughtboardPuzzleDrawable : IDrawable
   {
     _width = dirtyRect.Width;
     _height = dirtyRect.Height;
-    _gridLineFullThickness = dirtyRect.Width / 100;
+    _gridLineFullThickness = _width / 100;
     _gridLineHalfThickness = _gridLineFullThickness / 2;
-    _squareWidth = (dirtyRect.Width - _gridLineFullThickness) / 8;
-    _squareHeight = (dirtyRect.Height - _gridLineFullThickness) / 8;
+    _squareWidth = (_width - _gridLineFullThickness) / 8;
+    _squareHeight = (_height - _gridLineFullThickness) / 8;
 
     DrawGrid(canvas);
     DrawPieces(canvas);

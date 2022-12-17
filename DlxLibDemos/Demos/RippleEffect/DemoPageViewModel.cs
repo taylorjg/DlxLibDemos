@@ -8,6 +8,7 @@ namespace DlxLibDemos.Demos.RippleEffect;
 public partial class RippleEffectDemoPageViewModel : DemoPageBaseViewModel
 {
   private ILogger<RippleEffectDemoPageViewModel> _logger;
+  private Puzzle _selectedPuzzle;
 
   public RippleEffectDemoPageViewModel(
     ILogger<RippleEffectDemoPageViewModel> logger,
@@ -19,5 +20,22 @@ public partial class RippleEffectDemoPageViewModel : DemoPageBaseViewModel
     _logger = logger;
     _logger.LogInformation("constructor");
     Demo = demo;
+    SelectedPuzzle = RippleEffect.Puzzles.ThePuzzles.First();
+  }
+
+  public Puzzle[] Puzzles { get => RippleEffect.Puzzles.ThePuzzles; }
+
+  public Puzzle SelectedPuzzle
+  {
+    get => _selectedPuzzle;
+    set
+    {
+      if (value != _selectedPuzzle)
+      {
+        _logger.LogInformation($"SelectedPuzzle setter value: {value}");
+        SetProperty(ref _selectedPuzzle, value);
+        DemoSettings = _selectedPuzzle;
+      }
+    }
   }
 }
