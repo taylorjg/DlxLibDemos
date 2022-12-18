@@ -12,20 +12,13 @@ public class FlowFreeDrawable : IDrawable
   private readonly Color _gridColour = Colors.Yellow;
   private Puzzle _puzzle;
 
-  private static readonly Dictionary<string, Color> PieceColours = new Dictionary<string, Color>
+  private static readonly Dictionary<string, Color> DotColours = new Dictionary<string, Color>
   {
-    { "F", Color.FromRgba("#CCCCE5") },
-    { "I", Color.FromRgba("#650205") },
-    { "L", Color.FromRgba("#984D11") },
-    { "N", Color.FromRgba("#FFFD38") },
-    { "P", Color.FromRgba("#FD8023") },
-    { "T", Color.FromRgba("#FC2028") },
-    { "U", Color.FromRgba("#7F1CC9") },
-    { "V", Color.FromRgba("#6783E3") },
-    { "W", Color.FromRgba("#0F7F12") },
-    { "X", Color.FromRgba("#FC1681") },
-    { "Y", Color.FromRgba("#29FD2F") },
-    { "Z", Color.FromRgba("#CCCA2A") }
+    { "A", Colors.Red },
+    { "B", Colors.Green },
+    { "C", Colors.Blue },
+    { "D", Colors.Yellow },
+    { "E", Colors.Orange }
   };
 
   public FlowFreeDrawable(IWhatToDraw whatToDraw)
@@ -47,6 +40,7 @@ public class FlowFreeDrawable : IDrawable
 
     DrawBackground(canvas);
     DrawGrid(canvas);
+    DrawColourPairs(canvas);
   }
 
   private void DrawBackground(ICanvas canvas)
@@ -93,6 +87,33 @@ public class FlowFreeDrawable : IDrawable
       canvas.StrokeSize = _gridLineFullThickness;
       canvas.DrawLine(x, y1, x, y2);
     }
+  }
+
+  private void DrawColourPairs(ICanvas canvas)
+  {
+    foreach (var colourPair in _puzzle.ColourPairs)
+    {
+      DrawColourPair(canvas, colourPair);
+    }
+  }
+
+  private void DrawColourPair(ICanvas canvas, ColourPair colourPair)
+  {
+    var colour = DotColours.GetValueOrDefault(colourPair.Label) ?? Colors.White;
+
+    DrawDot(canvas, colour, colourPair.Start);
+    DrawDot(canvas, colour, colourPair.End);
+  }
+
+  private void DrawDot(ICanvas canvas, Color colour, Coords coords)
+  {
+    var w = _squareWidth * 0.75f;
+    var h = _squareHeight * 0.75f;
+    var x = CalculateX(coords.Col) + _squareWidth / 2 - w / 2;
+    var y = CalculateY(coords.Row) + _squareHeight / 2 - h / 2;
+
+    canvas.FillColor = colour;
+    canvas.FillEllipse(x, y, w, h);
   }
 
   private float CalculateX(int col) => col * _squareWidth + _gridLineHalfThickness;
