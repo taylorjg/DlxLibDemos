@@ -27,7 +27,7 @@ public class RippleEffectDemo : IDemo
       foreach (var initialValue in room.InitialValues)
       {
         var (cell, value) = initialValue;
-        var internalRow = new RippleEffectInternalRow(cell, value, true, room.RoomStartIndex);
+        var internalRow = new RippleEffectInternalRow(puzzle, cell, value, true, room.RoomStartIndex);
         internalRows.Add(internalRow);
       }
 
@@ -41,7 +41,7 @@ public class RippleEffectDemo : IDemo
       {
         foreach (var value in valuesToSolve)
         {
-          var internalRow = new RippleEffectInternalRow(cell, value, false, room.RoomStartIndex);
+          var internalRow = new RippleEffectInternalRow(puzzle, cell, value, false, room.RoomStartIndex);
           internalRows.Add(internalRow);
         }
       }
@@ -64,25 +64,24 @@ public class RippleEffectDemo : IDemo
 
   public int? GetNumPrimaryColumns(object demoSettings)
   {
-    return 2 * 8 * 8;
+    var puzzle = (Puzzle)demoSettings;
+    var size = puzzle.Size;
+    return 2 * size * size;
   }
-
-  private static readonly Coords[] AllLocations =
-    Enumerable.Range(0, 8).SelectMany(row =>
-        Enumerable.Range(0, 8).Select(col =>
-          new Coords(row, col))).ToArray();
 
   private static int[] MakeLocationColumns(RippleEffectInternalRow internalRow)
   {
-    var columns = Enumerable.Repeat(0, 8 * 8).ToArray();
+    var size = internalRow.Puzzle.Size;
+    var columns = Enumerable.Repeat(0, size * size).ToArray();
     var (row, col) = internalRow.Cell;
-    columns[row * 8 + col] = 1;
+    columns[row * size + col] = 1;
     return columns;
   }
 
   private static int[] MakeRoomColumns(RippleEffectInternalRow internalRow)
   {
-    var columns = Enumerable.Repeat(0, 8 * 8).ToArray();
+    var size = internalRow.Puzzle.Size;
+    var columns = Enumerable.Repeat(0, size * size).ToArray();
     var index = internalRow.RoomStartIndex + internalRow.Value - 1;
     columns[index] = 1;
     return columns;
@@ -90,8 +89,8 @@ public class RippleEffectDemo : IDemo
 
   private static int[] MakeRippleColumns(RippleEffectInternalRow internalRow)
   {
-    var size = 8;
-    var maxValue = 5;
+    var size = internalRow.Puzzle.Size;
+    var maxValue = internalRow.Puzzle.MaxValue;
 
     var arrayOfArrays = Enumerable.Range(0, maxValue * 4).Select(_ => new int[size * size]).ToArray();
 
@@ -116,11 +115,17 @@ public class RippleEffectDemo : IDemo
     return arrayOfArrays.SelectMany(array => array).ToArray();
   }
 
-  private static Coords[] GetRippleCells(RippleEffectInternalRow internalRow, Func<Coords, Coords> transformCoords)
+  private static Coords[] GetRippleCells(
+    RippleEffectInternalRow internalRow,
+    Func<Coords, Coords> transformCoords
+  )
   {
-    var (cell, value, _isInitialValue, _roomCellIndex) = internalRow;
+    var size = internalRow.Puzzle.Size;
+    var cell = internalRow.Cell;
+    var value = internalRow.Value;
+
     var cells = new List<Coords> { cell };
-    var size = 8;
+
     foreach (var _ in Enumerable.Range(0, value))
     {
       cell = transformCoords(cell);
@@ -129,6 +134,7 @@ public class RippleEffectDemo : IDemo
         cells.Add(cell);
       }
     }
+
     return cells.ToArray();
   }
 }

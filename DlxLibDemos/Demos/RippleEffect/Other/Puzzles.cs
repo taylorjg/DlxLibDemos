@@ -2,38 +2,65 @@ namespace DlxLibDemos.Demos.RippleEffect;
 
 public static class Puzzles
 {
+  // https://krazydad.com/ripple/sfiles/RIP_CH_8x8_v1_4pp_b1.pdf
+  // Challenging Ripple Effect, Volume 1, Book 1
   public static readonly Puzzle[] ThePuzzles = new Puzzle[]
   {
     ParsePuzzle(
-      "Name",
+      "Ripple #1",
       new string[] {
-        "ABCCCDDD",
-        "EBFGHHDI",
-        "EEFGGJJK",
-        "ELLGMMKK",
-        "LLNOOMMK",
-        "PLNQOMRR",
-        "PSTOORRU",
-        "VVTTTUUU"
+        "ABCDDEFF",
+        "ABDDGEEH",
+        "ABTIGEEH",
+        "AAJIGKLH",
+        "AMJIIKLL",
+        "NMJOPKQL",
+        "NMJOPPQL",
+        "NNROPPQS"
       },
       new string[] {
-        "---3----",
+        "2----5--",
         "--------",
-        "------2-",
-        "---1-3--",
-        "--1-5---",
-        "-3------",
+        "4-------",
+        "-5------",
+        "------4-",
+        "-----2--",
         "--------",
-        "----2---"
+        "--------"
+      }
+    ),
+    ParsePuzzle(
+      "Ripple #2",
+      new string[] {
+        "ABBCCCCD",
+        "EEFGHICJ",
+        "EFFGIIJJ",
+        "EFFKIILL",
+        "EMKKNLLL",
+        "MMKNNOLP",
+        "MMQQOOPP",
+        "RQQQOOPP"
+      },
+      new string[] {
+        "------3-",
+        "-----5--",
+        "-------2",
+        "--4-----",
+        "5----1--",
+        "--------",
+        "-1----1-",
+        "--------"
       }
     )
   };
 
   private static Puzzle ParsePuzzle(string name, string[] roomLines, string[] initialValueLines)
   {
+    var size = roomLines.Length;
     var initialValues = ParseInitialValues(initialValueLines);
     var rooms = ParseRooms(roomLines, initialValues);
-    return new Puzzle(name, rooms, initialValues);
+    var maxValue = rooms.Max(room => room.Cells.Length);
+    return new Puzzle(name, size, maxValue, rooms, initialValues);
   }
 
   private static Room[] ParseRooms(string[] roomLines, InitialValue[] initialValues)

@@ -13,6 +13,7 @@ public class RippleEffectDrawable : IDrawable
   private float _squareHeight;
   private readonly Color _gridColour = Colors.Black;
   private readonly Color _borderColour = Colors.Black;
+  private Puzzle _puzzle;
 
   public RippleEffectDrawable(IWhatToDraw whatToDraw)
   {
@@ -21,14 +22,17 @@ public class RippleEffectDrawable : IDrawable
 
   public void Draw(ICanvas canvas, RectF dirtyRect)
   {
+    _puzzle = (Puzzle)_whatToDraw.DemoSettings;
+    var size = _puzzle.Size;
+
     _width = dirtyRect.Width;
     _height = dirtyRect.Height;
     _gridLineFullThickness = _width / 400;
     _gridLineHalfThickness = _gridLineFullThickness / 2;
     _borderLineFullThickness = _gridLineFullThickness * 4;
     _borderLineHalfThickness = _borderLineFullThickness / 2;
-    _squareWidth = (_width - _borderLineFullThickness) / 8;
-    _squareHeight = (_height - _borderLineFullThickness) / 8;
+    _squareWidth = (_width - _borderLineFullThickness) / size;
+    _squareHeight = (_height - _borderLineFullThickness) / size;
 
     DrawBackground(canvas);
     DrawGrid(canvas);
@@ -59,7 +63,7 @@ public class RippleEffectDrawable : IDrawable
 
   private void DrawHorizontalGridLines(ICanvas canvas)
   {
-    foreach (var row in Enumerable.Range(0, 9))
+    foreach (var row in Enumerable.Range(0, _puzzle.Size + 1))
     {
       var x1 = _borderLineHalfThickness;
       var x2 = _width - _borderLineHalfThickness;
@@ -72,7 +76,7 @@ public class RippleEffectDrawable : IDrawable
 
   private void DrawVerticalGridLines(ICanvas canvas)
   {
-    foreach (var col in Enumerable.Range(0, 9))
+    foreach (var col in Enumerable.Range(0, _puzzle.Size + 1))
     {
       var x = CalculateX(col);
       var y1 = _borderLineHalfThickness;
@@ -85,9 +89,7 @@ public class RippleEffectDrawable : IDrawable
 
   private void DrawRooms(ICanvas canvas)
   {
-    var puzzle = (Puzzle)_whatToDraw.DemoSettings;
-
-    foreach (var room in puzzle.Rooms)
+    foreach (var room in _puzzle.Rooms)
     {
       DrawRoom(canvas, room);
     }
@@ -121,9 +123,7 @@ public class RippleEffectDrawable : IDrawable
 
   private void DrawInitialValues(ICanvas canvas)
   {
-    var puzzle = (Puzzle)_whatToDraw.DemoSettings;
-
-    foreach (var initialValue in puzzle.InitialValues)
+    foreach (var initialValue in _puzzle.InitialValues)
     {
       DrawDigit(canvas, initialValue.Cell, initialValue.Value, true);
     }
