@@ -34,6 +34,8 @@ Here are links to the existing WPF demo apps:
 
 ![Aztec Diamond](screenshots/aztec-diamond.png)
 
+![Ripple effect](screenshots/ripple-effect.png)
+
 # TODO
 
 * Convert/create demos:
@@ -43,7 +45,7 @@ Here are links to the existing WPF demo apps:
   * ~~Draughtboard Puzzle~~
   * ~~TetraSticks~~
   * ~~Aztec Diamond (new - no old WPF counterpart)~~
-  * Ripple Effect
+  * ~~Ripple Effect~~
   * Flow Free
   * Self Visualisation (new - no old WPF counterpart - but I do have a web version [here](https://github.com/taylorjg/dlxlib-self-visualisation))
 * ~~Display version information~~
