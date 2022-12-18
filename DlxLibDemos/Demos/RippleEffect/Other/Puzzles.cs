@@ -2,12 +2,13 @@ namespace DlxLibDemos.Demos.RippleEffect;
 
 public static class Puzzles
 {
-  // https://krazydad.com/ripple/sfiles/RIP_CH_8x8_v1_4pp_b1.pdf
-  // Challenging Ripple Effect, Volume 1, Book 1
   public static readonly Puzzle[] ThePuzzles = new Puzzle[]
   {
+    // https://krazydad.com/ripple/sfiles/RIP_CH_8x8_v1_4pp_b1.pdf
+    // Challenging Ripple Effect, Volume 1, Book 1
+    // Ripple #1
     ParsePuzzle(
-      "Ripple #1",
+      "Ripple #1 (8x8)",
       new string[] {
         "ABCDDEFF",
         "ABDDGEEH",
@@ -29,8 +30,12 @@ public static class Puzzles
         "--------"
       }
     ),
+
+    // https://krazydad.com/ripple/sfiles/RIP_CH_8x8_v1_4pp_b1.pdf
+    // Challenging Ripple Effect, Volume 1, Book 1
+    // Ripple #2
     ParsePuzzle(
-      "Ripple #2",
+      "Ripple #2 (8x8)",
       new string[] {
         "ABBCCCCD",
         "EEFGHICJ",
@@ -51,7 +56,38 @@ public static class Puzzles
         "-1----1-",
         "--------"
       }
-    )
+    ),
+
+    // https://krazydad.com/ripple/sfiles/RIP_ST_10x10_v1_4pp_b1.pdf
+    // Super-Tough Ripple Effect, Volume 1, Book 1
+    // Ripple #1
+    ParsePuzzle(
+      "Ripple #1 (10x10)",
+      new string[] {
+        "ABCCDDDDEE",
+        "AFFGGGHDEE",
+        "AIFFFJJDKE",
+        "ALFMMMNDOO",
+        "PLLQRSNNNN",
+        "TLLRRRUUUV",
+        "TWLXYYYYUV",
+        "TZZaaabYUV",
+        "TcZZZdbYeV",
+        "fcZggggYeh"
+      },
+      new string[] {
+        "----54--1-",
+        "---------3",
+        "---13-----",
+        "----------",
+        "-3----4---",
+        "----------",
+        "------6--4",
+        "----------",
+        "---2-----3",
+        "-----4----"
+      }
+    ),
   };
 
   private static Puzzle ParsePuzzle(string name, string[] roomLines, string[] initialValueLines)
