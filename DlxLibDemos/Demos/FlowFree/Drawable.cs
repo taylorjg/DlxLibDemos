@@ -41,6 +41,7 @@ public class FlowFreeDrawable : IDrawable
     DrawBackground(canvas);
     DrawGrid(canvas);
     DrawColourPairs(canvas);
+    DrawPipes(canvas);
   }
 
   private void DrawBackground(ICanvas canvas)
@@ -99,7 +100,7 @@ public class FlowFreeDrawable : IDrawable
 
   private void DrawColourPair(ICanvas canvas, ColourPair colourPair)
   {
-    var colour = DotColours.GetValueOrDefault(colourPair.Label) ?? Colors.White;
+    var colour = GetColorForColorPair(colourPair);
 
     DrawDot(canvas, colour, colourPair.Start);
     DrawDot(canvas, colour, colourPair.End);
@@ -107,13 +108,49 @@ public class FlowFreeDrawable : IDrawable
 
   private void DrawDot(ICanvas canvas, Color colour, Coords coords)
   {
-    var w = _squareWidth * 0.75f;
-    var h = _squareHeight * 0.75f;
-    var x = CalculateX(coords.Col) + _squareWidth / 2 - w / 2;
-    var y = CalculateY(coords.Row) + _squareHeight / 2 - h / 2;
+    var width = _squareWidth * 0.75f;
+    var height = _squareHeight * 0.75f;
+    var squareCentre = CalculateSquareCentre(coords);
+    var x = squareCentre.X - width / 2;
+    var y = squareCentre.Y - height / 2;
 
     canvas.FillColor = colour;
-    canvas.FillEllipse(x, y, w, h);
+    canvas.FillEllipse(x, y, width, height);
+  }
+
+  private void DrawPipes(ICanvas canvas)
+  {
+    var solutionInternalRows = _whatToDraw.SolutionInternalRows.Cast<FlowFreeInternalRow>();
+
+    foreach (var internalRow in solutionInternalRows)
+    {
+      var colour = GetColorForColorPair(internalRow.ColourPair);
+      var pipe = internalRow.Pipe;
+      DrawPipe(canvas, colour, pipe);
+    }
+  }
+
+  private void DrawPipe(ICanvas canvas, Color colour, Coords[] pipe)
+  {
+    var path = new PathF();
+
+    path.MoveTo(CalculateSquareCentre(pipe[0]));
+
+    foreach (var coords in pipe.Skip(1))
+    {
+      path.LineTo(CalculateSquareCentre(coords));
+    }
+
+    canvas.StrokeColor = colour;
+    canvas.StrokeSize = _squareWidth / 3;
+    canvas.StrokeLineCap = LineCap.Round;
+    canvas.StrokeLineJoin = LineJoin.Round;
+    canvas.DrawPath(path);
+  }
+
+  private Color GetColorForColorPair(ColourPair colourPair)
+  {
+    return DotColours.GetValueOrDefault(colourPair.Label) ?? Colors.White;
   }
 
   private float CalculateX(int col) => col * _squareWidth + _gridLineHalfThickness;
@@ -121,4 +158,10 @@ public class FlowFreeDrawable : IDrawable
 
   private PointF CalculatePoint(Coords coords) =>
     new PointF(CalculateX(coords.Col), CalculateY(coords.Row));
+
+  private PointF CalculateSquareCentre(Coords coords) =>
+    new PointF(
+      CalculateX(coords.Col) + _squareWidth / 2,
+      CalculateY(coords.Row) + _squareHeight / 2
+    );
 }
