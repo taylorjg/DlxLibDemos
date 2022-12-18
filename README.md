@@ -44,7 +44,7 @@ Here are links to the existing WPF demo apps:
   * ~~N Queens~~ (new - no old WPF counterpart)
   * ~~Draughtboard Puzzle~~
   * ~~TetraSticks~~
-  * ~~Aztec Diamond (new - no old WPF counterpart)~~
+  * ~~Aztec Diamond~~ (new - no old WPF counterpart)
   * ~~Ripple Effect~~
   * Flow Free
   * Self Visualisation (new - no old WPF counterpart - but I do have a web version [here](https://github.com/taylorjg/dlxlib-self-visualisation))

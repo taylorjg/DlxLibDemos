@@ -10,6 +10,7 @@ using DlxLibDemos.Demos.DraughtboardPuzzle;
 using DlxLibDemos.Demos.TetraSticks;
 using DlxLibDemos.Demos.AztecDiamond;
 using DlxLibDemos.Demos.RippleEffect;
+using DlxLibDemos.Demos.FlowFree;
 
 namespace DlxLibDemos;
 
@@ -77,6 +78,11 @@ public partial class HomePageViewModel : ObservableObject
           DemoNames.RippleEffect,
           "RippleEffectDemoPage",
           _serviceProvider.GetService<RippleEffectThumbnailDrawable>()
+        ),
+        new AvailableDemo(
+          DemoNames.FlowFree,
+          "FlowFreeDemoPage",
+          _serviceProvider.GetService<FlowFreeThumbnailDrawable>()
         )
       };
     }
