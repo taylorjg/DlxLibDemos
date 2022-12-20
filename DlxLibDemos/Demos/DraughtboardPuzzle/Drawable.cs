@@ -46,12 +46,11 @@ public class DraughtboardPuzzleDrawable : IDrawable
     foreach (var row in Enumerable.Range(0, 9))
     {
       var x1 = 0;
-      var y1 = CalculateY(row);
       var x2 = _width;
-      var y2 = y1;
+      var y = CalculateY(row);
       canvas.StrokeColor = _gridColour;
       canvas.StrokeSize = _gridLineFullThickness;
-      canvas.DrawLine(x1, y1, x2, y2);
+      canvas.DrawLine(x1, y, x2, y);
     }
   }
 
@@ -59,13 +58,12 @@ public class DraughtboardPuzzleDrawable : IDrawable
   {
     foreach (var col in Enumerable.Range(0, 9))
     {
-      var x1 = CalculateX(col);
+      var x = CalculateX(col);
       var y1 = 0;
-      var x2 = x1;
       var y2 = _height;
       canvas.StrokeColor = _gridColour;
       canvas.StrokeSize = _gridLineFullThickness;
-      canvas.DrawLine(x1, y1, x2, y2);
+      canvas.DrawLine(x, y1, x, y2);
     }
   }
 

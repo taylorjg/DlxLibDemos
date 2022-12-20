@@ -42,12 +42,12 @@ public class TetraSticksDrawable : IDrawable
   {
     _width = dirtyRect.Width;
     _height = dirtyRect.Height;
-    _gridLineFullThickness = dirtyRect.Width / 100;
+    _gridLineFullThickness = _width / 100;
     _gridLineHalfThickness = _gridLineFullThickness / 2;
     _polyLineFullThickness = _gridLineFullThickness * 2;
     _polyLineHalfThickness = _polyLineFullThickness / 2;
-    _squareWidth = (dirtyRect.Width - _polyLineFullThickness) / 5;
-    _squareHeight = (dirtyRect.Height - _polyLineFullThickness) / 5;
+    _squareWidth = (_width - _polyLineFullThickness) / 5;
+    _squareHeight = (_height - _polyLineFullThickness) / 5;
 
     DrawGrid(canvas);
     DrawPieces(canvas);

@@ -71,7 +71,7 @@ public class DraughtboardPuzzleDemo : IDemo
     }
   }
 
-  private IEnumerable<int> MakePieceColumns(DraughtboardPuzzleInternalRow internalRow)
+  private static int[] MakePieceColumns(DraughtboardPuzzleInternalRow internalRow)
   {
     var columns = Enumerable.Repeat(0, Pieces.ThePieces.Length).ToArray();
     var pieceIndex = Array.FindIndex(Pieces.ThePieces, p => p.Label == internalRow.Label);
@@ -79,7 +79,7 @@ public class DraughtboardPuzzleDemo : IDemo
     return columns;
   }
 
-  private IEnumerable<int> MakeLocationColumns(DraughtboardPuzzleInternalRow internalRow)
+  private static int[] MakeLocationColumns(DraughtboardPuzzleInternalRow internalRow)
   {
     var indices = internalRow.Variation.Squares.Select(square =>
     {

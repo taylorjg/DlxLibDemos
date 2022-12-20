@@ -101,7 +101,7 @@ public class AztecDiamondDemo : IDemo
     }
   }
 
-  private int[] MakePieceColumns(AztecDiamondInternalRow internalRow)
+  private static int[] MakePieceColumns(AztecDiamondInternalRow internalRow)
   {
     var pwvs = PiecesWithVariations.ThePiecesWithVariations;
     var columns = Enumerable.Repeat(0, pwvs.Length).ToArray();
@@ -113,7 +113,7 @@ public class AztecDiamondDemo : IDemo
     return columns;
   }
 
-  private int[] MakeHorizontalsColumns(AztecDiamondInternalRow internalRow)
+  private static int[] MakeHorizontalsColumns(AztecDiamondInternalRow internalRow)
   {
     var columns = Enumerable.Repeat(0, Locations.AllHorizontals.Length).ToArray();
     foreach (var horizontal in internalRow.Variation.Horizontals)
@@ -128,7 +128,7 @@ public class AztecDiamondDemo : IDemo
     return columns;
   }
 
-  private int[] MakeVerticalsColumns(AztecDiamondInternalRow internalRow)
+  private static int[] MakeVerticalsColumns(AztecDiamondInternalRow internalRow)
   {
     var columns = Enumerable.Repeat(0, Locations.AllVerticals.Length).ToArray();
     foreach (var vertical in internalRow.Variation.Verticals)
@@ -143,7 +143,7 @@ public class AztecDiamondDemo : IDemo
     return columns;
   }
 
-  private int[] MakeJunctionsColumns(AztecDiamondInternalRow internalRow)
+  private static int[] MakeJunctionsColumns(AztecDiamondInternalRow internalRow)
   {
     var columns = Enumerable.Repeat(0, Locations.AllJunctions.Length).ToArray();
     foreach (var junction in internalRow.Variation.Junctions)

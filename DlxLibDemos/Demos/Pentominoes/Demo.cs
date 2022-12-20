@@ -69,7 +69,7 @@ public class PentominoesDemo : IDemo
     }
   }
 
-  private IEnumerable<int> MakePieceColumns(PentominoesInternalRow internalRow)
+  private static int[] MakePieceColumns(PentominoesInternalRow internalRow)
   {
     var columns = Enumerable.Repeat(0, Pieces.ThePieces.Length).ToArray();
     var pieceIndex = Array.FindIndex(Pieces.ThePieces, p => p.Label == internalRow.Label);
@@ -77,7 +77,7 @@ public class PentominoesDemo : IDemo
     return columns;
   }
 
-  private IEnumerable<int> MakeLocationColumns(PentominoesInternalRow internalRow)
+  private static int[] MakeLocationColumns(PentominoesInternalRow internalRow)
   {
     var indices = internalRow.Variation.CoordsList.Select(coords =>
     {
@@ -85,17 +85,23 @@ public class PentominoesDemo : IDemo
       var col = internalRow.Location.Col + coords.Col;
       return row * 8 + col;
     });
+
     var columns = Enumerable.Repeat(0, 8 * 8).ToArray();
+
     foreach (var index in indices)
     {
       columns[index] = 1;
     }
-    var indicesToExclude = new[] {
+
+    var locationIndicesToExclude = new[] {
       3 * 8 + 3,
       3 * 8 + 4,
       4 * 8 + 3,
       4 * 8 + 4
     };
-    return columns.Where((_, index) => !indicesToExclude.Contains(index));
+
+    return columns
+      .Where((_, index) => !locationIndicesToExclude.Contains(index))
+      .ToArray();
   }
 }
