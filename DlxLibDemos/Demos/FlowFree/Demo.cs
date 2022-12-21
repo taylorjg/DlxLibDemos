@@ -19,7 +19,22 @@ public class FlowFreeDemo : IDemo
 
   public object[] BuildInternalRows(object demoSettings)
   {
-    return new object[0];
+    var puzzle = (Puzzle)demoSettings;
+    var pathFinder = new PathFinder(puzzle);
+    var internalRows = new List<FlowFreeInternalRow>();
+    foreach (var colourPair in puzzle.ColourPairs)
+    {
+      var path = pathFinder.FindPath(colourPair);
+      if (path != null) {
+        var internalRow = new FlowFreeInternalRow(puzzle, colourPair, path);
+        _logger.LogInformation($"colourPair: {colourPair.Label}");
+        foreach (var coords in path) {
+          _logger.LogInformation($"coords: {coords}");
+        }
+        internalRows.Add(internalRow);
+      }
+    }
+    return internalRows.ToArray();
   }
 
   public int[] InternalRowToMatrixRow(object internalRow)
