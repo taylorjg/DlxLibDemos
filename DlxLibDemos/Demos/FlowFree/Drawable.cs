@@ -18,7 +18,30 @@ public class FlowFreeDrawable : IDrawable
     { "B", Colors.Green },
     { "C", Colors.Blue },
     { "D", Colors.Yellow },
-    { "E", Colors.Orange }
+    { "E", Colors.Orange },
+    { "F", Colors.Cyan },
+    { "G", Colors.Magenta },
+    { "H", Colors.Brown },
+    { "I", Colors.Purple },
+    { "J", Colors.White },
+    { "K", Colors.Grey },
+    { "L", Colors.LimeGreen }
+  };
+
+  private static readonly Dictionary<string, Color> LabelColours = new Dictionary<string, Color>
+  {
+    { "A", Colors.White },
+    { "B", Colors.White },
+    { "C", Colors.White },
+    { "D", Colors.Black },
+    { "E", Colors.Black },
+    { "F", Colors.Black },
+    { "G", Colors.White },
+    { "H", Colors.White },
+    { "I", Colors.White },
+    { "J", Colors.Black },
+    { "K", Colors.Black },
+    { "L", Colors.Black }
   };
 
   public FlowFreeDrawable(IWhatToDraw whatToDraw)

@@ -17,6 +17,19 @@ public static class Puzzles
       "---B-D",
       "-B-EAC",
       "---C--"
+    }),
+    // Jumbo Pack 10x10 - hard
+    ParsePuzzle("Puzzle 1 (10x10)", new[] {
+      "A----C---C",
+      "---J------",
+      "--JB------",
+      "-FEH--E---",
+      "-L----H-B-",
+      "--------K-",
+      "--A--G---F",
+      "DK--------",
+      "-I----L-G-",
+      "-D--I-----"
     })
   };
 
