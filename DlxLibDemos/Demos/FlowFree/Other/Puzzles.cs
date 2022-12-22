@@ -9,6 +9,14 @@ public static class Puzzles
       "--D--",
       "-AE-B",
       "-CB--"
+    }),
+    ParsePuzzle("Puzzle 1 (6x6)", new[] {
+      "-----E",
+      "------",
+      "-DA---",
+      "---B-D",
+      "-B-EAC",
+      "---C--"
     })
   };
 
