@@ -36,6 +36,8 @@ Here are links to the existing WPF demo apps:
 
 ![Ripple effect](screenshots/ripple-effect.png)
 
+![Flow Free](screenshots/flowfree.png)
+
 # TODO
 
 * Convert/create demos:
