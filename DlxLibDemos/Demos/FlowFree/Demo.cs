@@ -20,21 +20,38 @@ public class FlowFreeDemo : IDemo
   public object[] BuildInternalRows(object demoSettings)
   {
     var puzzle = (Puzzle)demoSettings;
-    var pathFinder = new PathFinder(puzzle);
     var internalRows = new List<FlowFreeInternalRow>();
     foreach (var colourPair in puzzle.ColourPairs)
     {
-      var path = pathFinder.FindPath(colourPair);
-      if (path != null) {
+      var paths = FindPathsForColourPair(puzzle, colourPair);
+      foreach (var path in paths)
+      {
         var internalRow = new FlowFreeInternalRow(puzzle, colourPair, path);
-        _logger.LogInformation($"colourPair: {colourPair.Label}");
-        foreach (var coords in path) {
-          _logger.LogInformation($"coords: {coords}");
-        }
         internalRows.Add(internalRow);
       }
     }
     return internalRows.ToArray();
+  }
+
+  private List<Coords[]> FindPathsForColourPair(Puzzle puzzle, ColourPair colourPair)
+  {
+    var paths = new List<Coords[]>();
+    var pathFinder = new PathFinder(puzzle);
+
+    paths.Add(pathFinder.FindPath(colourPair));
+
+    foreach (var emptyLocation in puzzle.EmptyLocations)
+    {
+      var additionalObstacles = new Coords[] { emptyLocation };
+      paths.Add(pathFinder.FindPath(colourPair, additionalObstacles));
+    }
+
+    var makeNormalisedRepresentation = (Coords[] path) => string.Join("-", path.Select(p => p.ToString()));
+
+    return paths
+      .Where(path => path != null)
+      .DistinctBy(makeNormalisedRepresentation)
+      .ToList();
   }
 
   public int[] InternalRowToMatrixRow(object internalRow)

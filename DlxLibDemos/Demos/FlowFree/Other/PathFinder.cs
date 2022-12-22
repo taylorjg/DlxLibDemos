@@ -5,24 +5,20 @@ namespace DlxLibDemos.Demos.FlowFree;
 public class PathFinder
 {
   private Puzzle _puzzle;
-  private Coords[] _dots;
 
   public PathFinder(Puzzle puzzle)
   {
     _puzzle = puzzle;
-    _dots = _puzzle.ColourPairs
-      .SelectMany(colourPair => new[] { colourPair.Start, colourPair.End })
-      .ToArray();
   }
 
-  public Coords[] FindPath(ColourPair colourPair)
+  public Coords[] FindPath(ColourPair colourPair, Coords[] additionalObstacles = null)
   {
     var start = colourPair.Start;
     var goal = colourPair.End;
     var openSet = new HashSet<Coords> { start };
     var cameFrom = new Dictionary<Coords, Coords>();
-    var gScore = new Dictionary<Coords, double> { { start, 0 } };
-    var fScore = new Dictionary<Coords, double> { { start, Heuristic(start, goal) } };
+    var gScore = new Dictionary<Coords, int> { { start, 0 } };
+    var fScore = new Dictionary<Coords, int> { { start, Heuristic(start, goal) } };
 
     while (openSet.Any())
     {
@@ -35,15 +31,17 @@ public class PathFinder
 
       openSet.Remove(current);
 
-      foreach (var n in Neighbours(current, goal))
+      foreach (var n in Neighbours(current, goal, additionalObstacles ?? new Coords[0]))
       {
         var tentativeScore = gScore[current] + 1;
-        var nScore = gScore.GetValueOrDefault(n, double.MaxValue);
-        if (tentativeScore < nScore) {
+        var nScore = gScore.GetValueOrDefault(n, int.MaxValue);
+        if (tentativeScore < nScore)
+        {
           cameFrom[n] = current;
           gScore[n] = tentativeScore;
           fScore[n] = tentativeScore + Heuristic(n, goal);
-          if (!openSet.Contains(n)) {
+          if (!openSet.Contains(n))
+          {
             openSet.Add(n);
           }
         }
@@ -53,12 +51,12 @@ public class PathFinder
     return null;
   }
 
-  private static Coords NodeWithLowestScore(HashSet<Coords> openSet, Dictionary<Coords, double> fScore)
+  private static Coords NodeWithLowestScore(HashSet<Coords> openSet, Dictionary<Coords, int> fScore)
   {
     return openSet.MinBy(n => fScore[n]);
   }
 
-  private Coords[] Neighbours(Coords current, Coords goal)
+  private Coords[] Neighbours(Coords current, Coords goal, Coords[] additionalObstacles)
   {
     var ns = new[] {
       current.Up(),
@@ -67,28 +65,25 @@ public class PathFinder
       current.Right()
     };
 
+    var isWithinPuzzle = (Coords n) => (
+      n.Row >= 0 && n.Row < _puzzle.Size &&
+      n.Col >= 0 && n.Col < _puzzle.Size
+    );
+
+    var isNotAdditionalObstacle = (Coords n) =>
+      !additionalObstacles.Contains(n);
+
+    var isEmptyLocationOrGoal = (Coords n) =>
+      _puzzle.EmptyLocations.Contains(n) || n == goal;
+
     return ns
-      .Where(n => IsWithinPuzzle(n))
-      .Where(n => IsEmptyLocationOrGoal(n, goal))
+      .Where(isWithinPuzzle)
+      .Where(isNotAdditionalObstacle)
+      .Where(isEmptyLocationOrGoal)
       .ToArray();
   }
 
-  private bool IsWithinPuzzle(Coords n)
-  {
-    return (
-      n.Row >= 0 &&
-      n.Row < _puzzle.Size &&
-      n.Col >= 0 &&
-      n.Col < _puzzle.Size
-    );
-  }
-
-  private bool IsEmptyLocationOrGoal(Coords n, Coords goal)
-  {
-    return !_dots.Contains(n) || n == goal;
-  }
-
-  private double Heuristic(Coords a, Coords b)
+  private int Heuristic(Coords a, Coords b)
   {
     var rowDiff = Math.Abs(a.Row - b.Row);
     var colDiff = Math.Abs(a.Col - b.Col);
