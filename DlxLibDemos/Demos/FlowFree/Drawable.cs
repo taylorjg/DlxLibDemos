@@ -56,15 +56,16 @@ public class FlowFreeDrawable : IDrawable
 
     _width = dirtyRect.Width;
     _height = dirtyRect.Height;
-    _gridLineFullThickness = _width / 400;
+    _gridLineFullThickness = _width / 600;
     _gridLineHalfThickness = _gridLineFullThickness / 2;
     _squareWidth = (_width - _gridLineFullThickness) / size;
     _squareHeight = (_height - _gridLineFullThickness) / size;
 
     DrawBackground(canvas);
     DrawGrid(canvas);
-    DrawColourPairs(canvas);
+    DrawColourPairDots(canvas);
     DrawPipes(canvas);
+    DrawColourPairLabels(canvas);
   }
 
   private void DrawBackground(ICanvas canvas)
@@ -113,26 +114,20 @@ public class FlowFreeDrawable : IDrawable
     }
   }
 
-  private void DrawColourPairs(ICanvas canvas)
+  private void DrawColourPairDots(ICanvas canvas)
   {
     foreach (var colourPair in _puzzle.ColourPairs)
     {
-      DrawColourPair(canvas, colourPair);
+      DrawDot(canvas, colourPair.Label, colourPair.Start);
+      DrawDot(canvas, colourPair.Label, colourPair.End);
     }
   }
 
-  private void DrawColourPair(ICanvas canvas, ColourPair colourPair)
+  private void DrawDot(ICanvas canvas, string label, Coords coords)
   {
-    var colour = GetColorForColorPair(colourPair);
-
-    DrawDot(canvas, colour, colourPair.Start);
-    DrawDot(canvas, colour, colourPair.End);
-  }
-
-  private void DrawDot(ICanvas canvas, Color colour, Coords coords)
-  {
-    var width = _squareWidth * 0.75f;
-    var height = _squareHeight * 0.75f;
+    var colour = GetDotColor(label);
+    var width = _squareWidth * 0.7f;
+    var height = _squareHeight * 0.7f;
     var squareCentre = CalculateSquareCentre(coords);
     var x = squareCentre.X - width / 2;
     var y = squareCentre.Y - height / 2;
@@ -141,13 +136,44 @@ public class FlowFreeDrawable : IDrawable
     canvas.FillEllipse(x, y, width, height);
   }
 
+  private void DrawColourPairLabels(ICanvas canvas)
+  {
+    foreach (var colourPair in _puzzle.ColourPairs)
+    {
+      DrawLabel(canvas, colourPair.Label, colourPair.Start);
+      DrawLabel(canvas, colourPair.Label, colourPair.End);
+    }
+  }
+
+  private void DrawLabel(ICanvas canvas, string label, Coords coords)
+  {
+    var colour = GetLabelColor(label);
+    var width = _squareWidth * 0.7f;
+    var height = _squareHeight * 0.7f;
+    var squareCentre = CalculateSquareCentre(coords);
+    var x = squareCentre.X - width / 2;
+    var y = squareCentre.Y - height / 2;
+
+    canvas.FontColor = colour;
+    canvas.FontSize = _squareWidth * 0.5f;
+    canvas.DrawString(
+      label,
+      x,
+      y,
+      width,
+      height,
+      HorizontalAlignment.Center,
+      VerticalAlignment.Center
+    );
+  }
+
   private void DrawPipes(ICanvas canvas)
   {
     var solutionInternalRows = _whatToDraw.SolutionInternalRows.Cast<FlowFreeInternalRow>();
 
     foreach (var internalRow in solutionInternalRows)
     {
-      var colour = GetColorForColorPair(internalRow.ColourPair);
+      var colour = GetDotColor(internalRow.ColourPair.Label);
       var pipe = internalRow.Pipe;
       DrawPipe(canvas, colour, pipe);
     }
@@ -171,9 +197,14 @@ public class FlowFreeDrawable : IDrawable
     canvas.DrawPath(path);
   }
 
-  private Color GetColorForColorPair(ColourPair colourPair)
+  private Color GetDotColor(string label)
   {
-    return DotColours.GetValueOrDefault(colourPair.Label) ?? Colors.White;
+    return DotColours.GetValueOrDefault(label) ?? Colors.White;
+  }
+
+  private Color GetLabelColor(string label)
+  {
+    return LabelColours.GetValueOrDefault(label) ?? Colors.White;
   }
 
   private float CalculateX(int col) => col * _squareWidth + _gridLineHalfThickness;

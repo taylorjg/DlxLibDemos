@@ -18,6 +18,36 @@ public static class Puzzles
       "-B-EAC",
       "---C--"
     }),
+    ParsePuzzle("Puzzle 1 (7x7)", new[] {
+      "-------",
+      "CD---FB",
+      "EC----A",
+      "--D----",
+      "-----F-",
+      "---E-B-",
+      "A------"
+    }),
+    ParsePuzzle("Puzzle 1 (8x8)", new[] {
+      "F--FD---",
+      "--AIG-G-",
+      "--C-----",
+      "--B-EH--",
+      "----I---",
+      "---A----",
+      "-C-B--ED",
+      "-------H"
+    }),
+    ParsePuzzle("Puzzle 1 (9x9)", new[] {
+      "C--------",
+      "---------",
+      "---A-----",
+      "--H--E---",
+      "-----F---",
+      "C-EF-G---",
+      "B--D-----",
+      "-G---B-H-",
+      "-------AD"
+    }),
     // Jumbo Pack 10x10 - hard
     ParsePuzzle("Puzzle 1 (10x10)", new[] {
       "A----C---C",
