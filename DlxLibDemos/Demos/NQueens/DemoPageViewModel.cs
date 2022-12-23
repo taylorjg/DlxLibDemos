@@ -13,7 +13,7 @@ public partial class NQueensDemoPageViewModel : DemoPageBaseViewModel
   public NQueensDemoPageViewModel(
     ILogger<NQueensDemoPageViewModel> logger,
     NQueensDemo demo,
-      DemoPageBaseViewModel.Dependencies baseDependencies
+    DemoPageBaseViewModel.Dependencies baseDependencies
   )
     : base(baseDependencies)
   {

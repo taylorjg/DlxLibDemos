@@ -10,4 +10,5 @@ public static class DemoNames
   public const string AztecDiamond = "Aztec Diamond";
   public const string RippleEffect = "Ripple Effect";
   public const string FlowFree = "Flow Free";
+  public const string SelfVisualisation = "Self Visualisation";
 }

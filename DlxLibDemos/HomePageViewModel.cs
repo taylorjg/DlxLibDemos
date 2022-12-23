@@ -11,6 +11,7 @@ using DlxLibDemos.Demos.TetraSticks;
 using DlxLibDemos.Demos.AztecDiamond;
 using DlxLibDemos.Demos.RippleEffect;
 using DlxLibDemos.Demos.FlowFree;
+using DlxLibDemos.Demos.SelfVisualisation;
 
 namespace DlxLibDemos;
 
@@ -83,6 +84,11 @@ public partial class HomePageViewModel : ObservableObject
           DemoNames.FlowFree,
           "FlowFreeDemoPage",
           _serviceProvider.GetService<FlowFreeThumbnailDrawable>()
+        ),
+        new AvailableDemo(
+          DemoNames.SelfVisualisation,
+          "SelfVisualisationDemoPage",
+          _serviceProvider.GetService<SelfVisualisationThumbnailDrawable>()
         )
       };
     }

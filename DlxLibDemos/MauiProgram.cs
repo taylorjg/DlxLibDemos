@@ -8,6 +8,7 @@ using DlxLibDemos.Demos.TetraSticks;
 using DlxLibDemos.Demos.AztecDiamond;
 using DlxLibDemos.Demos.RippleEffect;
 using DlxLibDemos.Demos.FlowFree;
+using DlxLibDemos.Demos.SelfVisualisation;
 
 namespace DlxLibDemos;
 
@@ -65,6 +66,9 @@ public static class MauiProgram
     builder.Services.AddTransient<FlowFreeDemoPageView>();
     builder.Services.AddTransient<FlowFreeDemoPageViewModel>();
 
+    builder.Services.AddTransient<SelfVisualisationDemoPageView>();
+    builder.Services.AddTransient<SelfVisualisationDemoPageViewModel>();
+
     builder.Services.AddTransient<SudokuThumbnailDrawable>();
     builder.Services.AddTransient<PentominoesThumbnailDrawable>();
     builder.Services.AddTransient<NQueensThumbnailDrawable>();
@@ -73,6 +77,7 @@ public static class MauiProgram
     builder.Services.AddTransient<AztecDiamondThumbnailDrawable>();
     builder.Services.AddTransient<RippleEffectThumbnailDrawable>();
     builder.Services.AddTransient<FlowFreeThumbnailDrawable>();
+    builder.Services.AddTransient<SelfVisualisationThumbnailDrawable>();
 
     builder.Services.AddTransient<SudokuDemo>();
     builder.Services.AddTransient<PentominoesDemo>();
@@ -82,6 +87,7 @@ public static class MauiProgram
     builder.Services.AddTransient<AztecDiamondDemo>();
     builder.Services.AddTransient<RippleEffectDemo>();
     builder.Services.AddTransient<FlowFreeDemo>();
+    builder.Services.AddTransient<SelfVisualisationDemo>();
 
     Routing.RegisterRoute("SudokuDemoPage", typeof(SudokuDemoPageView));
     Routing.RegisterRoute("PentominoesDemoPage", typeof(PentominoesDemoPageView));
@@ -91,6 +97,7 @@ public static class MauiProgram
     Routing.RegisterRoute("AztecDiamondDemoPage", typeof(AztecDiamondDemoPageView));
     Routing.RegisterRoute("RippleEffectDemoPage", typeof(RippleEffectDemoPageView));
     Routing.RegisterRoute("FlowFreeDemoPage", typeof(FlowFreeDemoPageView));
+    Routing.RegisterRoute("SelfVisualisationDemoPage", typeof(SelfVisualisationDemoPageView));
 
     return builder.Build();
   }
