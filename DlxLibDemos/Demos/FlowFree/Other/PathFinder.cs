@@ -1,7 +1,5 @@
 namespace DlxLibDemos.Demos.FlowFree;
 
-// https://en.wikipedia.org/wiki/A*_search_algorithm
-
 public class PathFinder
 {
   private Puzzle _puzzle;
@@ -11,58 +9,58 @@ public class PathFinder
     _puzzle = puzzle;
   }
 
-  public Coords[] FindPath(ColourPair colourPair, Coords[] additionalObstacles = null)
+  public List<Coords[]> FindPaths(ColourPair colourPair, int maxDirectionChanges = 7)
   {
     var start = colourPair.Start;
     var goal = colourPair.End;
-    var openSet = new HashSet<Coords> { start };
-    var cameFrom = new Dictionary<Coords, Coords>();
-    var gScore = new Dictionary<Coords, int> { { start, 0 } };
-    var fScore = new Dictionary<Coords, int> { { start, Heuristic(start, goal) } };
 
-    while (openSet.Any())
+    var currentPath = new Stack<Coords>();
+    currentPath.Push(start);
+
+    var paths = new List<Coords[]>();
+
+    FindPathsInternal(currentPath, paths, start, goal, maxDirectionChanges);
+
+    return paths;
+  }
+
+  private void FindPathsInternal(
+    Stack<Coords> currentPath,
+    List<Coords[]> paths,
+    Coords node,
+    Coords goal,
+    int maxDirectionChanges
+  )
+  {
+    foreach (var nextNode in Neighbours(node, goal))
     {
-      var current = NodeWithLowestScore(openSet, fScore);
-
-      if (current == goal)
+      if (nextNode == goal)
       {
-        return ReconstructPath(cameFrom, current);
+        var list = new List<Coords> { nextNode };
+        list.AddRange(currentPath);
+        if (CountDirectionChanges(list) <= maxDirectionChanges) {
+          paths.Add(list.ToArray());
+        }
       }
-
-      openSet.Remove(current);
-
-      foreach (var n in Neighbours(current, goal, additionalObstacles ?? new Coords[0]))
+      else
       {
-        var tentativeScore = gScore[current] + 1;
-        var nScore = gScore.GetValueOrDefault(n, int.MaxValue);
-        if (tentativeScore < nScore)
+        if (!currentPath.Contains(nextNode))
         {
-          cameFrom[n] = current;
-          gScore[n] = tentativeScore;
-          fScore[n] = tentativeScore + Heuristic(n, goal);
-          if (!openSet.Contains(n))
-          {
-            openSet.Add(n);
-          }
+          currentPath.Push(nextNode);
+          FindPathsInternal(currentPath, paths, nextNode, goal, maxDirectionChanges);
+          currentPath.Pop();
         }
       }
     }
-
-    return null;
   }
 
-  private static Coords NodeWithLowestScore(HashSet<Coords> openSet, Dictionary<Coords, int> fScore)
-  {
-    return openSet.MinBy(n => fScore[n]);
-  }
-
-  private Coords[] Neighbours(Coords current, Coords goal, Coords[] additionalObstacles)
+  private Coords[] Neighbours(Coords node, Coords goal)
   {
     var ns = new[] {
-      current.Up(),
-      current.Down(),
-      current.Left(),
-      current.Right()
+      node.Up(),
+      node.Down(),
+      node.Left(),
+      node.Right()
     };
 
     var isWithinPuzzle = (Coords n) => (
@@ -70,38 +68,28 @@ public class PathFinder
       n.Col >= 0 && n.Col < _puzzle.Size
     );
 
-    var isNotAdditionalObstacle = (Coords n) =>
-      !additionalObstacles.Contains(n);
-
     var isEmptyLocationOrGoal = (Coords n) =>
       _puzzle.EmptyLocations.Contains(n) || n == goal;
 
     return ns
       .Where(isWithinPuzzle)
-      .Where(isNotAdditionalObstacle)
       .Where(isEmptyLocationOrGoal)
       .ToArray();
   }
 
-  private int Heuristic(Coords a, Coords b)
+  private int CountDirectionChanges(List<Coords> path)
   {
-    var rowDiff = Math.Abs(a.Row - b.Row);
-    var colDiff = Math.Abs(a.Col - b.Col);
-    return rowDiff + colDiff;
-  }
-
-  private static Coords[] ReconstructPath(Dictionary<Coords, Coords> cameFrom, Coords current)
-  {
-    var totalPath = new List<Coords> { current };
-
-    for (; ; )
+    if (path.Count < 3) return 0;
+    var count = 0;
+    var indices = Enumerable.Range(0, path.Count).ToArray();
+    foreach (var index in indices[1..^1])
     {
-      if (!cameFrom.TryGetValue(current, out current)) break;
-      totalPath.Add(current);
+      var p1 = path[index - 1];
+      var p3 = path[index + 1];
+      var rowDiff = Math.Abs(p3.Row - p1.Row);
+      var colDiff = Math.Abs(p3.Col - p1.Col);
+      if (rowDiff != 0 && colDiff != 0) count++;
     }
-
-    totalPath.Reverse();
-
-    return totalPath.ToArray();
+    return count;
   }
 }
