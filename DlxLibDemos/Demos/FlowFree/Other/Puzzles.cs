@@ -110,7 +110,7 @@ public static class Puzzles
       "-B-E-----C",
       "-H-------A"
     }),
-    ParsePuzzle("Puzzle 2 (10x10)", new[] {x
+    ParsePuzzle("Puzzle 2 (10x10)", new[] {
       "----------",
       "-H--------",
       "------EA--",
