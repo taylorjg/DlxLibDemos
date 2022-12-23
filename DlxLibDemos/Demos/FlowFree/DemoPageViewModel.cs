@@ -9,6 +9,7 @@ public partial class FlowFreeDemoPageViewModel : DemoPageBaseViewModel
 {
   private ILogger<FlowFreeDemoPageViewModel> _logger;
   private Puzzle _selectedPuzzle;
+  private bool _showLabels;
 
   public FlowFreeDemoPageViewModel(
     ILogger<FlowFreeDemoPageViewModel> logger,
@@ -21,6 +22,7 @@ public partial class FlowFreeDemoPageViewModel : DemoPageBaseViewModel
     _logger.LogInformation("constructor");
     Demo = demo;
     SelectedPuzzle = FlowFree.Puzzles.ThePuzzles.First();
+    ShowLabels = true;
   }
 
   public Puzzle[] Puzzles { get => FlowFree.Puzzles.ThePuzzles; }
@@ -36,6 +38,17 @@ public partial class FlowFreeDemoPageViewModel : DemoPageBaseViewModel
         SetProperty(ref _selectedPuzzle, value);
         DemoSettings = _selectedPuzzle;
       }
+    }
+  }
+
+  public bool ShowLabels
+  {
+    get => _showLabels;
+    set
+    {
+      _logger.LogInformation($"ShowLabels setter value: {value}");
+      SetProperty(ref _showLabels, value);
+      DemoOptionalSettings = _showLabels;
     }
   }
 }

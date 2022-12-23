@@ -138,6 +138,9 @@ public class FlowFreeDrawable : IDrawable
 
   private void DrawColourPairLabels(ICanvas canvas)
   {
+    var showLabels = (bool)_whatToDraw.DemoOptionalSettings;
+    if (!showLabels) return;
+
     foreach (var colourPair in _puzzle.ColourPairs)
     {
       DrawLabel(canvas, colourPair.Label, colourPair.Start);

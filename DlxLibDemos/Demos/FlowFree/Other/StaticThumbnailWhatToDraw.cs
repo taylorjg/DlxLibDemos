@@ -11,6 +11,7 @@ public class FlowFreeStaticThumbnailWhatToDraw : IWhatToDraw
     var puzzle = Puzzles.ThePuzzles[0];
 
     DemoSettings = puzzle;
+    DemoOptionalSettings = false;
 
     SolutionInternalRows = new[]
     {

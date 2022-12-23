@@ -15,6 +15,14 @@
       ItemsSource="{Binding Puzzles}"
       ItemDisplayBinding="{Binding Name}"
       SelectedItem="{Binding SelectedPuzzle}" />
+
+    <Label
+      Margin="10,0,0,0"
+      Text="Show Labels:"
+      VerticalOptions="Center" />
+    <Switch
+      IsToggled="{Binding ShowLabels}"
+      VerticalOptions="Center" />
   </HorizontalStackLayout>
 
 </local:DemoPageBaseView>
