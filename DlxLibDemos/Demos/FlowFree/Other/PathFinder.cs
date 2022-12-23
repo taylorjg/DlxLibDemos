@@ -9,7 +9,7 @@ public class PathFinder
     _puzzle = puzzle;
   }
 
-  public List<Coords[]> FindPaths(ColourPair colourPair, int maxDirectionChanges = 7)
+  public List<Coords[]> FindPaths(ColourPair colourPair)
   {
     var start = colourPair.Start;
     var goal = colourPair.End;
@@ -19,11 +19,14 @@ public class PathFinder
 
     var paths = new List<Coords[]>();
 
+    var maxDirectionChanges = _puzzle.ColourPairs.Length - 1;
+
     FindPathsInternal(currentPath, paths, start, goal, maxDirectionChanges);
 
     return paths;
   }
 
+  // Inspired by this: https://stackoverflow.com/a/22464491
   private void FindPathsInternal(
     Stack<Coords> currentPath,
     List<Coords[]> paths,
@@ -38,7 +41,8 @@ public class PathFinder
       {
         var list = new List<Coords> { nextNode };
         list.AddRange(currentPath);
-        if (CountDirectionChanges(list) <= maxDirectionChanges) {
+        if (CountDirectionChanges(list) <= maxDirectionChanges)
+        {
           paths.Add(list.ToArray());
         }
       }
@@ -47,7 +51,11 @@ public class PathFinder
         if (!currentPath.Contains(nextNode))
         {
           currentPath.Push(nextNode);
-          FindPathsInternal(currentPath, paths, nextNode, goal, maxDirectionChanges);
+          var numDirectionChanges = CountDirectionChanges(currentPath.ToList());
+          if (numDirectionChanges <= maxDirectionChanges)
+          {
+            FindPathsInternal(currentPath, paths, nextNode, goal, maxDirectionChanges);
+          }
           currentPath.Pop();
         }
       }
@@ -69,7 +77,7 @@ public class PathFinder
     );
 
     var isEmptyLocationOrGoal = (Coords n) =>
-      _puzzle.EmptyLocations.Contains(n) || n == goal;
+      !_puzzle.Dots.Contains(n) || n == goal;
 
     return ns
       .Where(isWithinPuzzle)

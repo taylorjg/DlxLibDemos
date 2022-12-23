@@ -23,15 +23,13 @@ public class FlowFreeDemo : IDemo
     var pathFinder = new PathFinder(puzzle);
     var internalRows = new List<FlowFreeInternalRow>();
 
-    var makePathString = (Coords[] path) => string.Join(" ", path.Select(coords => $"{coords.Row},{coords.Col}"));
-
     foreach (var colourPair in puzzle.ColourPairs)
     {
-      _logger.LogInformation($"Paths for colour pair {colourPair.Label}:");
+      _logger.LogInformation($"Finding paths for colour pair {colourPair.Label}...");
       var paths = pathFinder.FindPaths(colourPair);
+      _logger.LogInformation($"Number of paths found for colour pair {colourPair.Label}: {paths.Count}");
       foreach (var path in paths)
       {
-        _logger.LogInformation($"  {makePathString(path)}");
         var internalRow = new FlowFreeInternalRow(puzzle, colourPair, path);
         internalRows.Add(internalRow);
       }
