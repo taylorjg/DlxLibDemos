@@ -19,7 +19,7 @@ public class PathFinder
 
     var paths = new List<Coords[]>();
 
-    var maxDirectionChanges = _puzzle.ColourPairs.Length - 1;
+    var maxDirectionChanges = _puzzle.ColourPairs.Length;
 
     FindPathsInternal(currentPath, paths, start, goal, maxDirectionChanges);
 

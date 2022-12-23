@@ -10,6 +10,14 @@ public static class Puzzles
       "-AE-B",
       "-CB--"
     }),
+    ParsePuzzle("Puzzle 2 (5x5)", new[] {
+      "---AB",
+      "--CB-",
+      "A----",
+      "EC-DE",
+      "----D"
+    }),
+
     ParsePuzzle("Puzzle 1 (6x6)", new[] {
       "-----E",
       "------",
@@ -18,6 +26,15 @@ public static class Puzzles
       "-B-EAC",
       "---C--"
     }),
+    ParsePuzzle("Puzzle 2 (6x6)", new[] {
+      "---C-D",
+      "---B-C",
+      "--AD--",
+      "------",
+      "---BA-",
+      "------"
+    }),
+
     ParsePuzzle("Puzzle 1 (7x7)", new[] {
       "-------",
       "CD---FB",
@@ -27,6 +44,16 @@ public static class Puzzles
       "---E-B-",
       "A------"
     }),
+    ParsePuzzle("Puzzle 2 (7x7)", new[] {
+      "F-----A",
+      "E-EFA-C",
+      "------B",
+      "-------",
+      "-B-----",
+      "-D---C-",
+      "----D--"
+    }),
+
     ParsePuzzle("Puzzle 1 (8x8)", new[] {
       "F--FD---",
       "--AIG-G-",
@@ -37,6 +64,17 @@ public static class Puzzles
       "-C-B--ED",
       "-------H"
     }),
+    ParsePuzzle("Puzzle 2 (8x8)", new[] {
+      "-C-----D",
+      "-H----E-",
+      "----F-B-",
+      "---B--D-",
+      "---CA---",
+      "-HE---A-",
+      "----F---",
+      "G------G"
+    }),
+
     ParsePuzzle("Puzzle 1 (9x9)", new[] {
       "C--------",
       "---------",
@@ -48,18 +86,41 @@ public static class Puzzles
       "-G---B-H-",
       "-------AD"
     }),
-    // Jumbo Pack 10x10 - hard
+    ParsePuzzle("Puzzle 2 (9x9)", new[] {
+      "------A-A",
+      "-------GB",
+      "--B------",
+      "------D--",
+      "-F-------",
+      "---------",
+      "--------G",
+      "EDFC----C",
+      "--------E"
+    }),
+
     ParsePuzzle("Puzzle 1 (10x10)", new[] {
-      "A----C---C",
-      "---J------",
-      "--JB------",
-      "-FEH--E---",
-      "-L----H-B-",
-      "--------K-",
-      "--A--G---F",
-      "DK--------",
-      "-I----L-G-",
-      "-D--I-----"
+      "----------",
+      "----------",
+      "-------D--",
+      "-FD-----F-",
+      "-E---BI-C-",
+      "-----G----",
+      "--AIG-----",
+      "---------H",
+      "-B-E-----C",
+      "-H-------A"
+    }),
+    ParsePuzzle("Puzzle 2 (10x10)", new[] {x
+      "----------",
+      "-H--------",
+      "------EA--",
+      "C--BJ-----",
+      "----------",
+      "FB--F-----",
+      "--I--J-AH-",
+      "----------",
+      "-GD-D--GE-",
+      "-------IC-"
     })
   };
 
