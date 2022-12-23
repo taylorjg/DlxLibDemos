@@ -48,7 +48,7 @@ Here are links to the existing WPF demo apps:
   * ~~TetraSticks~~
   * ~~Aztec Diamond~~ (new - no old WPF counterpart)
   * ~~Ripple Effect~~
-  * Flow Free
+  * ~~Flow Free~~
   * Self Visualisation (new - no old WPF counterpart - but I do have a web version [here](https://github.com/taylorjg/dlxlib-self-visualisation))
 * ~~Display version information~~
 * ~~Do the solving on a background thread~~
