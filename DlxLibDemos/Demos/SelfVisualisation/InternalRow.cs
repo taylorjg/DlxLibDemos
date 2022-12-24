@@ -1,3 +1,3 @@
 namespace DlxLibDemos.Demos.SelfVisualisation;
 
-public record SelfVisualisationInternalRow();
+public record SelfVisualisationInternalRow(int[] MatrixRow);

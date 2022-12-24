@@ -21,7 +21,7 @@ public partial class FlowFreeDemoPageViewModel : DemoPageBaseViewModel
     _logger = logger;
     _logger.LogInformation("constructor");
     Demo = demo;
-    SelectedPuzzle = FlowFree.Puzzles.ThePuzzles.First();
+    SelectedPuzzle = Puzzles.First();
     ShowLabels = true;
   }
 

@@ -20,7 +20,7 @@ public partial class SudokuDemoPageViewModel : DemoPageBaseViewModel
     _logger = logger;
     _logger.LogInformation("constructor");
     Demo = demo;
-    SelectedPuzzle = Sudoku.Puzzles.ThePuzzles.First();
+    SelectedPuzzle = Puzzles.First();
   }
 
   public Puzzle[] Puzzles { get => Sudoku.Puzzles.ThePuzzles; }

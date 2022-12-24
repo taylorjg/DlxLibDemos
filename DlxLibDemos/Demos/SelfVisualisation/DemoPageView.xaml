@@ -5,4 +5,16 @@
                         x:Class="DlxLibDemos.Demos.SelfVisualisation.SelfVisualisationDemoPageView"
                         Title="{x:Static local:DemoNames.SelfVisualisation}">
 
+  <HorizontalStackLayout Spacing="10">
+    <Label
+      Text="Sample Matrix:"
+      VerticalOptions="Center" />
+    <Picker
+      WidthRequest="300"
+      Title="Select a sample matrix"
+      ItemsSource="{Binding SampleMatrices}"
+      ItemDisplayBinding="{Binding Name}"
+      SelectedItem="{Binding SelectedSampleMatrix}" />
+  </HorizontalStackLayout>
+
 </local:DemoPageBaseView>

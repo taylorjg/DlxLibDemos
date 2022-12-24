@@ -19,12 +19,25 @@ public class SelfVisualisationDemo : IDemo
 
   public object[] BuildInternalRows(object demoSettings)
   {
-    return new SelfVisualisationInternalRow[0];
+    var sampleMatrix = (SampleMatrix)demoSettings;
+    var matrix = sampleMatrix.Matrix;
+    var rowCount = matrix.GetLength(0);
+    var colCount = matrix.GetLength(1);
+
+    var makeMatrixRow = (int rowIndex) =>
+      Enumerable.Range(0, colCount)
+        .Select(colIndex => matrix[rowIndex, colIndex])
+        .ToArray();
+
+    return Enumerable.Range(0, rowCount)
+      .Select(rowIndex => new SelfVisualisationInternalRow(makeMatrixRow(rowIndex)))
+      .ToArray();
   }
 
   public int[] InternalRowToMatrixRow(object internalRow)
   {
-    return new int[0];
+    var selfVisualisationInternalRow = (SelfVisualisationInternalRow)internalRow;
+    return selfVisualisationInternalRow.MatrixRow;
   }
 
   public int? GetNumPrimaryColumns(object demoSettings)

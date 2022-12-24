@@ -20,7 +20,7 @@ public partial class RippleEffectDemoPageViewModel : DemoPageBaseViewModel
     _logger = logger;
     _logger.LogInformation("constructor");
     Demo = demo;
-    SelectedPuzzle = RippleEffect.Puzzles.ThePuzzles.First();
+    SelectedPuzzle = Puzzles.First();
   }
 
   public Puzzle[] Puzzles { get => RippleEffect.Puzzles.ThePuzzles; }
