@@ -1,6 +1,6 @@
 namespace DlxLibDemos;
 
-public interface IBackgroundSolver
+public interface ISolver
 {
   void Solve(
     bool enableSearchSteps,

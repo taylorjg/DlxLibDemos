@@ -11,7 +11,7 @@ namespace DlxLibDemos;
 public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
 {
   private ILogger<DemoPageBaseViewModel> _logger;
-  private IBackgroundSolver _backgroundSolver;
+  private ISolver _solver;
   private IDemo _demo;
   private object _demoSettings;
   private object _demoOptionalSettings;
@@ -30,7 +30,7 @@ public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
   {
     _logger = dependencies.Logger;
     _logger.LogInformation("constructor");
-    _backgroundSolver = dependencies.BackgroundSolver;
+    _solver = dependencies.Solver;
     var dispatcherProvider = dependencies.DispatcherProvider;
     var dispatcher = dispatcherProvider.GetForCurrentThread();
     _dispatcherTimer = dispatcher.CreateTimer();
@@ -44,17 +44,17 @@ public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
   public sealed class Dependencies
   {
     internal ILogger<DemoPageBaseViewModel> Logger { get; private set; }
-    internal IBackgroundSolver BackgroundSolver { get; private set; }
+    internal ISolver Solver { get; private set; }
     internal IDispatcherProvider DispatcherProvider { get; private set; }
 
     public Dependencies(
       ILogger<DemoPageBaseViewModel> logger,
-      IBackgroundSolver backgroundSolver,
+      ISolver solver,
       IDispatcherProvider dispatcherProvider
     )
     {
       Logger = logger;
-      BackgroundSolver = backgroundSolver;
+      Solver = solver;
       DispatcherProvider = dispatcherProvider;
     }
   }
@@ -205,7 +205,7 @@ public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
   {
     _cancellationTokenSource = new CancellationTokenSource();
 
-    _backgroundSolver.Solve(
+    _solver.Solve(
       AnimationEnabled,
       _messages.Enqueue,
       _cancellationTokenSource.Token,

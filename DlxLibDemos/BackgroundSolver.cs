@@ -3,7 +3,7 @@ using DlxLib;
 
 namespace DlxLibDemos;
 
-public class BackgroundSolver : IBackgroundSolver
+public class BackgroundSolver : ISolver
 {
   private ILogger<BackgroundSolver> _logger;
 
