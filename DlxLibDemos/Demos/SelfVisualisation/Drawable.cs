@@ -6,8 +6,6 @@ public class SelfVisualisationDrawable : IDrawable
   private float _width;
   private float _height;
 
-  private int N;
-
   public SelfVisualisationDrawable(IWhatToDraw whatToDraw)
   {
     _whatToDraw = whatToDraw;
