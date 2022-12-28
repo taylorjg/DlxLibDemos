@@ -56,7 +56,7 @@ public class BackgroundSolver : ISolver
       var dlx = new DlxLib.Dlx(cancellationToken);
 
       var searchStepCount = 0;
-      var solutionCount = 0;
+      var incrementalSolutionCount = 0;
 
       dlx.SearchStep += (_, e) =>
       {
@@ -75,10 +75,10 @@ public class BackgroundSolver : ISolver
 
       dlx.SolutionFound += (_, e) =>
       {
-        solutionCount++;
-        _logger.LogInformation($"[SolutionFound] solutionCount: {solutionCount}");
+        incrementalSolutionCount++;
+        _logger.LogInformation($"[SolutionFound] solutionCount: {incrementalSolutionCount}");
         var solutionInternalRows = findSolutionInternalRows(e.Solution.RowIndexes);
-        var message = new SolutionFoundMessage(solutionInternalRows, searchStepCount, solutionCount);
+        var message = new SolutionFoundMessage(solutionInternalRows, searchStepCount, incrementalSolutionCount);
         MainThread.BeginInvokeOnMainThread(() => onMessage(message));
       };
 
@@ -86,15 +86,14 @@ public class BackgroundSolver : ISolver
        ? dlx.Solve(matrix, row => row, col => col, maybeNumPrimaryColumns.Value)
        : dlx.Solve(matrix, row => row, col => col);
 
-      var solution = solutions.FirstOrDefault();
+      var finalSolutionCount = solutions.Count();
 
-      _logger.LogInformation($"Final searchStepCount: {searchStepCount}");
+      _logger.LogInformation($"searchStepCount: {searchStepCount}");
+      _logger.LogInformation($"incrementalSolutionCount: {incrementalSolutionCount}");
+      _logger.LogInformation($"finalSolutionCount: {finalSolutionCount}");
 
-      if (solution == null)
-      {
-        var message = new NoSolutionFoundMessage(searchStepCount);
-        MainThread.BeginInvokeOnMainThread(() => onMessage(message));
-      }
+      var message = new FinishedMessage(searchStepCount, finalSolutionCount);
+      MainThread.BeginInvokeOnMainThread(() => onMessage(message));
     }
     catch (Exception ex)
     {

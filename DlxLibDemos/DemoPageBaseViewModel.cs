@@ -17,14 +17,17 @@ public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
   private object _demoOptionalSettings;
   private IDrawable _drawable;
   private object[] _solutionInternalRows;
+  private bool _isSoluton;
   private bool _solutionAvailable;
   private IDispatcherTimer _dispatcherTimer;
   private bool _animationEnabled;
   private int _animationInterval;
   private ConcurrentQueue<BaseMessage> _messages = new ConcurrentQueue<BaseMessage>();
   private bool _isSolving;
+  private bool _isTimerPaused;
   private CancellationTokenSource _cancellationTokenSource;
   private int _searchStepCount;
+  private int _solutionCount;
 
   public DemoPageBaseViewModel(Dependencies dependencies)
   {
@@ -160,10 +163,27 @@ public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
     }
   }
 
+  public bool IsTimerPaused
+  {
+    get => _isTimerPaused;
+    set
+    {
+      _logger.LogInformation($"IsTimerPaused setter value: {value}");
+      SetProperty(ref _isTimerPaused, value);
+      UpdateButtonCommands();
+    }
+  }
+
   public int SearchStepCount
   {
     get => _searchStepCount;
     set => SetProperty(ref _searchStepCount, value);
+  }
+
+  public int SolutionCount
+  {
+    get => _solutionCount;
+    set => SetProperty(ref _solutionCount, value);
   }
 
   private void UpdateButtonCommands()
@@ -171,6 +191,7 @@ public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
     SolveCommand.NotifyCanExecuteChanged();
     CancelCommand.NotifyCanExecuteChanged();
     ResetCommand.NotifyCanExecuteChanged();
+    NextSolutionCommand.NotifyCanExecuteChanged();
   }
 
   private void OnTick()
@@ -185,18 +206,28 @@ public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
   {
     SolutionInternalRows = message.SolutionInternalRows;
     SearchStepCount = message.SearchStepCount;
+    _isSoluton = false;
   }
 
   private void OnMessage(SolutionFoundMessage message)
   {
     SolutionInternalRows = message.SolutionInternalRows;
     SearchStepCount = message.SearchStepCount;
-    StopTimer();
+    SolutionCount = message.SolutionCount;
+    _isSoluton = true;
+    PauseTimer();
   }
 
-  private void OnMessage(NoSolutionFoundMessage message)
+  private void OnMessage(FinishedMessage message)
   {
-    SolutionInternalRows = new object[0];
+    SearchStepCount = message.SearchStepCount;
+    SolutionCount = message.SolutionCount;
+
+    if (!_isSoluton)
+    {
+      SolutionInternalRows = new object[0];
+    }
+
     StopTimer();
   }
 
@@ -225,7 +256,9 @@ public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
   private void Reset()
   {
     SolutionInternalRows = new object[0];
+    _isSoluton = false;
     SearchStepCount = 0;
+    SolutionCount = 0;
   }
 
   private bool CanReset()
@@ -245,6 +278,17 @@ public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
     return IsSolving;
   }
 
+  [RelayCommand(CanExecute = nameof(CanNextSolution))]
+  private void NextSolution()
+  {
+    ResumeTimer();
+  }
+
+  private bool CanNextSolution()
+  {
+    return IsTimerPaused;
+  }
+
   private void StartTimer()
   {
     _logger.LogInformation("starting the dispatch timer");
@@ -258,6 +302,20 @@ public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
     _dispatcherTimer.Stop();
     _messages.Clear();
     IsSolving = false;
+  }
+
+  private void PauseTimer()
+  {
+    _logger.LogInformation("pausing the dispatch timer");
+    _dispatcherTimer.Stop();
+    IsTimerPaused = true;
+  }
+
+  private void ResumeTimer()
+  {
+    _logger.LogInformation("resuming the dispatch timer");
+    _dispatcherTimer.Start();
+    IsTimerPaused = false;
   }
 
   private void RaiseNeedRedraw()

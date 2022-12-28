@@ -28,12 +28,14 @@ public class SolutionFoundMessage : BaseMessage
   }
 }
 
-public class NoSolutionFoundMessage : BaseMessage
+public class FinishedMessage : BaseMessage
 {
   public int SearchStepCount { get; private init; }
+  public int SolutionCount { get; private init; }
 
-  public NoSolutionFoundMessage(int searchStepCount)
+  public FinishedMessage(int searchStepCount, int solutionCount)
   {
     SearchStepCount = searchStepCount;
+    SolutionCount = solutionCount;
   }
 }
