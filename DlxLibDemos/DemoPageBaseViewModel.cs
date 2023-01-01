@@ -17,7 +17,7 @@ public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
   private object _demoOptionalSettings;
   private IDrawable _drawable;
   private object[] _solutionInternalRows;
-  private bool _isSoluton;
+  private bool _isSolution;
   private bool _solutionAvailable;
   private IDispatcherTimer _dispatcherTimer;
   private bool _animationEnabled;
@@ -28,6 +28,7 @@ public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
   private CancellationTokenSource _cancellationTokenSource;
   private int _searchStepCount;
   private int _solutionCount;
+  private int _currentSolutionNumber;
 
   public DemoPageBaseViewModel(Dependencies dependencies)
   {
@@ -41,6 +42,9 @@ public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
     SolutionInternalRows = new object[0];
     AnimationEnabled = false;
     AnimationInterval = 10;
+    SearchStepCount = 0;
+    SolutionCount = 0;
+    CurrentSolutionNumber = 0;
   }
 
   // https://stackoverflow.com/questions/52982560/asp-net-core-constructor-injection-with-inheritance
@@ -183,7 +187,31 @@ public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
   public int SolutionCount
   {
     get => _solutionCount;
-    set => SetProperty(ref _solutionCount, value);
+    set
+    {
+      SetProperty(ref _solutionCount, value);
+      OnPropertyChanged(nameof(SolutionSummary));
+    }
+  }
+
+  public int CurrentSolutionNumber
+  {
+    get => _currentSolutionNumber;
+    set
+    {
+      SetProperty(ref _currentSolutionNumber, value);
+      OnPropertyChanged(nameof(SolutionSummary));
+    }
+  }
+
+  public string SolutionSummary
+  {
+    get => (CurrentSolutionNumber, SolutionCount) switch
+    {
+      (0, 0) => string.Empty,
+      (0, _) => $"-/{SolutionCount}",
+      _ => $"{CurrentSolutionNumber}/{SolutionCount}"
+    };
   }
 
   private void UpdateButtonCommands()
@@ -206,24 +234,23 @@ public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
   {
     SolutionInternalRows = message.SolutionInternalRows;
     SearchStepCount = message.SearchStepCount;
-    _isSoluton = false;
+    _isSolution = false;
   }
 
   private void OnMessage(SolutionFoundMessage message)
   {
     SolutionInternalRows = message.SolutionInternalRows;
     SearchStepCount = message.SearchStepCount;
-    SolutionCount = message.SolutionCount;
-    _isSoluton = true;
+    CurrentSolutionNumber = CurrentSolutionNumber + 1;
+    _isSolution = true;
     PauseTimer();
   }
 
   private void OnMessage(FinishedMessage message)
   {
     SearchStepCount = message.SearchStepCount;
-    SolutionCount = message.SolutionCount;
 
-    if (!_isSoluton)
+    if (!_isSolution)
     {
       SolutionInternalRows = new object[0];
     }
@@ -236,9 +263,26 @@ public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
   {
     _cancellationTokenSource = new CancellationTokenSource();
 
+    var onMessage = (BaseMessage message) =>
+    {
+      var solutionFoundMessage = message as SolutionFoundMessage;
+      if (solutionFoundMessage != null)
+      {
+        SolutionCount = solutionFoundMessage.SolutionCount;
+      }
+
+      var finishedMessage = message as FinishedMessage;
+      if (finishedMessage != null)
+      {
+        IsSolving = false;
+      }
+
+      _messages.Enqueue(message);
+    };
+
     _solver.Solve(
       AnimationEnabled,
-      _messages.Enqueue,
+      onMessage,
       _cancellationTokenSource.Token,
       _demo,
       _demoSettings
@@ -255,10 +299,12 @@ public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
   [RelayCommand(CanExecute = nameof(CanReset))]
   private void Reset()
   {
+    StopTimer();
     SolutionInternalRows = new object[0];
-    _isSoluton = false;
+    _isSolution = false;
     SearchStepCount = 0;
     SolutionCount = 0;
+    CurrentSolutionNumber = 0;
   }
 
   private bool CanReset()
@@ -275,7 +321,7 @@ public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
 
   private bool CanCancel()
   {
-    return IsSolving;
+    return IsSolving || _dispatcherTimer.IsRunning;
   }
 
   [RelayCommand(CanExecute = nameof(CanNextSolution))]

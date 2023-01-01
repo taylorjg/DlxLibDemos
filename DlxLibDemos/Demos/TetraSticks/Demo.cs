@@ -75,9 +75,15 @@ public class TetraSticksDemo : IDemo
 
   private IEnumerable<TetraSticksInternalRow> AllPossiblePiecePlacements()
   {
+    var fixedPieces = PiecesWithVariations.ThePiecesWithVariations.Reverse().Take(1).ToArray();
+
     foreach (var pieceWithVariations in _piecesInPlay)
     {
-      foreach (var variation in pieceWithVariations.Variations)
+      var variations = fixedPieces.Contains(pieceWithVariations)
+        ? pieceWithVariations.Variations.Take(1)
+        : pieceWithVariations.Variations;
+
+      foreach (var variation in variations)
       {
         foreach (var location in Locations)
         {

@@ -56,9 +56,15 @@ public class DraughtboardPuzzleDemo : IDemo
 
   private IEnumerable<DraughtboardPuzzleInternalRow> AllPossiblePiecePlacements()
   {
+    var fixedPieces = PiecesWithVariations.ThePiecesWithVariations.Take(1).ToArray();
+
     foreach (var pieceWithVariations in PiecesWithVariations.ThePiecesWithVariations)
     {
-      foreach (var variation in pieceWithVariations.Variations)
+      var variations = fixedPieces.Contains(pieceWithVariations)
+        ? pieceWithVariations.Variations.Take(1)
+        : pieceWithVariations.Variations;
+
+      foreach (var variation in variations)
       {
         foreach (var location in Locations)
         {

@@ -22,7 +22,7 @@ public class AztecDiamondDemo : IDemo
     var internalRows = AllPossiblePiecePlacements().Where(IsValidPiecePlacement).ToArray();
     var solutionInternalRows = new AztecDiamondStaticThumbnailWhatToDraw().SolutionInternalRows;
 
-    var replaceInternalRowsWithSolutionInternalRow = (int index) =>
+    var preSolvePiece = (int index) =>
     {
       var solutionInternalRow = solutionInternalRows[index] as AztecDiamondInternalRow;
       var newInternalRows = internalRows.Where(internalRow =>
@@ -35,9 +35,11 @@ public class AztecDiamondDemo : IDemo
       return newInternalRows.ToArray();
     };
 
-    foreach (var index in Enumerable.Range(0, 5))
+    var preSolvedPieceCount = 5;
+
+    foreach (var index in Enumerable.Range(0, preSolvedPieceCount))
     {
-      internalRows = replaceInternalRowsWithSolutionInternalRow(index);
+      internalRows = preSolvePiece(index);
     }
 
     return internalRows;
