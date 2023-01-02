@@ -17,7 +17,7 @@ public class FlowFreeDemo : IDemo
     return new FlowFreeDrawable(whatToDraw);
   }
 
-  public object[] BuildInternalRows(object demoSettings)
+  public object[] BuildInternalRows(object demoSettings, CancellationToken cancellationToken)
   {
     var puzzle = (Puzzle)demoSettings;
     var pathFinder = new PathFinder(puzzle);
@@ -26,7 +26,7 @@ public class FlowFreeDemo : IDemo
     foreach (var colourPair in puzzle.ColourPairs)
     {
       _logger.LogInformation($"Finding paths for colour pair {colourPair.Label}...");
-      var paths = pathFinder.FindPaths(colourPair);
+      var paths = pathFinder.FindPaths(colourPair, cancellationToken);
       _logger.LogInformation($"Number of paths found for colour pair {colourPair.Label}: {paths.Count}");
       foreach (var path in paths)
       {

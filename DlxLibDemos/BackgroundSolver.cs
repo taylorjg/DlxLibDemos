@@ -41,7 +41,7 @@ public class BackgroundSolver : ISolver
       var (enableSearchSteps, onMessage, cancellationToken, demo, demoSettings) =
         (Tuple<bool, Action<BaseMessage>, CancellationToken, IDemo, object>)state;
 
-      var internalRows = demo.BuildInternalRows(demoSettings);
+      var internalRows = demo.BuildInternalRows(demoSettings, cancellationToken);
       var matrix = internalRows.Select(demo.InternalRowToMatrixRow).ToArray();
       var maybeNumPrimaryColumns = demo.GetNumPrimaryColumns(demoSettings);
 

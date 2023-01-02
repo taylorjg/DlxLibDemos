@@ -17,7 +17,7 @@ public class PentominoesDemo : IDemo
     return new PentominoesDrawable(whatToDraw);
   }
 
-  public object[] BuildInternalRows(object demoSettings)
+  public object[] BuildInternalRows(object demoSettings, CancellationToken cancellationToken)
   {
     return AllPossiblePiecePlacements().Where(IsValidPiecePlacement).ToArray();
   }

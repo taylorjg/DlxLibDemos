@@ -17,7 +17,7 @@ public class AztecDiamondDemo : IDemo
     return new AztecDiamondDrawable(whatToDraw);
   }
 
-  public object[] BuildInternalRows(object demoSettings)
+  public object[] BuildInternalRows(object demoSettings, CancellationToken cancellationToken)
   {
     var internalRows = AllPossiblePiecePlacements().Where(IsValidPiecePlacement).ToArray();
     var solutionInternalRows = new AztecDiamondStaticThumbnailWhatToDraw().SolutionInternalRows;

@@ -17,7 +17,7 @@ public class SudokuDemo : IDemo
     return new SudokuDrawable(whatToDraw);
   }
 
-  public object[] BuildInternalRows(object demoSettings)
+  public object[] BuildInternalRows(object demoSettings, CancellationToken cancellationToken)
   {
     var puzzle = (Puzzle)demoSettings;
     var internalRows = puzzle.InternalRows;

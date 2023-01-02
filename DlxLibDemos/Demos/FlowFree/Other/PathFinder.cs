@@ -9,7 +9,7 @@ public class PathFinder
     _puzzle = puzzle;
   }
 
-  public List<Coords[]> FindPaths(ColourPair colourPair)
+  public List<Coords[]> FindPaths(ColourPair colourPair, CancellationToken cancellationToken)
   {
     var start = colourPair.Start;
     var goal = colourPair.End;
@@ -21,7 +21,7 @@ public class PathFinder
 
     var maxDirectionChanges = _puzzle.ColourPairs.Length;
 
-    FindPathsInternal(currentPath, paths, start, goal, maxDirectionChanges);
+    FindPathsInternal(currentPath, paths, start, goal, maxDirectionChanges, cancellationToken);
 
     return paths;
   }
@@ -32,11 +32,14 @@ public class PathFinder
     List<Coords[]> paths,
     Coords node,
     Coords goal,
-    int maxDirectionChanges
+    int maxDirectionChanges,
+    CancellationToken cancellationToken
   )
   {
     foreach (var nextNode in Neighbours(node, goal))
     {
+      if (cancellationToken.IsCancellationRequested) return;
+
       if (nextNode == goal)
       {
         var list = new List<Coords> { nextNode };
@@ -54,7 +57,7 @@ public class PathFinder
           var numDirectionChanges = CountDirectionChanges(currentPath.ToList());
           if (numDirectionChanges <= maxDirectionChanges)
           {
-            FindPathsInternal(currentPath, paths, nextNode, goal, maxDirectionChanges);
+            FindPathsInternal(currentPath, paths, nextNode, goal, maxDirectionChanges, cancellationToken);
           }
           currentPath.Pop();
         }

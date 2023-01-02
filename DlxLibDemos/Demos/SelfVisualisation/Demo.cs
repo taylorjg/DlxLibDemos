@@ -17,7 +17,7 @@ public class SelfVisualisationDemo : IDemo
     return new SelfVisualisationDrawable(whatToDraw);
   }
 
-  public object[] BuildInternalRows(object demoSettings)
+  public object[] BuildInternalRows(object demoSettings, CancellationToken cancellationToken)
   {
     var sampleMatrix = (SampleMatrix)demoSettings;
     var matrix = sampleMatrix.Matrix;

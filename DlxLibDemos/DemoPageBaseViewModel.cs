@@ -265,6 +265,8 @@ public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
 
     var onMessage = (BaseMessage message) =>
     {
+      if (_cancellationTokenSource.IsCancellationRequested) return;
+
       var solutionFoundMessage = message as SolutionFoundMessage;
       if (solutionFoundMessage != null)
       {

@@ -18,7 +18,7 @@ public class TetraSticksDemo : IDemo
     return new TetraSticksDrawable(whatToDraw);
   }
 
-  public object[] BuildInternalRows(object demoSettings)
+  public object[] BuildInternalRows(object demoSettings, CancellationToken cancellationToken)
   {
     var missingLetter = (string)demoSettings;
     _piecesInPlay = PiecesWithVariations.ThePiecesWithVariations.Where(p => p.Label != missingLetter).ToArray();

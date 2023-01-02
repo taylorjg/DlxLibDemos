@@ -18,7 +18,7 @@ public class NQueensDemo : IDemo
     return new NQueensDrawable(whatToDraw);
   }
 
-  public object[] BuildInternalRows(object demoSettings)
+  public object[] BuildInternalRows(object demoSettings, CancellationToken cancellationToken)
   {
     N = (int)demoSettings;
     var locations =

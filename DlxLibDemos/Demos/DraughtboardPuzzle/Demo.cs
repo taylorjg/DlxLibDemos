@@ -17,7 +17,7 @@ public class DraughtboardPuzzleDemo : IDemo
     return new DraughtboardPuzzleDrawable(whatToDraw);
   }
 
-  public object[] BuildInternalRows(object demoSettings)
+  public object[] BuildInternalRows(object demoSettings, CancellationToken cancellationToken)
   {
     return AllPossiblePiecePlacements().Where(IsValidPiecePlacement).ToArray();
   }

@@ -17,7 +17,7 @@ public class RippleEffectDemo : IDemo
     return new RippleEffectDrawable(whatToDraw);
   }
 
-  public object[] BuildInternalRows(object demoSettings)
+  public object[] BuildInternalRows(object demoSettings, CancellationToken cancellationToken)
   {
     var puzzle = (Puzzle)demoSettings;
     var internalRows = new List<RippleEffectInternalRow>();
