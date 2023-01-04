@@ -61,10 +61,15 @@ public class BackgroundSolver : ISolver
       dlx.SearchStep += (_, e) =>
       {
         searchStepCount++;
+
         if (searchStepCount % 1000 == 0)
         {
           _logger.LogInformation($"[SearchStep] searchStepCount: {searchStepCount}");
+
+          var message = new ProgressMessage(searchStepCount);
+          MainThread.BeginInvokeOnMainThread(() => onMessage(message));
         }
+
         if (enableSearchSteps)
         {
           var solutionInternalRows = findSolutionInternalRows(e.RowIndexes);

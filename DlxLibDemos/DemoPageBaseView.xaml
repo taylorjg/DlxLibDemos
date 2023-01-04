@@ -70,12 +70,12 @@
                         Text="Search steps:" />
                     <Label
                         VerticalOptions="Center"
-                        Text="{TemplateBinding BindingContext.SearchStepCount}" />
+                        Text="{TemplateBinding BindingContext.SearchStepSummary}" />
 
                     <Label
                         VerticalOptions="Center"
                         Margin="10,0,0,0"
-                        Text="Solution:" />
+                        Text="Solutions:" />
                     <Label
                         VerticalOptions="Center"
                         Text="{TemplateBinding BindingContext.SolutionSummary}" />

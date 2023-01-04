@@ -27,6 +27,7 @@ public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
   private bool _isTimerPaused;
   private CancellationTokenSource _cancellationTokenSource;
   private int _searchStepCount;
+  private int _currentSearchStepNumber;
   private int _solutionCount;
   private int _currentSolutionNumber;
 
@@ -43,6 +44,7 @@ public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
     AnimationEnabled = false;
     AnimationInterval = 10;
     SearchStepCount = 0;
+    CurrentSearchStepNumber = 0;
     SolutionCount = 0;
     CurrentSolutionNumber = 0;
   }
@@ -181,7 +183,31 @@ public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
   public int SearchStepCount
   {
     get => _searchStepCount;
-    set => SetProperty(ref _searchStepCount, value);
+    set
+    {
+      SetProperty(ref _searchStepCount, value);
+      OnPropertyChanged(nameof(SearchStepSummary));
+    }
+  }
+
+  public int CurrentSearchStepNumber
+  {
+    get => _currentSearchStepNumber;
+    set
+    {
+      SetProperty(ref _currentSearchStepNumber, value);
+      OnPropertyChanged(nameof(SearchStepSummary));
+    }
+  }
+
+  public string SearchStepSummary
+  {
+    get => (CurrentSearchStepNumber, SearchStepCount) switch
+    {
+      (0, 0) => string.Empty,
+      (0, _) => $"-/{SearchStepCount}",
+      _ => $"{CurrentSearchStepNumber}/{SearchStepCount}"
+    };
   }
 
   public int SolutionCount
@@ -233,14 +259,14 @@ public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
   private void OnMessage(SearchStepMessage message)
   {
     SolutionInternalRows = message.SolutionInternalRows;
-    SearchStepCount = message.SearchStepCount;
+    CurrentSearchStepNumber = message.SearchStepCount;
     _isSolution = false;
   }
 
   private void OnMessage(SolutionFoundMessage message)
   {
     SolutionInternalRows = message.SolutionInternalRows;
-    SearchStepCount = message.SearchStepCount;
+    CurrentSearchStepNumber = message.SearchStepCount;
     CurrentSolutionNumber = CurrentSolutionNumber + 1;
     _isSolution = true;
     PauseTimer();
@@ -267,9 +293,17 @@ public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
     {
       if (_cancellationTokenSource.IsCancellationRequested) return;
 
+      var progressMessage = message as ProgressMessage;
+      if (progressMessage != null)
+      {
+        SearchStepCount = progressMessage.SearchStepCount;
+        return;
+      }
+
       var solutionFoundMessage = message as SolutionFoundMessage;
       if (solutionFoundMessage != null)
       {
+        SearchStepCount = solutionFoundMessage.SearchStepCount;
         SolutionCount = solutionFoundMessage.SolutionCount;
       }
 
@@ -305,6 +339,7 @@ public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
     SolutionInternalRows = new object[0];
     _isSolution = false;
     SearchStepCount = 0;
+    CurrentSearchStepNumber = 0;
     SolutionCount = 0;
     CurrentSolutionNumber = 0;
   }

@@ -14,6 +14,16 @@ public class SearchStepMessage : BaseMessage
   }
 }
 
+public class ProgressMessage : BaseMessage
+{
+  public int SearchStepCount { get; private init; }
+
+  public ProgressMessage(int searchStepCount)
+  {
+    SearchStepCount = searchStepCount;
+  }
+}
+
 public class SolutionFoundMessage : BaseMessage
 {
   public object[] SolutionInternalRows { get; private init; }
