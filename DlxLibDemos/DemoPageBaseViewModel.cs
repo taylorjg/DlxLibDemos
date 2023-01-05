@@ -318,8 +318,10 @@ public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
       _messages.Enqueue(message);
     };
 
+    var options = new SolverOptions(AnimationEnabled, 1000);
+
     _solver.Solve(
-      AnimationEnabled,
+      options,
       onMessage,
       _cancellationTokenSource.Token,
       _demo,

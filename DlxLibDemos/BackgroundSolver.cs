@@ -14,14 +14,14 @@ public class BackgroundSolver : ISolver
   }
 
   public void Solve(
-    bool enableSearchSteps,
+    SolverOptions options,
     Action<BaseMessage> onMessage,
     CancellationToken cancellationToken,
     IDemo demo,
     object demoSettings = null
   )
   {
-    var state = Tuple.Create(enableSearchSteps, onMessage, cancellationToken, demo, demoSettings);
+    var state = Tuple.Create(options, onMessage, cancellationToken, demo, demoSettings);
 
     Task.Factory.StartNew(
       ThreadEntryPoint,
@@ -38,8 +38,8 @@ public class BackgroundSolver : ISolver
     {
       _logger.LogInformation("[ThreadEntryPoint]");
 
-      var (enableSearchSteps, onMessage, cancellationToken, demo, demoSettings) =
-        (Tuple<bool, Action<BaseMessage>, CancellationToken, IDemo, object>)state;
+      var (options, onMessage, cancellationToken, demo, demoSettings) =
+        (Tuple<SolverOptions, Action<BaseMessage>, CancellationToken, IDemo, object>)state;
 
       var internalRows = demo.BuildInternalRows(demoSettings, cancellationToken);
       var matrix = internalRows.Select(demo.InternalRowToMatrixRow).ToArray();
@@ -70,7 +70,7 @@ public class BackgroundSolver : ISolver
           MainThread.BeginInvokeOnMainThread(() => onMessage(message));
         }
 
-        if (enableSearchSteps)
+        if (options.EnableSearchSteps)
         {
           var solutionInternalRows = findSolutionInternalRows(e.RowIndexes);
           var message = new SearchStepMessage(solutionInternalRows, searchStepCount);
