@@ -48,7 +48,7 @@ public class FlowFreeDemo : IDemo
   {
     return null;
   }
-  public int ProgressFrequency { get => 1; }
+  public int ProgressFrequency { get => 1000; }
 
   private static int[] MakePipeColumns(FlowFreeInternalRow internalRow)
   {
