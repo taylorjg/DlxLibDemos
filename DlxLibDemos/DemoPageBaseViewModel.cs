@@ -310,6 +310,8 @@ public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
       var finishedMessage = message as FinishedMessage;
       if (finishedMessage != null)
       {
+        SearchStepCount = finishedMessage.SearchStepCount;
+        SolutionCount = finishedMessage.SolutionCount;
         IsSolving = false;
       }
 
