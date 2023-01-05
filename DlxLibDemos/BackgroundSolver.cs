@@ -62,7 +62,7 @@ public class BackgroundSolver : ISolver
       {
         searchStepCount++;
 
-        if (searchStepCount % 1000 == 0)
+        if (searchStepCount % options.ProgressFrequency == 0)
         {
           _logger.LogInformation($"[SearchStep] searchStepCount: {searchStepCount}");
 

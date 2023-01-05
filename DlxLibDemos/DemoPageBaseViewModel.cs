@@ -98,7 +98,7 @@ public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
       _logger.LogInformation($"DemoSettings setter value: {value}");
       SetProperty(ref _demoSettings, value);
       RaiseNeedRedraw();
-      SolutionInternalRows = new object[0];
+      Reset();
     }
   }
 
@@ -318,7 +318,7 @@ public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
       _messages.Enqueue(message);
     };
 
-    var options = new SolverOptions(AnimationEnabled, 1000);
+    var options = new SolverOptions(AnimationEnabled, _demo.ProgressFrequency);
 
     _solver.Solve(
       options,

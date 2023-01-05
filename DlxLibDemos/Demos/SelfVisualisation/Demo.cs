@@ -44,4 +44,5 @@ public class SelfVisualisationDemo : IDemo
   {
     return null;
   }
+  public int ProgressFrequency { get => 1; }
 }

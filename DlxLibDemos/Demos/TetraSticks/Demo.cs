@@ -45,6 +45,8 @@ public class TetraSticksDemo : IDemo
     return 15 + 30 + 30;
   }
 
+  public int ProgressFrequency { get => 10_000; }
+
   private static readonly Coords[] Locations =
     Enumerable.Range(0, 6).SelectMany(row =>
         Enumerable.Range(0, 6).Select(col =>

@@ -40,6 +40,8 @@ public class NQueensDemo : IDemo
     return N + N;
   }
 
+  public int ProgressFrequency { get => 10; }
+
   private int[] BuildMatrixRow(NQueensInternalRow internalRow)
   {
     var row = internalRow.Coords.Row;

@@ -6,4 +6,5 @@ public interface IDemo
   public object[] BuildInternalRows(object demoSettings, CancellationToken cancellationToken);
   public int[] InternalRowToMatrixRow(object internalRow);
   public int? GetNumPrimaryColumns(object demoSettings);
+  public int ProgressFrequency { get; }
 }

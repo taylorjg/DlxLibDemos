@@ -35,6 +35,8 @@ public class DraughtboardPuzzleDemo : IDemo
     return null;
   }
 
+  public int ProgressFrequency { get => 1000; }
+
   private static readonly Coords[] Locations =
     Enumerable.Range(0, 8).SelectMany(row =>
         Enumerable.Range(0, 8).Select(col =>

@@ -41,6 +41,8 @@ public class SudokuDemo : IDemo
     return null;
   }
 
+  public int ProgressFrequency { get => 1; }
+
   private static readonly Coords[] AllCoords =
     Enumerable.Range(0, 9).SelectMany(row =>
         Enumerable.Range(0, 9).Select(col =>

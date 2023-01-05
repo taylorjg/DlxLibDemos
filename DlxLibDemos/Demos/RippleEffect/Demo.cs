@@ -69,6 +69,8 @@ public class RippleEffectDemo : IDemo
     return 2 * size * size;
   }
 
+  public int ProgressFrequency { get => 1; }
+
   private static int[] MakeLocationColumns(RippleEffectInternalRow internalRow)
   {
     var size = internalRow.Puzzle.Size;

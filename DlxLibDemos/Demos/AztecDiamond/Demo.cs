@@ -64,6 +64,8 @@ public class AztecDiamondDemo : IDemo
     return 25 + 50 + 50;
   }
 
+  public int ProgressFrequency { get => 1000; }
+
   private bool IsValidPiecePlacement(AztecDiamondInternalRow internalRow)
   {
     foreach (var horizontal in internalRow.Variation.Horizontals)
