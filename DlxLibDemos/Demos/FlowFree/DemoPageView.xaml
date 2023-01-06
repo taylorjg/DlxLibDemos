@@ -7,12 +7,22 @@
 
   <HorizontalStackLayout Spacing="10">
     <Label
+      Text="Puzzle Size:"
+      VerticalOptions="Center" />
+    <Picker
+      WidthRequest="100"
+      Title="Select a puzzle size"
+      ItemsSource="{Binding PuzzleSizes}"
+      ItemDisplayBinding="{Binding Name}"
+      SelectedItem="{Binding SelectedPuzzleSize}" />
+
+    <Label
       Text="Puzzle:"
       VerticalOptions="Center" />
     <Picker
       WidthRequest="300"
       Title="Select a puzzle"
-      ItemsSource="{Binding Puzzles}"
+      ItemsSource="{Binding PuzzlesOfSelectedSize}"
       ItemDisplayBinding="{Binding Name}"
       SelectedItem="{Binding SelectedPuzzle}" />
 

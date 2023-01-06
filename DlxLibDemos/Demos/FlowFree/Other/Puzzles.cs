@@ -1,16 +1,19 @@
 namespace DlxLibDemos.Demos.FlowFree;
 
+public record PuzzleSizeEntry(int Size, string Name);
+
 public static class Puzzles
 {
   public static Puzzle[] ThePuzzles = new[] {
-    ParsePuzzle("Puzzle 1 (5x5)", new[] {
+    // Size 5 puzzles
+    ParsePuzzle("Puzzle 1", new[] {
       "C--AE",
       "---D-",
       "--D--",
       "-AE-B",
       "-CB--"
     }),
-    ParsePuzzle("Puzzle 2 (5x5)", new[] {
+    ParsePuzzle("Puzzle 2", new[] {
       "---AB",
       "--CB-",
       "A----",
@@ -18,7 +21,8 @@ public static class Puzzles
       "----D"
     }),
 
-    ParsePuzzle("Puzzle 1 (6x6)", new[] {
+    // Size 6 puzzles
+    ParsePuzzle("Puzzle 1", new[] {
       "-----E",
       "------",
       "-DA---",
@@ -26,7 +30,7 @@ public static class Puzzles
       "-B-EAC",
       "---C--"
     }),
-    ParsePuzzle("Puzzle 2 (6x6)", new[] {
+    ParsePuzzle("Puzzle 2", new[] {
       "---C-D",
       "---B-C",
       "--AD--",
@@ -35,7 +39,8 @@ public static class Puzzles
       "------"
     }),
 
-    ParsePuzzle("Puzzle 1 (7x7)", new[] {
+    // Size 7 puzzles
+    ParsePuzzle("Puzzle 1", new[] {
       "-------",
       "CD---FB",
       "EC----A",
@@ -44,7 +49,7 @@ public static class Puzzles
       "---E-B-",
       "A------"
     }),
-    ParsePuzzle("Puzzle 2 (7x7)", new[] {
+    ParsePuzzle("Puzzle 2", new[] {
       "F-----A",
       "E-EFA-C",
       "------B",
@@ -54,7 +59,8 @@ public static class Puzzles
       "----D--"
     }),
 
-    ParsePuzzle("Puzzle 1 (8x8)", new[] {
+    // Size 8 puzzles
+    ParsePuzzle("Puzzle 1", new[] {
       "F--FD---",
       "--AIG-G-",
       "--C-----",
@@ -64,7 +70,7 @@ public static class Puzzles
       "-C-B--ED",
       "-------H"
     }),
-    ParsePuzzle("Puzzle 2 (8x8)", new[] {
+    ParsePuzzle("Puzzle 2", new[] {
       "-C-----D",
       "-H----E-",
       "----F-B-",
@@ -75,7 +81,8 @@ public static class Puzzles
       "G------G"
     }),
 
-    ParsePuzzle("Puzzle 1 (9x9)", new[] {
+    // Size 9 puzzles
+    ParsePuzzle("Puzzle 1", new[] {
       "C--------",
       "---------",
       "---A-----",
@@ -86,7 +93,7 @@ public static class Puzzles
       "-G---B-H-",
       "-------AD"
     }),
-    ParsePuzzle("Puzzle 2 (9x9)", new[] {
+    ParsePuzzle("Puzzle 2", new[] {
       "------A-A",
       "-------GB",
       "--B------",
@@ -98,7 +105,8 @@ public static class Puzzles
       "--------E"
     }),
 
-    ParsePuzzle("Puzzle 1 (10x10)", new[] {
+    // Size 10 puzzles
+    ParsePuzzle("Puzzle 1", new[] {
       "----------",
       "----------",
       "-------D--",
@@ -110,7 +118,7 @@ public static class Puzzles
       "-B-E-----C",
       "-H-------A"
     }),
-    ParsePuzzle("Puzzle 2 (10x10)", new[] {
+    ParsePuzzle("Puzzle 2", new[] {
       "----------",
       "-H--------",
       "------EA--",
@@ -123,6 +131,13 @@ public static class Puzzles
       "-------IC-"
     })
   };
+
+  public static PuzzleSizeEntry[] ThePuzzleSizes =
+    ThePuzzles
+      .Select(puzzle => puzzle.Size)
+      .Distinct()
+      .Select(size => new PuzzleSizeEntry(size, $"{size}x{size}"))
+      .ToArray();
 
   private static Puzzle ParsePuzzle(string name, string[] grid)
   {

@@ -8,6 +8,8 @@ namespace DlxLibDemos.Demos.FlowFree;
 public partial class FlowFreeDemoPageViewModel : DemoPageBaseViewModel
 {
   private ILogger<FlowFreeDemoPageViewModel> _logger;
+  private PuzzleSizeEntry _selectedPuzzleSize;
+  private Puzzle[] _puzzlesOfSelectedSize;
   private Puzzle _selectedPuzzle;
   private bool _showLabels;
 
@@ -21,11 +23,36 @@ public partial class FlowFreeDemoPageViewModel : DemoPageBaseViewModel
     _logger = logger;
     _logger.LogInformation("constructor");
     Demo = demo;
-    SelectedPuzzle = Puzzles.First();
+    SelectedPuzzleSize = PuzzleSizes.First();
     ShowLabels = true;
   }
 
-  public Puzzle[] Puzzles { get => FlowFree.Puzzles.ThePuzzles; }
+  public PuzzleSizeEntry[] PuzzleSizes { get => FlowFree.Puzzles.ThePuzzleSizes; }
+
+  public PuzzleSizeEntry SelectedPuzzleSize
+  {
+    get => _selectedPuzzleSize;
+    set
+    {
+      if (value != _selectedPuzzleSize)
+      {
+        SetProperty(ref _selectedPuzzleSize, value);
+        PuzzlesOfSelectedSize = FlowFree.Puzzles.ThePuzzles
+          .Where(puzzle => puzzle.Size == _selectedPuzzleSize.Size)
+          .ToArray();
+      }
+    }
+  }
+
+  public Puzzle[] PuzzlesOfSelectedSize
+  {
+    get => _puzzlesOfSelectedSize;
+    set
+    {
+      SetProperty(ref _puzzlesOfSelectedSize, value);
+      SelectedPuzzle = _puzzlesOfSelectedSize.First();
+    }
+  }
 
   public Puzzle SelectedPuzzle
   {
