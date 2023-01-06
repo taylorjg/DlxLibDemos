@@ -1,5 +1,4 @@
-dotnet run \
-  --project DlxLibDemos \
+dotnet build DlxLibDemos \
   --configuration Release \
   --framework net6.0-maccatalyst \
-  --no-launch-profile
+  --target:run
