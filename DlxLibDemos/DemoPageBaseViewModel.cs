@@ -315,6 +315,7 @@ public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
         IsSolving = false;
       }
 
+      UpdateButtonCommands();
       _messages.Enqueue(message);
     };
 
@@ -373,7 +374,7 @@ public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
 
   private bool CanNextSolution()
   {
-    return IsTimerPaused;
+    return CurrentSolutionNumber < SolutionCount;
   }
 
   private void StartTimer()
