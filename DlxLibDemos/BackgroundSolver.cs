@@ -66,8 +66,11 @@ public class BackgroundSolver : ISolver
         {
           _logger.LogInformation($"[SearchStep] searchStepCount: {searchStepCount}");
 
-          var message = new ProgressMessage(searchStepCount);
-          MainThread.BeginInvokeOnMainThread(() => onMessage(message));
+          if (!options.EnableSearchSteps)
+          {
+            var message = new ProgressMessage(searchStepCount);
+            MainThread.BeginInvokeOnMainThread(() => onMessage(message));
+          }
         }
 
         if (options.EnableSearchSteps)

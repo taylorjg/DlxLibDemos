@@ -47,10 +47,38 @@
                         Text="{TemplateBinding BindingContext.AnimationInterval, StringFormat='{0} ms'}"
                         IsEnabled="{TemplateBinding BindingContext.AnimationEnabled}"
                         />
+
                     <Button
                         Margin="10,0,0,0"
-                        Text="Next Solution"
-                        Command="{TemplateBinding BindingContext.NextSolutionCommand}" />
+                        Text="First"
+                        IsVisible="{TemplateBinding BindingContext.AnimationDisabled}"
+                        Command="{TemplateBinding BindingContext.GoToFirstMessageCommand}" />
+                    <Button
+                        Margin="10,0,0,0"
+                        Text="Previous"
+                        IsVisible="{TemplateBinding BindingContext.AnimationDisabled}"
+                        Command="{TemplateBinding BindingContext.GoToPreviousMessageCommand}" />
+                    <Button
+                        Margin="10,0,0,0"
+                        Text="Next"
+                        IsVisible="{TemplateBinding BindingContext.AnimationDisabled}"
+                        Command="{TemplateBinding BindingContext.GoToNextMessageCommand}" />
+                    <Button
+                        Margin="10,0,0,0"
+                        Text="Last"
+                        IsVisible="{TemplateBinding BindingContext.AnimationDisabled}"
+                        Command="{TemplateBinding BindingContext.GoToLastMessageCommand}" />
+
+                    <Button
+                        Margin="10,0,0,0"
+                        Text="Pause"
+                        IsVisible="{TemplateBinding BindingContext.AnimationEnabled}"
+                        Command="{TemplateBinding BindingContext.PauseCommand}" />
+                    <Button
+                        Margin="10,0,0,0"
+                        Text="Resume"
+                        IsVisible="{TemplateBinding BindingContext.AnimationEnabled}"
+                        Command="{TemplateBinding BindingContext.ResumeCommand}" />
                 </HorizontalStackLayout>
 
                 <HorizontalStackLayout Grid.Row="3" Margin="10" Spacing="10" HorizontalOptions="Center">
