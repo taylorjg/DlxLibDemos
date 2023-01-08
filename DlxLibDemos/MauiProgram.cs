@@ -8,6 +8,7 @@ using DlxLibDemos.Demos.TetraSticks;
 using DlxLibDemos.Demos.AztecDiamond;
 using DlxLibDemos.Demos.RippleEffect;
 using DlxLibDemos.Demos.FlowFree;
+using DlxLibDemos.Demos.Kakuro;
 using DlxLibDemos.Demos.SelfVisualisation;
 
 namespace DlxLibDemos;
@@ -66,6 +67,9 @@ public static class MauiProgram
     builder.Services.AddTransient<FlowFreeDemoPageView>();
     builder.Services.AddTransient<FlowFreeDemoPageViewModel>();
 
+    builder.Services.AddTransient<KakuroDemoPageView>();
+    builder.Services.AddTransient<KakuroDemoPageViewModel>();
+
     builder.Services.AddTransient<SelfVisualisationDemoPageView>();
     builder.Services.AddTransient<SelfVisualisationDemoPageViewModel>();
 
@@ -77,6 +81,7 @@ public static class MauiProgram
     builder.Services.AddTransient<AztecDiamondThumbnailDrawable>();
     builder.Services.AddTransient<RippleEffectThumbnailDrawable>();
     builder.Services.AddTransient<FlowFreeThumbnailDrawable>();
+    builder.Services.AddTransient<KakuroThumbnailDrawable>();
     builder.Services.AddTransient<SelfVisualisationThumbnailDrawable>();
 
     builder.Services.AddTransient<SudokuDemo>();
@@ -87,6 +92,7 @@ public static class MauiProgram
     builder.Services.AddTransient<AztecDiamondDemo>();
     builder.Services.AddTransient<RippleEffectDemo>();
     builder.Services.AddTransient<FlowFreeDemo>();
+    builder.Services.AddTransient<KakuroDemo>();
     builder.Services.AddTransient<SelfVisualisationDemo>();
 
     Routing.RegisterRoute("SudokuDemoPage", typeof(SudokuDemoPageView));
@@ -97,6 +103,7 @@ public static class MauiProgram
     Routing.RegisterRoute("AztecDiamondDemoPage", typeof(AztecDiamondDemoPageView));
     Routing.RegisterRoute("RippleEffectDemoPage", typeof(RippleEffectDemoPageView));
     Routing.RegisterRoute("FlowFreeDemoPage", typeof(FlowFreeDemoPageView));
+    Routing.RegisterRoute("KakuroDemoPage", typeof(KakuroDemoPageView));
     Routing.RegisterRoute("SelfVisualisationDemoPage", typeof(SelfVisualisationDemoPageView));
 
     return builder.Build();
