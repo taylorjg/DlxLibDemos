@@ -2,7 +2,7 @@ using Microsoft.Extensions.Logging.Abstractions;
 
 namespace DlxLibDemos.Tests;
 
-public class DemoPageBaseViewModelTests
+public class DemoPageViewModelTests
 {
   [Fact]
   public void CanConstructViewModel()
