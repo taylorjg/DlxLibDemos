@@ -27,7 +27,7 @@
                         VerticalOptions="Center"
                         IsToggled="{TemplateBinding BindingContext.AnimationEnabled}">
                         <Switch.IsEnabled>
-                            <TemplateBinding Path="BindingContext.IsSolving">
+                            <TemplateBinding Path="BindingContext.IsBackgroundSolving">
                                 <TemplateBinding.Converter>
                                     <mct:InvertedBoolConverter />
                                 </TemplateBinding.Converter>
@@ -109,7 +109,7 @@
                         Text="{TemplateBinding BindingContext.SolutionSummary}" />
 
                     <ActivityIndicator
-                        IsRunning="{TemplateBinding BindingContext.IsSolving}" />
+                        IsRunning="{TemplateBinding BindingContext.IsBackgroundSolving}" />
                 </HorizontalStackLayout>
             </Grid>
         </ControlTemplate>

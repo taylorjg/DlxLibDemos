@@ -24,7 +24,7 @@ public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
   private int _animationInterval;
   private ConcurrentQueue<BaseMessage> _messageQueue = new();
   private List<BaseMessage> _messageList = new();
-  private bool _isSolving;
+  private bool _isBackgroundSolving;
   private bool _isTimerPaused;
   private CancellationTokenSource _cancellationTokenSource;
   private int _searchStepCount;
@@ -165,15 +165,25 @@ public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
     }
   }
 
-  public bool IsSolving
+  public bool IsBackgroundSolving
   {
-    get => _isSolving;
+    get => _isBackgroundSolving;
     set
     {
-      _logger.LogInformation($"IsSolving setter value: {value}");
-      SetProperty(ref _isSolving, value);
+      _logger.LogInformation($"IsBackgroundSolving setter value: {value}");
+      SetProperty(ref _isBackgroundSolving, value);
       UpdateButtonCommands();
     }
+  }
+
+  public bool IsAnimating
+  {
+    get { return false; }
+  }
+
+  public bool IsBusy
+  {
+    get { return false; }
   }
 
   public bool IsTimerPaused
@@ -326,7 +336,7 @@ public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
       {
         SearchStepCount = finishedMessage.SearchStepCount;
         SolutionCount = finishedMessage.SolutionCount;
-        IsSolving = false;
+        IsBackgroundSolving = false;
       }
 
       if (AnimationEnabled)
@@ -357,7 +367,7 @@ public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
 
   private bool CanSolve()
   {
-    return !IsSolving && !SolutionAvailable;
+    return !IsBackgroundSolving && !SolutionAvailable;
   }
 
   [RelayCommand(CanExecute = nameof(CanReset))]
@@ -376,7 +386,7 @@ public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
 
   private bool CanReset()
   {
-    return !IsSolving && SolutionAvailable;
+    return !IsBackgroundSolving && SolutionAvailable;
   }
 
   [RelayCommand(CanExecute = nameof(CanCancel))]
@@ -388,7 +398,7 @@ public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
 
   private bool CanCancel()
   {
-    return IsSolving || _animationTimer.IsRunning;
+    return IsBackgroundSolving || _animationTimer.IsRunning;
   }
 
   [RelayCommand(CanExecute = nameof(CanPause))]
@@ -479,7 +489,7 @@ public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
   {
     _logger.LogInformation("starting the animation timer");
     _animationTimer.Start();
-    IsSolving = true;
+    IsBackgroundSolving = true;
   }
 
   private void StopTimer()
@@ -487,7 +497,7 @@ public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
     _logger.LogInformation("stopping the animation timer");
     _animationTimer.Stop();
     _messageQueue.Clear();
-    IsSolving = false;
+    IsBackgroundSolving = false;
   }
 
   private void PauseTimer()
