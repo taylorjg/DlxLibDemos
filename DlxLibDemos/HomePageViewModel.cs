@@ -1,8 +1,6 @@
 using Microsoft.Extensions.Logging;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using MetroLog.Maui;
-using System.Windows.Input;
 using DlxLibDemos.Demos.Sudoku;
 using DlxLibDemos.Demos.Pentominoes;
 using DlxLibDemos.Demos.NQueens;
@@ -37,7 +35,6 @@ public partial class HomePageViewModel : ObservableObject
     _navigationService = navigationService;
     _serviceProvider = serviceProvider;
     _logger.LogInformation("constructor");
-    _logger.LogInformation($"FileSystem.CacheDirectory: {FileSystem.CacheDirectory}");
   }
 
   public AvailableDemo[] AvailableDemos
