@@ -26,7 +26,13 @@ public class KakuroDrawable : IDrawable
 
     DrawBackground(canvas);
     DrawGrid(canvas);
-    FillBlocks(canvas);
+    DrawBlocks(canvas);
+    DrawDigit(canvas, new Coords(4, 3), 7);
+
+    var coords = new Coords(1, 1);
+    DrawBlock(canvas, coords);
+    DrawAcrossClue(canvas, coords, 6);
+    DrawDownClue(canvas, coords, 34);
   }
 
   private void DrawBackground(ICanvas canvas)
@@ -75,7 +81,7 @@ public class KakuroDrawable : IDrawable
     }
   }
 
-  private void FillBlocks(ICanvas canvas)
+  private void DrawBlocks(ICanvas canvas)
   {
     foreach (var row in Enumerable.Range(0, 10))
     {
@@ -83,16 +89,121 @@ public class KakuroDrawable : IDrawable
       {
         if (row == 0 || col == 0)
         {
-          var x = CalculateX(col);
-          var y = CalculateY(row);
-          var width = _squareWidth;
-          var height = _squareHeight;
-
-          canvas.FillColor = Colors.Black;
-          canvas.FillRectangle(x, y, width, height);
+          DrawBlock(canvas, new Coords(row, col));
         }
       }
     }
+  }
+
+  private void DrawBlock(ICanvas canvas, Coords coords)
+  {
+    var x = CalculateX(coords.Col);
+    var y = CalculateY(coords.Row);
+    var width = _squareWidth;
+    var height = _squareHeight;
+
+    canvas.FillColor = Colors.Black;
+    canvas.FillRectangle(x, y, width, height);
+  }
+
+  private void DrawAcrossClue(ICanvas canvas, Coords coords, int sum)
+  {
+    var px = CalculateX(coords.Col);
+    var py = CalculateY(coords.Row);
+    var p1 = new PointF(px + _gridLineFullThickness, py);
+    var p2 = new PointF(px + _squareWidth * 0.85f, py);
+    var p3 = new PointF(px + _squareWidth, py + _squareHeight / 4);
+    var p4 = new PointF(p2.X, py + _squareHeight / 2);
+    var p5 = new PointF(px + _squareWidth / 2 + _gridLineFullThickness, py + _squareHeight / 2);
+    var path = new PathF();
+    path.MoveTo(p1);
+    path.LineTo(p2);
+    path.LineTo(p3);
+    path.LineTo(p4);
+    path.LineTo(p5);
+    path.Close();
+
+    canvas.SaveState();
+    canvas.FillColor = Colors.White;
+    canvas.FillPath(path);
+    canvas.RestoreState();
+
+    var sumString = sum.ToString();
+    var width = _squareWidth / 2;
+    var height = _squareHeight / 2;
+    var x = CalculateX(coords.Col) + width;
+    var y = CalculateY(coords.Row);
+    canvas.FontColor = Colors.Black;
+    canvas.FontSize = _squareWidth * 0.35f;
+    canvas.DrawString(
+      sumString,
+      x,
+      y,
+      width,
+      height,
+      HorizontalAlignment.Center,
+      VerticalAlignment.Center
+    );
+  }
+
+  private void DrawDownClue(ICanvas canvas, Coords coords, int sum)
+  {
+    var px = CalculateX(coords.Col);
+    var py = CalculateY(coords.Row);
+    var p1 = new PointF(px, py + _gridLineFullThickness);
+    var p2 = new PointF(px, py + _squareHeight * 0.85f);
+    var p3 = new PointF(px + _squareWidth / 4, py + _squareHeight);
+    var p4 = new PointF(px + _squareWidth / 2, p2.Y);
+    var p5 = new PointF(px + _squareWidth / 2, py + _squareHeight / 2 + _gridLineFullThickness);
+    var path = new PathF();
+    path.MoveTo(p1);
+    path.LineTo(p2);
+    path.LineTo(p3);
+    path.LineTo(p4);
+    path.LineTo(p5);
+    path.Close();
+
+    canvas.SaveState();
+    canvas.FillColor = Colors.White;
+    canvas.FillPath(path);
+    canvas.RestoreState();
+
+    var sumString = sum.ToString();
+    var width = _squareWidth / 2;
+    var height = _squareHeight / 2;
+    var x = CalculateX(coords.Col);
+    var y = CalculateY(coords.Row) + height;
+    canvas.FontColor = Colors.Black;
+    canvas.FontSize = _squareWidth * 0.35f;
+    canvas.DrawString(
+      sumString,
+      x,
+      y,
+      width,
+      height,
+      HorizontalAlignment.Center,
+      VerticalAlignment.Center
+    );
+  }
+
+  private void DrawDigit(ICanvas canvas, Coords coords, int value)
+  {
+    var valueString = value.ToString();
+    var x = CalculateX(coords.Col);
+    var y = CalculateY(coords.Row);
+    var width = _squareWidth;
+    var height = _squareHeight;
+    canvas.FontColor = Colors.Black;
+    canvas.FontSize = _squareWidth * 0.6f;
+    canvas.DrawString(
+      valueString,
+      x,
+      y,
+      width,
+      height,
+      HorizontalAlignment.Center,
+      VerticalAlignment.Center
+    );
   }
 
   private float CalculateX(int col) => col * _squareWidth + _gridLineHalfThickness;
