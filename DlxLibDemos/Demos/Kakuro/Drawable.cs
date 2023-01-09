@@ -99,6 +99,9 @@ public class KakuroDrawable : IDrawable
 
   private void DrawClues(ICanvas canvas, Clue[] clues)
   {
+    var showLabels = (bool)_whatToDraw.DemoOptionalSettings;
+    if (!showLabels) return;
+
     foreach (var clue in clues)
     {
       DrawClue(canvas, clue);

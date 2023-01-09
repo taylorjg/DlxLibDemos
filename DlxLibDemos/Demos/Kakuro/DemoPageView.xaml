@@ -5,4 +5,15 @@
                         x:Class="DlxLibDemos.Demos.Kakuro.KakuroDemoPageView"
                         Title="{x:Static local:DemoNames.Kakuro}">
 
+  <HorizontalStackLayout Spacing="10">
+    <Label
+      Text="Show Labels:"
+      VerticalOptions="Center" />
+
+    <!-- IsEnabled="{Binding SolutionAvailable}" -->
+    <Switch
+      IsToggled="{Binding ShowLabels}"
+      VerticalOptions="Center" />
+  </HorizontalStackLayout>
+
 </local:DemoPageBaseView>
