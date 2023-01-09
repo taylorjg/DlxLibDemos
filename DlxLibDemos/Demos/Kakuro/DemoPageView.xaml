@@ -7,12 +7,12 @@
 
   <HorizontalStackLayout Spacing="10">
     <Label
-      Text="Show Labels:"
+      Text="Show Clues:"
       VerticalOptions="Center" />
 
     <!-- IsEnabled="{Binding SolutionAvailable}" -->
     <Switch
-      IsToggled="{Binding ShowLabels}"
+      IsToggled="{Binding ShowClues}"
       VerticalOptions="Center" />
   </HorizontalStackLayout>
 

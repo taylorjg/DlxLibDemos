@@ -5,7 +5,7 @@ namespace DlxLibDemos.Demos.Kakuro;
 public partial class KakuroDemoPageViewModel : DemoPageBaseViewModel
 {
   private ILogger<KakuroDemoPageViewModel> _logger;
-  private bool _showLabels;
+  private bool _showClues;
 
   public KakuroDemoPageViewModel(
     ILogger<KakuroDemoPageViewModel> logger,
@@ -17,17 +17,17 @@ public partial class KakuroDemoPageViewModel : DemoPageBaseViewModel
     _logger = logger;
     _logger.LogInformation("constructor");
     Demo = demo;
-    ShowLabels = true;
+    ShowClues = true;
   }
 
-  public bool ShowLabels
+  public bool ShowClues
   {
-    get => _showLabels;
+    get => _showClues;
     set
     {
-      _logger.LogInformation($"ShowLabels setter value: {value}");
-      SetProperty(ref _showLabels, value);
-      DemoOptionalSettings = _showLabels;
+      _logger.LogInformation($"ShowClues setter value: {value}");
+      SetProperty(ref _showClues, value);
+      DemoOptionalSettings = _showClues;
     }
   }
 }
