@@ -24,15 +24,12 @@ public class KakuroDrawable : IDrawable
     _squareWidth = (_width - _gridLineFullThickness) / 10;
     _squareHeight = (_height - _gridLineFullThickness) / 10;
 
+    var puzzle = Puzzles.ThePuzzles.First();
+
     DrawBackground(canvas);
     DrawGrid(canvas);
-    DrawBlocks(canvas);
-    DrawDigit(canvas, new Coords(4, 3), 7);
-
-    var coords = new Coords(1, 1);
-    DrawBlock(canvas, coords);
-    DrawAcrossClue(canvas, coords, 6);
-    DrawDownClue(canvas, coords, 34);
+    DrawBlocks(canvas, puzzle.Blocks);
+    DrawClues(canvas, puzzle.Clues);
   }
 
   private void DrawBackground(ICanvas canvas)
@@ -81,17 +78,11 @@ public class KakuroDrawable : IDrawable
     }
   }
 
-  private void DrawBlocks(ICanvas canvas)
+  private void DrawBlocks(ICanvas canvas, Coords[] blocks)
   {
-    foreach (var row in Enumerable.Range(0, 10))
+    foreach (var block in blocks)
     {
-      foreach (var col in Enumerable.Range(0, 10))
-      {
-        if (row == 0 || col == 0)
-        {
-          DrawBlock(canvas, new Coords(row, col));
-        }
-      }
+      DrawBlock(canvas, block);
     }
   }
 
@@ -104,6 +95,27 @@ public class KakuroDrawable : IDrawable
 
     canvas.FillColor = Colors.Black;
     canvas.FillRectangle(x, y, width, height);
+  }
+
+  private void DrawClues(ICanvas canvas, Clue[] clues)
+  {
+    foreach (var clue in clues)
+    {
+      DrawClue(canvas, clue);
+    }
+  }
+
+  private void DrawClue(ICanvas canvas, Clue clue)
+  {
+    if (clue.AcrossSum.HasValue)
+    {
+      DrawAcrossClue(canvas, clue.Coords, clue.AcrossSum.Value);
+    }
+
+    if (clue.DownSum.HasValue)
+    {
+      DrawDownClue(canvas, clue.Coords, clue.DownSum.Value);
+    }
   }
 
   private void DrawAcrossClue(ICanvas canvas, Coords coords, int sum)
