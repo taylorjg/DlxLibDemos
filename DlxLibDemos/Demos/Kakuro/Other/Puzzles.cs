@@ -36,7 +36,9 @@ public static class Puzzles
     var blocks = FindBlocks(size, grid);
     var clues = ParseClues(labelDict, cluesString);
     var unknowns = FindUnknowns(size, grid);
-    return new Puzzle(size, blocks, clues, unknowns);
+    var horizontalRuns = FindHorizontalRuns(unknowns, clues);
+    var verticalRuns = FindVerticalRuns(unknowns, clues);
+    return new Puzzle(size, blocks, clues, unknowns, horizontalRuns, verticalRuns);
   }
 
   private static Dictionary<string, Coords> MakeLabelDict(int size, string[] grid)
@@ -94,6 +96,40 @@ public static class Puzzles
     }
 
     return unknowns.ToArray();
+  }
+
+  private static Coords[][] FindHorizontalRuns(Coords[] unknowns, Clue[] clues)
+  {
+    return clues
+      .Where(clue => clue.AcrossSum.HasValue)
+      .Select(clue => clue.Coords)
+      .Select(startingPoint => FindRun(unknowns, coords => coords.Right(), startingPoint))
+      .ToArray();
+  }
+
+  private static Coords[][] FindVerticalRuns(Coords[] unknowns, Clue[] clues)
+  {
+    return clues
+      .Where(clue => clue.DownSum.HasValue)
+      .Select(clue => clue.Coords)
+      .Select(startingPoint => FindRun(unknowns, coords => coords.Down(), startingPoint))
+      .ToArray();
+  }
+
+  private static Coords[] FindRun(Coords[] unknowns, Func<Coords, Coords> advance, Coords startingPoint)
+  {
+    var run = new List<Coords>();
+
+    var currentCoords = startingPoint;
+
+    for (; ; )
+    {
+      currentCoords = advance(currentCoords);
+      if (!unknowns.Contains(currentCoords)) break;
+      run.Add(currentCoords);
+    }
+
+    return run.ToArray();
   }
 
   private static Clue[] ParseClues(Dictionary<string, Coords> labelDict, string cluesString)
