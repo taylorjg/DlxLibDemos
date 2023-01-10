@@ -22,33 +22,24 @@ public class KakuroDemo : IDemo
     var puzzle = Puzzles.ThePuzzles.First();
     var internalRows = new List<KakuroInternalRow>();
 
-    foreach (var run in puzzle.HorizontalRuns)
+    var createInternalRowsFor = (Run[] runs) =>
     {
-      foreach (var setOfValues in FindRunDigits(run))
+      foreach (var run in runs)
       {
-        var permutations = new List<int[]>();
-        Permutations.DoPermute(setOfValues, 0, setOfValues.Length - 1, permutations);
-        foreach (var permutation in permutations)
+        foreach (var setOfValues in FindSetsOfValues(run))
         {
-          var internalRow = new KakuroInternalRow(puzzle, run, permutation);
-          internalRows.Add(internalRow);
+          foreach (var permutation in Permutations.DoPermute(setOfValues))
+          {
+            if (cancellationToken.IsCancellationRequested) return;
+            var internalRow = new KakuroInternalRow(puzzle, run, permutation);
+            internalRows.Add(internalRow);
+          }
         }
       }
-    }
+    };
 
-    foreach (var run in puzzle.VerticalRuns)
-    {
-      foreach (var setOfValues in FindRunDigits(run))
-      {
-        var permutations = new List<int[]>();
-        Permutations.DoPermute(setOfValues, 0, setOfValues.Length - 1, permutations);
-        foreach (var permutation in permutations)
-        {
-          var internalRow = new KakuroInternalRow(puzzle, run, permutation);
-          internalRows.Add(internalRow);
-        }
-      }
-    }
+    createInternalRowsFor(puzzle.HorizontalRuns);
+    createInternalRowsFor(puzzle.VerticalRuns);
 
     return internalRows.ToArray();
   }
@@ -73,7 +64,7 @@ public class KakuroDemo : IDemo
   // - contains only values 1..9
   // - does not have any duplicated values
   // e.g. for run length 3 and sum 10, valid sets of values would be [1,4,5], [2,3,5], [1,3,6], etc
-  private static int[][] FindRunDigits(Run run)
+  private static int[][] FindSetsOfValues(Run run)
   {
     var setsOfValues = new List<int[]>();
 

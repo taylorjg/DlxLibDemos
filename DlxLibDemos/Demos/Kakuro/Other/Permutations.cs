@@ -4,7 +4,14 @@ namespace DlxLibDemos.Demos.Kakuro;
 
 public static class Permutations
 {
-  public static void DoPermute(int[] nums, int start, int end, List<int[]> list)
+  public static List<int[]> DoPermute(int[] nums)
+  {
+    var permutations = new List<int[]>();
+    DoPermuteInternal(nums, 0, nums.Length - 1, permutations);
+    return permutations;
+  }
+
+  private static void DoPermuteInternal(int[] nums, int start, int end, List<int[]> list)
   {
     if (start == end)
     {
@@ -15,7 +22,7 @@ public static class Permutations
       for (var i = start; i <= end; i++)
       {
         Swap(ref nums[start], ref nums[i]);
-        DoPermute(nums, start + 1, end, list);
+        DoPermuteInternal(nums, start + 1, end, list);
         Swap(ref nums[start], ref nums[i]);
       }
     }

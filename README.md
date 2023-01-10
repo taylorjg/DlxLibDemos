@@ -38,6 +38,8 @@ Here are links to the existing WPF demo apps:
 
 ![Flow Free](screenshots/flowfree.png)
 
+![Kakuro](screenshots/kakuro.png)
+
 # TODO
 
 * Convert/create demos:
@@ -49,13 +51,14 @@ Here are links to the existing WPF demo apps:
   * ~~Aztec Diamond~~ (new - no old WPF counterpart)
   * ~~Ripple Effect~~
   * ~~Flow Free~~
+  * ~~Kakuro~~ (new - no old WPF counterpart - but see [here](https://github.com/taylorjg/kakuro))
   * Self Visualisation (new - no old WPF counterpart - but I do have a web version [here](https://github.com/taylorjg/dlxlib-self-visualisation))
 * ~~Display version information~~
 * ~~Do the solving on a background thread~~
-* Find all solutions and provide a mechanism to navigate between them
+* ~~Find all solutions and provide a mechanism to navigate between them~~
 * Add an About page
 * Add an app icon
-* Add unit tests
+* Add unit tests (made a start)
 * Deploy to Google Play Store
 * Deploy to Apple App Store
 * Release a new version of DlxLib targeting `net6.0` (or `net7.0` ?)
