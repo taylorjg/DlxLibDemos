@@ -147,10 +147,10 @@ public class KakuroDrawable : IDrawable
     var sumString = sum.ToString();
     var width = _squareWidth / 2;
     var height = _squareHeight / 2;
-    var x = CalculateX(coords.Col) + width;
+    var x = CalculateX(coords.Col) + width - _gridLineFullThickness;
     var y = CalculateY(coords.Row);
     canvas.FontColor = Colors.Black;
-    canvas.FontSize = _squareWidth * 0.35f;
+    canvas.FontSize = _squareWidth * 0.325f;
     canvas.DrawString(
       sumString,
       x,
@@ -188,9 +188,9 @@ public class KakuroDrawable : IDrawable
     var width = _squareWidth / 2;
     var height = _squareHeight / 2;
     var x = CalculateX(coords.Col);
-    var y = CalculateY(coords.Row) + height;
+    var y = CalculateY(coords.Row) + height - _gridLineFullThickness;
     canvas.FontColor = Colors.Black;
-    canvas.FontSize = _squareWidth * 0.35f;
+    canvas.FontSize = _squareWidth * 0.325f;
     canvas.DrawString(
       sumString,
       x,
