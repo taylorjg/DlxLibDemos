@@ -30,6 +30,7 @@ public class KakuroDrawable : IDrawable
     DrawGrid(canvas);
     DrawBlocks(canvas, puzzle.Blocks);
     DrawClues(canvas, puzzle.Clues);
+    DrawHorizontalRuns(canvas);
   }
 
   private void DrawBackground(ICanvas canvas)
@@ -199,6 +200,30 @@ public class KakuroDrawable : IDrawable
       HorizontalAlignment.Center,
       VerticalAlignment.Center
     );
+  }
+
+  private void DrawHorizontalRuns(ICanvas canvas)
+  {
+    var solutionInternalRows = _whatToDraw.SolutionInternalRows.Cast<KakuroInternalRow>();
+
+    foreach (var internalRow in solutionInternalRows)
+    {
+      if (internalRow.Run.RunType == RunType.Horizontal)
+      {
+        DrawHorizontalRun(canvas, internalRow);
+      }
+    }
+  }
+
+  private void DrawHorizontalRun(ICanvas canvas, KakuroInternalRow internalRow)
+  {
+    var run = internalRow.Run;
+    var values = internalRow.Values;
+
+    foreach (var index in Enumerable.Range(0, run.CoordsList.Length))
+    {
+      DrawDigit(canvas, run.CoordsList[index], values[index]);
+    }
   }
 
   private void DrawDigit(ICanvas canvas, Coords coords, int value)

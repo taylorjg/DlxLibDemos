@@ -5,6 +5,6 @@ public record Puzzle(
   Coords[] Blocks,
   Clue[] Clues,
   Coords[] Unknowns,
-  Coords[][] HorizontalRuns,
-  Coords[][] VerticalRuns
+  Run[] HorizontalRuns,
+  Run[] VerticalRuns
 );

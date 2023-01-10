@@ -1,3 +1,3 @@
 namespace DlxLibDemos.Demos.Kakuro;
 
-public record KakuroInternalRow(Coords Coords, int Value);
+public record KakuroInternalRow(Puzzle Puzzle, Run Run, int[] Values);

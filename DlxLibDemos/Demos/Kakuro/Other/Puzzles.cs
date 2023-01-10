@@ -98,21 +98,27 @@ public static class Puzzles
     return unknowns.ToArray();
   }
 
-  private static Coords[][] FindHorizontalRuns(Coords[] unknowns, Clue[] clues)
+  private static Run[] FindHorizontalRuns(Coords[] unknowns, Clue[] clues)
   {
     return clues
       .Where(clue => clue.AcrossSum.HasValue)
-      .Select(clue => clue.Coords)
-      .Select(startingPoint => FindRun(unknowns, coords => coords.Right(), startingPoint))
+      .Select(clue =>
+      {
+        var coordsList = FindRun(unknowns, coords => coords.Right(), clue.Coords);
+        return new Run(RunType.Horizontal, coordsList, clue.AcrossSum.Value);
+      })
       .ToArray();
   }
 
-  private static Coords[][] FindVerticalRuns(Coords[] unknowns, Clue[] clues)
+  private static Run[] FindVerticalRuns(Coords[] unknowns, Clue[] clues)
   {
     return clues
       .Where(clue => clue.DownSum.HasValue)
-      .Select(clue => clue.Coords)
-      .Select(startingPoint => FindRun(unknowns, coords => coords.Down(), startingPoint))
+      .Select(clue =>
+      {
+        var coordsList = FindRun(unknowns, coords => coords.Down(), clue.Coords);
+        return new Run(RunType.Vertical, coordsList, clue.DownSum.Value);
+      })
       .ToArray();
   }
 
