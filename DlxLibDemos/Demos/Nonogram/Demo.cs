@@ -33,8 +33,7 @@ public class NonogramDemo : IDemo
 
   public int? GetNumPrimaryColumns(object demoSettings)
   {
-    var puzzle = Puzzles.ThePuzzles.First();
-    return puzzle.HorizontalRuns.Length + puzzle.VerticalRuns.Length;
+    return null;
   }
 
   public int ProgressFrequency { get => 10; }
