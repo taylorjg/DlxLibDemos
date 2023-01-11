@@ -9,6 +9,7 @@ using DlxLibDemos.Demos.TetraSticks;
 using DlxLibDemos.Demos.AztecDiamond;
 using DlxLibDemos.Demos.RippleEffect;
 using DlxLibDemos.Demos.FlowFree;
+using DlxLibDemos.Demos.Nonogram;
 using DlxLibDemos.Demos.Kakuro;
 // using DlxLibDemos.Demos.SelfVisualisation;
 
@@ -87,6 +88,11 @@ public partial class HomePageViewModel : ObservableObject
           DemoNames.Kakuro,
           "KakuroDemoPage",
           _serviceProvider.GetService<KakuroThumbnailDrawable>()
+        ),
+        new AvailableDemo(
+          DemoNames.Nonogram,
+          "NonogramDemoPage",
+          _serviceProvider.GetService<NonogramThumbnailDrawable>()
         ),
         // new AvailableDemo(
         //   DemoNames.SelfVisualisation,

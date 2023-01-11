@@ -9,6 +9,7 @@ using DlxLibDemos.Demos.AztecDiamond;
 using DlxLibDemos.Demos.RippleEffect;
 using DlxLibDemos.Demos.FlowFree;
 using DlxLibDemos.Demos.Kakuro;
+using DlxLibDemos.Demos.Nonogram;
 using DlxLibDemos.Demos.SelfVisualisation;
 
 namespace DlxLibDemos;
@@ -70,6 +71,9 @@ public static class MauiProgram
     builder.Services.AddTransient<KakuroDemoPageView>();
     builder.Services.AddTransient<KakuroDemoPageViewModel>();
 
+    builder.Services.AddTransient<NonogramDemoPageView>();
+    builder.Services.AddTransient<NonogramDemoPageViewModel>();
+
     builder.Services.AddTransient<SelfVisualisationDemoPageView>();
     builder.Services.AddTransient<SelfVisualisationDemoPageViewModel>();
 
@@ -82,6 +86,7 @@ public static class MauiProgram
     builder.Services.AddTransient<RippleEffectThumbnailDrawable>();
     builder.Services.AddTransient<FlowFreeThumbnailDrawable>();
     builder.Services.AddTransient<KakuroThumbnailDrawable>();
+    builder.Services.AddTransient<NonogramThumbnailDrawable>();
     builder.Services.AddTransient<SelfVisualisationThumbnailDrawable>();
 
     builder.Services.AddTransient<SudokuDemo>();
@@ -93,6 +98,7 @@ public static class MauiProgram
     builder.Services.AddTransient<RippleEffectDemo>();
     builder.Services.AddTransient<FlowFreeDemo>();
     builder.Services.AddTransient<KakuroDemo>();
+    builder.Services.AddTransient<NonogramDemo>();
     builder.Services.AddTransient<SelfVisualisationDemo>();
 
     Routing.RegisterRoute("SudokuDemoPage", typeof(SudokuDemoPageView));
@@ -104,6 +110,7 @@ public static class MauiProgram
     Routing.RegisterRoute("RippleEffectDemoPage", typeof(RippleEffectDemoPageView));
     Routing.RegisterRoute("FlowFreeDemoPage", typeof(FlowFreeDemoPageView));
     Routing.RegisterRoute("KakuroDemoPage", typeof(KakuroDemoPageView));
+    Routing.RegisterRoute("NonogramDemoPage", typeof(NonogramDemoPageView));
     Routing.RegisterRoute("SelfVisualisationDemoPage", typeof(SelfVisualisationDemoPageView));
 
     return builder.Build();
