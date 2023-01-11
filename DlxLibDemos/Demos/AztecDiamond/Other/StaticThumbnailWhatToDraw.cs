@@ -8,7 +8,12 @@ public class AztecDiamondStaticThumbnailWhatToDraw : IWhatToDraw
 
   public AztecDiamondStaticThumbnailWhatToDraw()
   {
-    SolutionInternalRows = new[]
+    SolutionInternalRows = MakeSolution();
+  }
+
+  private static AztecDiamondInternalRow[] MakeSolution()
+  {
+    return new[]
     {
       MakeSolutionInternalRow("I", Orientation.North, false, 3, 2),
       MakeSolutionInternalRow("O", Orientation.North, false, 4, 8),
@@ -40,7 +45,7 @@ public class AztecDiamondStaticThumbnailWhatToDraw : IWhatToDraw
     };
   }
 
-  private AztecDiamondInternalRow MakeSolutionInternalRow(
+  private static AztecDiamondInternalRow MakeSolutionInternalRow(
     string label,
     Orientation orientation,
     bool reflected,

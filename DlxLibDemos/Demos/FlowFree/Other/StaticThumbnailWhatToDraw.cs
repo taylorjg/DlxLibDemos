@@ -8,12 +8,16 @@ public class FlowFreeStaticThumbnailWhatToDraw : IWhatToDraw
 
   public FlowFreeStaticThumbnailWhatToDraw()
   {
-    var puzzle = Puzzles.ThePuzzles[0];
+    var puzzle = Puzzles.ThePuzzles.First();
 
     DemoSettings = puzzle;
     DemoOptionalSettings = false;
+    SolutionInternalRows = MakeSolution(puzzle);
+  }
 
-    SolutionInternalRows = new[]
+  private static FlowFreeInternalRow[] MakeSolution(Puzzle puzzle)
+  {
+    return new[]
     {
       MakeSolutionInternalRow(puzzle, "A", "0,3 0,2 0,1 1,1 2,1 3,1"),
       MakeSolutionInternalRow(puzzle, "B", "3,4 4,4 4,3 4,2"),

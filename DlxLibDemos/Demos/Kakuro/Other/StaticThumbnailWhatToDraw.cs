@@ -23,22 +23,11 @@ public class KakuroStaticThumbnailWhatToDraw : IWhatToDraw
       ".13.31.13."
     };
 
-    var dict = ParseValues(solution);
-
-    SolutionInternalRows = puzzle.HorizontalRuns
-      .Select(run =>
-      {
-        var values = run.CoordsList
-          .Select(coords => dict[coords])
-          .ToArray();
-        return new KakuroInternalRow(puzzle, run, values);
-      })
-      .ToArray();
-
     DemoOptionalSettings = true;
+    SolutionInternalRows = ParseSolution(puzzle, solution);
   }
 
-  private static Dictionary<Coords, int> ParseValues(string[] solution)
+  private static KakuroInternalRow[] ParseSolution(Puzzle puzzle, string[] solution)
   {
     var dict = new Dictionary<Coords, int>();
 
@@ -57,6 +46,14 @@ public class KakuroStaticThumbnailWhatToDraw : IWhatToDraw
       }
     }
 
-    return dict;
+    return puzzle.HorizontalRuns
+      .Select(run =>
+      {
+        var values = run.CoordsList
+          .Select(coords => dict[coords])
+          .ToArray();
+        return new KakuroInternalRow(puzzle, run, values);
+      })
+      .ToArray();
   }
 }
