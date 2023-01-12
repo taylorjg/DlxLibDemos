@@ -28,6 +28,7 @@ public class NonogramDrawable : IDrawable
 
     DrawBackground(canvas);
     DrawGrid(canvas);
+    DrawHorizontalRunGroups(canvas);
   }
 
   private void DrawBackground(ICanvas canvas)
@@ -74,6 +75,46 @@ public class NonogramDrawable : IDrawable
       canvas.StrokeSize = _gridLineFullThickness;
       canvas.DrawLine(x, y1, x, y2);
     }
+  }
+
+  private void DrawHorizontalRunGroups(ICanvas canvas)
+  {
+    var solutionInternalRows = _whatToDraw.SolutionInternalRows.Cast<NonogramInternalRow>();
+
+    foreach (var internalRow in solutionInternalRows)
+    {
+      if (internalRow.RunGroup.RunGroupType == RunGroupType.Horizontal)
+      {
+        DrawHorizontalRunGroup(canvas, internalRow);
+      }
+    }
+  }
+
+  private void DrawHorizontalRunGroup(ICanvas canvas, NonogramInternalRow internalRow)
+  {
+    foreach (var RunCoordsList in internalRow.RunCoordsLists)
+    {
+      DrawHorizontalRun(canvas, RunCoordsList);
+    }
+  }
+
+  private void DrawHorizontalRun(ICanvas canvas, RunCoordsList runCoordsList)
+  {
+    foreach (var coords in runCoordsList.CoordsList)
+    {
+      DrawBlock(canvas, coords);
+    }
+  }
+
+  private void DrawBlock(ICanvas canvas, Coords coords)
+  {
+    var x = CalculateX(coords.Col);
+    var y = CalculateY(coords.Row);
+    var w = _squareWidth;
+    var h = _squareHeight;
+
+    canvas.FillColor = Colors.Black;
+    canvas.FillRectangle(x, y, w, h);
   }
 
   private float CalculateX(int col) => col * _squareWidth + _gridLineHalfThickness;
