@@ -8,52 +8,66 @@ public class NonogramStaticThumbnailWhatToDraw : IWhatToDraw
 
   public NonogramStaticThumbnailWhatToDraw()
   {
-    // var puzzle = Puzzles.ThePuzzles.First();
+    var puzzle = Puzzles.ThePuzzles.First();
 
-    // var solution = new[] {
-    //   "..........",
-    //   "..79.54.79",
-    //   ".241.95768",
-    //   ".9587.789.",
-    //   ".12.2469..",
-    //   ".31.629.61",
-    //   "...2153.89",
-    //   "..948.1254",
-    //   ".65347.342",
-    //   ".13.31.13."
-    // };
+    var solution = new[] {
+      "..........",
+      ".XX...XXX.",
+      "..........",
+      "..........",
+      "..........",
+      ".....XXXX.",
+      "..........",
+      "..........",
+      "..........",
+      ".........."
+    };
 
-    // DemoOptionalSettings = true;
-    // SolutionInternalRows = ParseSolution(puzzle, solution);
+    SolutionInternalRows = ParseSolution(puzzle, solution);
   }
 
-  // private static KakuroInternalRow[] ParseSolution(Puzzle puzzle, string[] solution)
-  // {
-  //   var dict = new Dictionary<Coords, int>();
+  private static NonogramInternalRow[] ParseSolution(Puzzle puzzle, string[] solution)
+  {
+    var dict = ParseHorizontalRuns(puzzle, solution);
 
-  //   var size = solution.Length;
+    var solutionInternalRows = new List<NonogramInternalRow>();
 
-  //   foreach (var row in Enumerable.Range(0, size))
-  //   {
-  //     foreach (var col in Enumerable.Range(0, size))
-  //     {
-  //       var ch = solution[row][col];
-  //       if (int.TryParse(ch.ToString(), out int value))
-  //       {
-  //         var coords = new Coords(row, col);
-  //         dict[coords] = value;
-  //       }
-  //     }
-  //   }
+    foreach (var index in Enumerable.Range(0, puzzle.HorizontalRunGroups.Length))
+    {
+      var horizontalRunGroup = puzzle.HorizontalRunGroups[index] as HorizontalRunGroup;
+      var runCoordsLists = dict[horizontalRunGroup.Row];
+      var internalRow = new NonogramInternalRow(puzzle, horizontalRunGroup, runCoordsLists);
+      solutionInternalRows.Add(internalRow);
+    }
 
-  //   return puzzle.HorizontalRuns
-  //     .Select(run =>
-  //     {
-  //       var values = run.CoordsList
-  //         .Select(coords => dict[coords])
-  //         .ToArray();
-  //       return new KakuroInternalRow(puzzle, run, values);
-  //     })
-  //     .ToArray();
-  // }
+    return solutionInternalRows.ToArray();
+  }
+
+  private static Dictionary<int, RunCoordsList[]> ParseHorizontalRuns(Puzzle puzzle, string[] solution)
+  {
+    var size = solution.Length;
+    var dict = new Dictionary<int, RunCoordsList[]>();
+
+    foreach (var horizontalRunGroup in puzzle.HorizontalRunGroups)
+    {
+      var row = (horizontalRunGroup as HorizontalRunGroup).Row;
+      var cols = Enumerable.Range(0, size);
+      var overallCoordsList = cols
+        .Where(col => solution[row][col] == 'X')
+        .Select(col => new Coords(row, col))
+        .ToArray();
+      var accumulatedLength = 0;
+      var runCoordsLists = new List<RunCoordsList>();
+      foreach (var length in horizontalRunGroup.Lengths)
+      {
+        var coordsList = overallCoordsList.Skip(accumulatedLength).Take(length).ToArray();
+        var runCoordsList = new RunCoordsList(coordsList.ToArray());
+        runCoordsLists.Add(runCoordsList);
+        accumulatedLength += length;
+      }
+      dict[row] = runCoordsLists.ToArray();
+    }
+
+    return dict;
+  }
 }

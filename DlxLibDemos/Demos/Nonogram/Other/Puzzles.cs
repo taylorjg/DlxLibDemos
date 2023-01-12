@@ -6,10 +6,28 @@ public static class Puzzles
     MakePuzzle(
       10,
       new[] {
-        new[] { 1, 2 }
+        new int[] {},
+        new[] { 2, 3 },
+        new int[] {},
+        new int[] {},
+        new int[] {},
+        new[] { 4 },
+        new int[] {},
+        new int[] {},
+        new int[] {},
+        new int[] {}
       },
       new[] {
-        new[] { 1, 2 }
+        new int[] {},
+        new[] { 1 },
+        new[] { 1 },
+        new int[] {},
+        new int[] {},
+        new[] { 1 },
+        new[] { 1, 1 },
+        new[] { 1, 1 },
+        new[] { 1, 1 },
+        new int[] {}
       }
     )
   };
