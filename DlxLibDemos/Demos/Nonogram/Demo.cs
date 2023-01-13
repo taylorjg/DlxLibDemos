@@ -22,6 +22,57 @@ public class NonogramDemo : IDemo
     var puzzle = Puzzles.ThePuzzles.First();
     var internalRows = new List<NonogramInternalRow>();
 
+    var intsToString = (IEnumerable<int> ns) => "[" + string.Join(", ", ns.Select(n => n.ToString())) + "]";
+
+    var size = puzzle.Size;
+
+    foreach (var horizontalRunGroup in puzzle.HorizontalRunGroups)
+    {
+      var setsOfStartingPositions = new List<int[]>();
+      var workingSetOfStartingPositions = new Stack<int>();
+
+      void RecursivelyFindSetsOfStartingPositions(int startPosition, int[] remainingLengths)
+      {
+        if (remainingLengths.Length == 0)
+        {
+          if (workingSetOfStartingPositions.Count == horizontalRunGroup.Lengths.Length)
+          {
+            var setOfStartingPositions = workingSetOfStartingPositions.Reverse().ToArray();
+            setsOfStartingPositions.Add(setOfStartingPositions);
+          }
+          return;
+        }
+
+        var runLength = remainingLengths[0];
+        var newRemainingLengths = remainingLengths[1..];
+        var sumOfRemainingLengths = newRemainingLengths.Sum();
+        var requiredGaps = newRemainingLengths.Length;
+        var lastValidStartPosition = size - sumOfRemainingLengths - requiredGaps - runLength;
+        var numValidStartPositions = lastValidStartPosition - startPosition + 1;
+        var validStartPositions = Enumerable.Range(startPosition, numValidStartPositions);
+
+        foreach (var validStartPosition in validStartPositions)
+        {
+          workingSetOfStartingPositions.Push(validStartPosition);
+
+          var newStartPosition = validStartPosition + runLength + 1;
+          RecursivelyFindSetsOfStartingPositions(newStartPosition, newRemainingLengths);
+
+          workingSetOfStartingPositions.Pop();
+        }
+      };
+
+      _logger.LogInformation($"processing horizontal run group for row: {horizontalRunGroup.Row}");
+
+      RecursivelyFindSetsOfStartingPositions(0, horizontalRunGroup.Lengths);
+
+      _logger.LogInformation($"found the following starting positions for horizontal run group for row: {horizontalRunGroup.Row}");
+      foreach (var setOfStartingPositions in setsOfStartingPositions)
+      {
+        _logger.LogInformation($"  {intsToString(setOfStartingPositions)}");
+      }
+    }
+
     return internalRows.ToArray();
   }
 

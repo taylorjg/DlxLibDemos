@@ -16,5 +16,8 @@ public partial class NonogramDemoPageViewModel : DemoPageBaseViewModel
     _logger = logger;
     _logger.LogInformation("constructor");
     Demo = demo;
+
+    var cancellationTokenSource = new CancellationTokenSource();
+    demo.BuildInternalRows(null, cancellationTokenSource.Token);
   }
 }
