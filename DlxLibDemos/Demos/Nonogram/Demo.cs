@@ -208,24 +208,38 @@ public class NonogramDemo : IDemo
     return columns;
   }
 
+  const int ON_INDEX = 0;
+  const int OFF_INDEX = 1;
+
   private int[] MakeHorizontalCoordsColumns(Puzzle puzzle, RunGroup runGroup, RunCoordsList[] runCoordsLists)
   {
     var size = puzzle.Size;
     var columns = Enumerable.Repeat(0, size * size * 2).ToArray();
 
-    var encodedValue = runGroup.RunGroupType == RunGroupType.Horizontal
-      ? EncodeValueNormal()
-      : EncodeValueInverse();
+    var selectedRowCoords = runCoordsLists.SelectMany(runCoordsList => runCoordsList.CoordsList).ToArray();
 
-    foreach (var runCoordsList in runCoordsLists)
+    if (runGroup.RunGroupType == RunGroupType.Horizontal)
     {
-      foreach (var coords in runCoordsList.CoordsList)
+      var row = (runGroup as HorizontalRunGroup).Row;
+      var allRowCoords = Enumerable.Range(0, size).Select(col => new Coords(row, col)).ToArray();
+      var unselectedRowCoords = allRowCoords.Except(selectedRowCoords);
+      foreach (var coords in selectedRowCoords)
       {
         var baseIndex = (coords.Row * size + coords.Col) * 2;
-        foreach (var index in Enumerable.Range(0, encodedValue.Length))
-        {
-          columns[baseIndex + index] = encodedValue[index];
-        }
+        columns[baseIndex + ON_INDEX] = 1;
+      }
+      foreach (var coords in unselectedRowCoords)
+      {
+        var baseIndex = (coords.Row * size + coords.Col) * 2;
+        columns[baseIndex + OFF_INDEX] = 1;
+      }
+    }
+    else
+    {
+      foreach (var coords in selectedRowCoords)
+      {
+        var baseIndex = (coords.Row * size + coords.Col) * 2;
+        columns[baseIndex + OFF_INDEX] = 1;
       }
     }
 
@@ -237,32 +251,33 @@ public class NonogramDemo : IDemo
     var size = puzzle.Size;
     var columns = Enumerable.Repeat(0, size * size * 2).ToArray();
 
-    var encodedValue = runGroup.RunGroupType == RunGroupType.Vertical
-      ? EncodeValueNormal()
-      : EncodeValueInverse();
+    var selectedColCoords = runCoordsLists.SelectMany(runCoordsList => runCoordsList.CoordsList).ToArray();
 
-    foreach (var runCoordsList in runCoordsLists)
+    if (runGroup.RunGroupType == RunGroupType.Vertical)
     {
-      foreach (var coords in runCoordsList.CoordsList)
+      var col = (runGroup as VerticalRunGroup).Col;
+      var allColCoords = Enumerable.Range(0, size).Select(row => new Coords(row, col)).ToArray();
+      var unselectedColCoords = allColCoords.Except(selectedColCoords);
+      foreach (var coords in selectedColCoords)
       {
         var baseIndex = (coords.Row * size + coords.Col) * 2;
-        foreach (var index in Enumerable.Range(0, encodedValue.Length))
-        {
-          columns[baseIndex + index] = encodedValue[index];
-        }
+        columns[baseIndex + ON_INDEX] = 1;
+      }
+      foreach (var coords in unselectedColCoords)
+      {
+        var baseIndex = (coords.Row * size + coords.Col) * 2;
+        columns[baseIndex + OFF_INDEX] = 1;
+      }
+    }
+    else
+    {
+      foreach (var coords in selectedColCoords)
+      {
+        var baseIndex = (coords.Row * size + coords.Col) * 2;
+        columns[baseIndex + OFF_INDEX] = 1;
       }
     }
 
     return columns;
-  }
-
-  private int[] EncodeValueNormal()
-  {
-    return new[] { 1, 0 };
-  }
-
-  private int[] EncodeValueInverse()
-  {
-    return new[] { 0, 1 };
   }
 }

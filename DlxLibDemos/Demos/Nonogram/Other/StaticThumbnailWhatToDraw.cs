@@ -10,21 +10,20 @@ public class NonogramStaticThumbnailWhatToDraw : IWhatToDraw
   {
     var puzzle = Puzzles.ThePuzzles.First();
 
-    // var solution = new[] {
-    //   "..........",
-    //   ".XX...XXX.",
-    //   "..........",
-    //   "..........",
-    //   "..........",
-    //   ".....XXXX.",
-    //   "..........",
-    //   "..........",
-    //   "..........",
-    //   ".........."
-    // };
+    var solution = new[] {
+      "...XXXX...",
+      "X.XXXXXX..",
+      "X..XXXX...",
+      "XX..XX....",
+      ".XXXXXXXX.",
+      "....XX..XX",
+      "...XXXX..X",
+      "..XX..XX.X",
+      "..X....X..",
+      "XXX....XXX"
+    };
 
-    // SolutionInternalRows = ParseSolution(puzzle, solution);
-    SolutionInternalRows = new NonogramInternalRow[0];
+    SolutionInternalRows = ParseSolution(puzzle, solution);
   }
 
   private static NonogramInternalRow[] ParseSolution(Puzzle puzzle, string[] solution)

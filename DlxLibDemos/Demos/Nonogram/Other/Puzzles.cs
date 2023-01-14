@@ -3,32 +3,32 @@ namespace DlxLibDemos.Demos.Nonogram;
 public static class Puzzles
 {
   public static Puzzle[] ThePuzzles = new[] {
-    // https://www.puzzle-nonograms.com/?size=1
+    // https://www.nonograms.org/nonograms/i/61360
     MakePuzzle(
       10,
       new[] {
         new[] { 4 },
-        new[] { 4 },
+        new[] { 1, 6 },
+        new[] { 1, 4 },
+        new[] { 2, 2 },
+        new[] { 8 },
+        new[] { 2, 2 },
+        new[] { 4, 1 },
+        new[] { 2, 2, 1 },
         new[] { 1, 1 },
-        new[] { 6, 1 },
-        new[] { 6, 1 },
-        new[] { 5, 1 },
-        new[] { 2 },
-        new[] { 4 },
-        new[] { 4, 2 },
-        new[] { 5, 3 }
+        new[] { 3, 3 }
       },
       new[] {
-        new[] { 1, 1 },
-        new[] { 4, 3 },
-        new[] { 3, 3 },
-        new[] { 7 },
-        new[] { 7 },
-        new[] { 3 },
-        new[] { 4, 1 },
+        new[] { 3, 1 },
         new[] { 2, 1 },
-        new[] { 2, 2 },
-        new[] { 2, 3, 1 }
+        new[] { 1, 1, 3 },
+        new[] { 3, 1, 2 },
+        new[] { 7 },
+        new[] { 7 },
+        new[] { 3, 1, 2 },
+        new[] { 1, 1, 3 },
+        new[] { 2, 1 },
+        new[] { 3, 1 }
       }
     )
   };
