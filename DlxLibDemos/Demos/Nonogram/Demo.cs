@@ -19,7 +19,7 @@ public class NonogramDemo : IDemo
 
   public object[] BuildInternalRows(object demoSettings, CancellationToken cancellationToken)
   {
-    var puzzle = Puzzles.ThePuzzles.First();
+    var puzzle = (Puzzle)demoSettings;
     var internalRows = new List<NonogramInternalRow>();
 
     var intsToString = (IEnumerable<int> ns) => "[" + string.Join(", ", ns.Select(n => n.ToString())) + "]";
@@ -164,7 +164,7 @@ public class NonogramDemo : IDemo
 
   public int? GetNumPrimaryColumns(object demoSettings)
   {
-    var puzzle = Puzzles.ThePuzzles.First();
+    var puzzle = (Puzzle)demoSettings;
     return puzzle.HorizontalRunGroups.Length + puzzle.VerticalRunGroups.Length;
   }
 

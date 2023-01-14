@@ -17,14 +17,14 @@ public class NonogramDrawable : IDrawable
 
   public void Draw(ICanvas canvas, RectF dirtyRect)
   {
+    var puzzle = (Puzzle)_whatToDraw.DemoSettings;
+
     _width = dirtyRect.Width;
     _height = dirtyRect.Height;
     _gridLineFullThickness = _width / 400;
     _gridLineHalfThickness = _gridLineFullThickness / 2;
-    _squareWidth = (_width - _gridLineFullThickness) / 10;
-    _squareHeight = (_height - _gridLineFullThickness) / 10;
-
-    var puzzle = Puzzles.ThePuzzles.First();
+    _squareWidth = (_width - _gridLineFullThickness) / puzzle.Size;
+    _squareHeight = (_height - _gridLineFullThickness) / puzzle.Size;
 
     DrawBackground(canvas);
     DrawGrid(canvas);
@@ -53,7 +53,9 @@ public class NonogramDrawable : IDrawable
 
   private void DrawHorizontalGridLines(ICanvas canvas)
   {
-    foreach (var row in Enumerable.Range(0, 10 + 1))
+    var puzzle = (Puzzle)_whatToDraw.DemoSettings;
+
+    foreach (var row in Enumerable.Range(0, puzzle.Size + 1))
     {
       var x1 = _gridLineHalfThickness;
       var x2 = _width - _gridLineHalfThickness;
@@ -66,7 +68,9 @@ public class NonogramDrawable : IDrawable
 
   private void DrawVerticalGridLines(ICanvas canvas)
   {
-    foreach (var col in Enumerable.Range(0, 10 + 1))
+    var puzzle = (Puzzle)_whatToDraw.DemoSettings;
+
+    foreach (var col in Enumerable.Range(0, puzzle.Size + 1))
     {
       var x = CalculateX(col);
       var y1 = _gridLineHalfThickness;

@@ -5,4 +5,16 @@
                         x:Class="DlxLibDemos.Demos.Nonogram.NonogramDemoPageView"
                         Title="{x:Static local:DemoNames.Nonogram}">
 
+  <HorizontalStackLayout Spacing="10">
+    <Label
+      Text="Puzzle:"
+      VerticalOptions="Center" />
+    <Picker
+      WidthRequest="300"
+      Title="Select a puzzle"
+      ItemsSource="{Binding Puzzles}"
+      ItemDisplayBinding="{Binding Name}"
+      SelectedItem="{Binding SelectedPuzzle}" />
+  </HorizontalStackLayout>
+
 </local:DemoPageBaseView>
