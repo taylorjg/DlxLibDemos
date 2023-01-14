@@ -102,7 +102,7 @@ public class NonogramDemo : IDemo
     return puzzle.HorizontalRunGroups.Length + puzzle.VerticalRunGroups.Length;
   }
 
-  public int ProgressFrequency { get => 10000; }
+  public int ProgressFrequency { get => 100; }
 
   private int[] BuildMatrixRow(NonogramInternalRow internalRow)
   {
@@ -111,12 +111,12 @@ public class NonogramDemo : IDemo
     var runCoordsLists = internalRow.RunCoordsLists;
     var rowColumns = MakeRowColumns(puzzle, runGroup);
     var colColumns = MakeColColumns(puzzle, runGroup);
-    var horizontalCoordsColumns = MakeHorizontalCoordsColumns(puzzle, runGroup, runCoordsLists);
-    var verticalCoordsColumns = MakeVerticalCoordsColumns(puzzle, runGroup, runCoordsLists);
+    var horizontalBlockColumns = MakeBlockColumns(puzzle, runGroup, runCoordsLists, RunGroupType.Horizontal);
+    var verticalBlockColumns = MakeBlockColumns(puzzle, runGroup, runCoordsLists, RunGroupType.Vertical);
     return rowColumns
       .Concat(colColumns)
-      .Concat(horizontalCoordsColumns)
-      .Concat(verticalCoordsColumns)
+      .Concat(horizontalBlockColumns)
+      .Concat(verticalBlockColumns)
       .ToArray();
   }
 
@@ -142,76 +142,40 @@ public class NonogramDemo : IDemo
     return columns;
   }
 
-  const int ON_INDEX = 0;
-  const int OFF_INDEX = 1;
-
-  private int[] MakeHorizontalCoordsColumns(Puzzle puzzle, RunGroup runGroup, RunCoordsList[] runCoordsLists)
+  private int[] MakeBlockColumns(Puzzle puzzle, RunGroup runGroup, RunCoordsList[] runCoordsLists, RunGroupType runGroupType)
   {
     var size = puzzle.Size;
     var columns = Enumerable.Repeat(0, size * size * 2).ToArray();
 
-    var selectedRowCoords = runCoordsLists.SelectMany(runCoordsList => runCoordsList.CoordsList).ToArray();
+    var selectedBlockCoords = runCoordsLists.SelectMany(runCoordsList => runCoordsList.CoordsList).ToArray();
 
-    if (runGroup.RunGroupType == RunGroupType.Horizontal)
+    if (runGroup.RunGroupType == runGroupType)
     {
-      var row = (runGroup as HorizontalRunGroup).Row;
-      var allRowCoords = Enumerable.Range(0, size).Select(col => new Coords(row, col)).ToArray();
-      var unselectedRowCoords = allRowCoords.Except(selectedRowCoords);
-      foreach (var coords in selectedRowCoords)
-      {
-        var baseIndex = (coords.Row * size + coords.Col) * 2;
-        columns[baseIndex + ON_INDEX] = 1;
-      }
-      foreach (var coords in unselectedRowCoords)
-      {
-        var baseIndex = (coords.Row * size + coords.Col) * 2;
-        columns[baseIndex + OFF_INDEX] = 1;
-      }
+      var allBlockCoords = Enumerable.Range(0, size).Select(col => runGroup.MakeCoords(col)).ToArray();
+      var unselectedBlockCoords = allBlockCoords.Except(selectedBlockCoords);
+      foreach (var coords in selectedBlockCoords) MarkOn(columns, size, coords);
+      foreach (var coords in unselectedBlockCoords) MarkOff(columns, size, coords);
     }
     else
     {
-      foreach (var coords in selectedRowCoords)
-      {
-        var baseIndex = (coords.Row * size + coords.Col) * 2;
-        columns[baseIndex + OFF_INDEX] = 1;
-      }
+      foreach (var coords in selectedBlockCoords) MarkOff(columns, size, coords);
     }
 
     return columns;
   }
 
-  private int[] MakeVerticalCoordsColumns(Puzzle puzzle, RunGroup runGroup, RunCoordsList[] runCoordsLists)
+  const int ON_INDEX = 0;
+  const int OFF_INDEX = 1;
+
+  private void MarkOn(int[] columns, int size, Coords coords)
   {
-    var size = puzzle.Size;
-    var columns = Enumerable.Repeat(0, size * size * 2).ToArray();
+    var baseIndex = (coords.Row * size + coords.Col) * 2;
+    columns[baseIndex + ON_INDEX] = 1;
+  }
 
-    var selectedColCoords = runCoordsLists.SelectMany(runCoordsList => runCoordsList.CoordsList).ToArray();
-
-    if (runGroup.RunGroupType == RunGroupType.Vertical)
-    {
-      var col = (runGroup as VerticalRunGroup).Col;
-      var allColCoords = Enumerable.Range(0, size).Select(row => new Coords(row, col)).ToArray();
-      var unselectedColCoords = allColCoords.Except(selectedColCoords);
-      foreach (var coords in selectedColCoords)
-      {
-        var baseIndex = (coords.Row * size + coords.Col) * 2;
-        columns[baseIndex + ON_INDEX] = 1;
-      }
-      foreach (var coords in unselectedColCoords)
-      {
-        var baseIndex = (coords.Row * size + coords.Col) * 2;
-        columns[baseIndex + OFF_INDEX] = 1;
-      }
-    }
-    else
-    {
-      foreach (var coords in selectedColCoords)
-      {
-        var baseIndex = (coords.Row * size + coords.Col) * 2;
-        columns[baseIndex + OFF_INDEX] = 1;
-      }
-    }
-
-    return columns;
+  private void MarkOff(int[] columns, int size, Coords coords)
+  {
+    var baseIndex = (coords.Row * size + coords.Col) * 2;
+    columns[baseIndex + OFF_INDEX] = 1;
   }
 }
