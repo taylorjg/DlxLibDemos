@@ -23,13 +23,14 @@ public class NonogramDemo : IDemo
     var internalRows = new List<NonogramInternalRow>();
 
     var intsToString = (IEnumerable<int> ns) => "[" + string.Join(", ", ns.Select(n => n.ToString())) + "]";
+    var pairsToString = (IEnumerable<(int, int)> pairs) => "[" + string.Join(", ", pairs.Select(pair => $"{pair.Item1}/{pair.Item2}")) + "]";
 
     var size = puzzle.Size;
 
     foreach (var horizontalRunGroup in puzzle.HorizontalRunGroups)
     {
-      var setsOfStartingPositions = new List<int[]>();
-      var workingSetOfStartingPositions = new Stack<int>();
+      var setsOfStartingPositions = new List<(int, int)[]>();
+      var workingSetOfStartingPositions = new Stack<(int, int)>();
 
       void RecursivelyFindSetsOfStartingPositions(int startPosition, int[] remainingLengths)
       {
@@ -53,7 +54,7 @@ public class NonogramDemo : IDemo
 
         foreach (var validStartPosition in validStartPositions)
         {
-          workingSetOfStartingPositions.Push(validStartPosition);
+          workingSetOfStartingPositions.Push((validStartPosition, runLength));
 
           var newStartPosition = validStartPosition + runLength + 1;
           RecursivelyFindSetsOfStartingPositions(newStartPosition, newRemainingLengths);
@@ -69,7 +70,86 @@ public class NonogramDemo : IDemo
       _logger.LogInformation($"found the following starting positions for horizontal run group for row: {horizontalRunGroup.Row}");
       foreach (var setOfStartingPositions in setsOfStartingPositions)
       {
-        _logger.LogInformation($"  {intsToString(setOfStartingPositions)}");
+        _logger.LogInformation($"  {pairsToString(setOfStartingPositions)}");
+        var runCoordsLists = new List<RunCoordsList>();
+        foreach (var pair in setOfStartingPositions)
+        {
+          var startingPosition = pair.Item1;
+          var runLength = pair.Item2;
+          var coordsList = new List<Coords>();
+          foreach (var col in Enumerable.Range(startingPosition, runLength))
+          {
+            var coords = new Coords(horizontalRunGroup.Row, col);
+            coordsList.Add(coords);
+          }
+          var runCoordsList = new RunCoordsList(coordsList.ToArray());
+          runCoordsLists.Add(runCoordsList);
+        }
+        var internalRow = new NonogramInternalRow(puzzle, horizontalRunGroup, runCoordsLists.ToArray());
+        internalRows.Add(internalRow);
+      }
+    }
+
+    foreach (var verticalRunGroup in puzzle.VerticalRunGroups)
+    {
+      var setsOfStartingPositions = new List<(int, int)[]>();
+      var workingSetOfStartingPositions = new Stack<(int, int)>();
+
+      void RecursivelyFindSetsOfStartingPositions(int startPosition, int[] remainingLengths)
+      {
+        if (remainingLengths.Length == 0)
+        {
+          if (workingSetOfStartingPositions.Count == verticalRunGroup.Lengths.Length)
+          {
+            var setOfStartingPositions = workingSetOfStartingPositions.Reverse().ToArray();
+            setsOfStartingPositions.Add(setOfStartingPositions);
+          }
+          return;
+        }
+
+        var runLength = remainingLengths[0];
+        var newRemainingLengths = remainingLengths[1..];
+        var sumOfRemainingLengths = newRemainingLengths.Sum();
+        var requiredGaps = newRemainingLengths.Length;
+        var lastValidStartPosition = size - sumOfRemainingLengths - requiredGaps - runLength;
+        var numValidStartPositions = lastValidStartPosition - startPosition + 1;
+        var validStartPositions = Enumerable.Range(startPosition, numValidStartPositions);
+
+        foreach (var validStartPosition in validStartPositions)
+        {
+          workingSetOfStartingPositions.Push((validStartPosition, runLength));
+
+          var newStartPosition = validStartPosition + runLength + 1;
+          RecursivelyFindSetsOfStartingPositions(newStartPosition, newRemainingLengths);
+
+          workingSetOfStartingPositions.Pop();
+        }
+      };
+
+      _logger.LogInformation($"processing vertical run group for col: {verticalRunGroup.Col}");
+
+      RecursivelyFindSetsOfStartingPositions(0, verticalRunGroup.Lengths);
+
+      _logger.LogInformation($"found the following starting positions for vertical run group for col: {verticalRunGroup.Col}");
+      foreach (var setOfStartingPositions in setsOfStartingPositions)
+      {
+        _logger.LogInformation($"  {pairsToString(setOfStartingPositions)}");
+        var runCoordsLists = new List<RunCoordsList>();
+        foreach (var pair in setOfStartingPositions)
+        {
+          var startingPosition = pair.Item1;
+          var runLength = pair.Item2;
+          var coordsList = new List<Coords>();
+          foreach (var row in Enumerable.Range(startingPosition, runLength))
+          {
+            var coords = new Coords(row, verticalRunGroup.Col);
+            coordsList.Add(coords);
+          }
+          var runCoordsList = new RunCoordsList(coordsList.ToArray());
+          runCoordsLists.Add(runCoordsList);
+        }
+        var internalRow = new NonogramInternalRow(puzzle, verticalRunGroup, runCoordsLists.ToArray());
+        internalRows.Add(internalRow);
       }
     }
 
@@ -84,11 +164,11 @@ public class NonogramDemo : IDemo
 
   public int? GetNumPrimaryColumns(object demoSettings)
   {
-    var puzzle = (Puzzle)demoSettings;
+    var puzzle = Puzzles.ThePuzzles.First();
     return puzzle.HorizontalRunGroups.Length + puzzle.VerticalRunGroups.Length;
   }
 
-  public int ProgressFrequency { get => 10; }
+  public int ProgressFrequency { get => 10000; }
 
   private int[] BuildMatrixRow(NonogramInternalRow internalRow)
   {
