@@ -18,6 +18,14 @@ Here are links to the existing WPF demo apps:
 * [Ripple Effect](https://github.com/taylorjg/RippleEffectDlx)
 * [Flow Free](https://github.com/taylorjg/FlowFreeSolverWpf)
 
+It would also be good to add some new demos e.g.:
+
+* N Queens
+* Aztec Diamond
+* Kakuro
+* Nonogram
+* Crossword
+
 # Screenshots
 
 ![Home Page](screenshots/home-page.png)
@@ -66,12 +74,6 @@ Here are links to the existing WPF demo apps:
 * Deploy to Apple App Store
 * Release a new version of DlxLib targeting `net6.0` (or `net7.0` ?)
 * Create new documentation for DlxLib e.g. GitBook ?
-
-# Running on macOS
-
-```
-dotnet build DlxLibDemos --framework net6.0-maccatalyst --target:run
-```
 
 # Links
 
