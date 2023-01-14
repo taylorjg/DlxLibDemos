@@ -9,6 +9,9 @@ public class NonogramDrawable : IDrawable
   private float _squareHeight;
   private float _gridLineFullThickness;
   private float _gridLineHalfThickness;
+  private Puzzle _puzzle;
+  private int _numMarginSquares;
+  private int _sizeWithMargin;
 
   public NonogramDrawable(IWhatToDraw whatToDraw)
   {
@@ -17,17 +20,24 @@ public class NonogramDrawable : IDrawable
 
   public void Draw(ICanvas canvas, RectF dirtyRect)
   {
-    var puzzle = (Puzzle)_whatToDraw.DemoSettings;
+    _puzzle = (Puzzle)_whatToDraw.DemoSettings;
+
+    var mostRunGroupsInARow = _puzzle.HorizontalRunGroups.Select(rg => rg.Lengths.Length).Max();
+    var mpstRunGroupsInACol = _puzzle.VerticalRunGroups.Select(rg => rg.Lengths.Length).Max();
+    _numMarginSquares = Math.Max(mostRunGroupsInARow, mpstRunGroupsInACol);
+    _sizeWithMargin = _numMarginSquares + _puzzle.Size;
 
     _width = dirtyRect.Width;
     _height = dirtyRect.Height;
     _gridLineFullThickness = _width / 400;
     _gridLineHalfThickness = _gridLineFullThickness / 2;
-    _squareWidth = (_width - _gridLineFullThickness) / puzzle.Size;
-    _squareHeight = (_height - _gridLineFullThickness) / puzzle.Size;
+    _squareWidth = (_width - _gridLineFullThickness) / _sizeWithMargin;
+    _squareHeight = (_height - _gridLineFullThickness) / _sizeWithMargin;
 
     DrawBackground(canvas);
     DrawGrid(canvas);
+    DrawHorizontalRunLengths(canvas);
+    DrawVerticalRunLengths(canvas);
     DrawHorizontalRunGroups(canvas);
   }
 
@@ -53,9 +63,7 @@ public class NonogramDrawable : IDrawable
 
   private void DrawHorizontalGridLines(ICanvas canvas)
   {
-    var puzzle = (Puzzle)_whatToDraw.DemoSettings;
-
-    foreach (var row in Enumerable.Range(0, puzzle.Size + 1))
+    foreach (var row in Enumerable.Range(0, _puzzle.Size + 1))
     {
       var x1 = _gridLineHalfThickness;
       var x2 = _width - _gridLineHalfThickness;
@@ -68,9 +76,7 @@ public class NonogramDrawable : IDrawable
 
   private void DrawVerticalGridLines(ICanvas canvas)
   {
-    var puzzle = (Puzzle)_whatToDraw.DemoSettings;
-
-    foreach (var col in Enumerable.Range(0, puzzle.Size + 1))
+    foreach (var col in Enumerable.Range(0, _puzzle.Size + 1))
     {
       var x = CalculateX(col);
       var y1 = _gridLineHalfThickness;
@@ -79,6 +85,60 @@ public class NonogramDrawable : IDrawable
       canvas.StrokeSize = _gridLineFullThickness;
       canvas.DrawLine(x, y1, x, y2);
     }
+  }
+
+  private void DrawHorizontalRunLengths(ICanvas canvas)
+  {
+    foreach (var runGroup in _puzzle.HorizontalRunGroups)
+    {
+      var horizontalRunGroup = runGroup as HorizontalRunGroup;
+      var row = horizontalRunGroup.Row;
+      var numRunLengths = runGroup.Lengths.Length;
+      foreach (var index in Enumerable.Range(0, numRunLengths))
+      {
+        var runLength = runGroup.Lengths[index];
+        var col = -(numRunLengths - index);
+        var coords = new Coords(row, col);
+        DrawRunLength(canvas, coords, runLength);
+      }
+    }
+  }
+
+  private void DrawVerticalRunLengths(ICanvas canvas)
+  {
+    foreach (var runGroup in _puzzle.VerticalRunGroups)
+    {
+      var verticalRunGroup = runGroup as VerticalRunGroup;
+      var col = verticalRunGroup.Col;
+      var numRunLengths = runGroup.Lengths.Length;
+      foreach (var index in Enumerable.Range(0, numRunLengths))
+      {
+        var runLength = runGroup.Lengths[index];
+        var row = -(numRunLengths - index);
+        var coords = new Coords(row, col);
+        DrawRunLength(canvas, coords, runLength);
+      }
+    }
+  }
+
+  private void DrawRunLength(ICanvas canvas, Coords coords, int runLength)
+  {
+    var runLengthString = runLength.ToString();
+    var x = CalculateX(coords.Col);
+    var y = CalculateY(coords.Row);
+    var width = _squareWidth;
+    var height = _squareHeight;
+    canvas.FontColor = Colors.Black;
+    canvas.FontSize = _squareWidth * 0.6f;
+    canvas.DrawString(
+      runLengthString,
+      x,
+      y,
+      width,
+      height,
+      HorizontalAlignment.Center,
+      VerticalAlignment.Center
+    );
   }
 
   private void DrawHorizontalRunGroups(ICanvas canvas)
@@ -121,8 +181,15 @@ public class NonogramDrawable : IDrawable
     canvas.FillRectangle(x, y, w, h);
   }
 
-  private float CalculateX(int col) => col * _squareWidth + _gridLineHalfThickness;
-  private float CalculateY(int row) => row * _squareHeight + _gridLineHalfThickness;
+  // private float CalculateX(int col) => col * _squareWidth + _gridLineHalfThickness;
+  // private float CalculateY(int row) => row * _squareHeight + _gridLineHalfThickness;
+
+  private float CalculateX(int col) =>
+    _numMarginSquares * _squareWidth +
+    col * _squareWidth + _gridLineHalfThickness;
+  private float CalculateY(int row) =>
+    _numMarginSquares * _squareHeight +
+    row * _squareHeight + _gridLineHalfThickness;
 
   private PointF CalculatePoint(Coords coords) =>
     new PointF(CalculateX(coords.Col), CalculateY(coords.Row));

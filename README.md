@@ -40,6 +40,8 @@ Here are links to the existing WPF demo apps:
 
 ![Kakuro](screenshots/kakuro.png)
 
+![Nonogram](screenshots/nonogram.png)
+
 # TODO
 
 * Convert/create demos:
@@ -52,7 +54,7 @@ Here are links to the existing WPF demo apps:
   * ~~Ripple Effect~~
   * ~~Flow Free~~
   * ~~Kakuro~~ (new - no old WPF counterpart - but see [here](https://github.com/taylorjg/kakuro))
-  * Nonogram (new - no old WPF counterpart)
+  * ~~Nonogram~~ (new - no old WPF counterpart)
   * Self Visualisation (new - no old WPF counterpart - but I do have a web version [here](https://github.com/taylorjg/dlxlib-self-visualisation))
 * ~~Display version information~~
 * ~~Do the solving on a background thread~~
