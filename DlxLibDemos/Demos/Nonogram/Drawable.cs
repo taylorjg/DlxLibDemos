@@ -196,15 +196,8 @@ public class NonogramDrawable : IDrawable
     canvas.FillRectangle(x, y, w, h);
   }
 
-  // private float CalculateX(int col) => col * _squareWidth + _gridLineHalfThickness;
-  // private float CalculateY(int row) => row * _squareHeight + _gridLineHalfThickness;
-
-  private float CalculateX(int col) =>
-    _numMarginSquares * _squareWidth +
-    col * _squareWidth + _gridLineHalfThickness;
-  private float CalculateY(int row) =>
-    _numMarginSquares * _squareHeight +
-    row * _squareHeight + _gridLineHalfThickness;
+  private float CalculateX(int col) => (_numMarginSquares + col) * _squareWidth + _gridLineHalfThickness;
+  private float CalculateY(int row) => (_numMarginSquares + row) * _squareHeight + _gridLineHalfThickness;
 
   private PointF CalculatePoint(Coords coords) =>
     new PointF(CalculateX(coords.Col), CalculateY(coords.Row));
