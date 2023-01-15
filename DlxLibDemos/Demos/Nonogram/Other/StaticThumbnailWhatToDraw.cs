@@ -24,6 +24,7 @@ public class NonogramStaticThumbnailWhatToDraw : IWhatToDraw
     };
 
     DemoSettings = puzzle;
+    DemoOptionalSettings = true;
     SolutionInternalRows = ParseSolution(puzzle, solution);
   }
 

@@ -22,9 +22,18 @@ public class NonogramDrawable : IDrawable
   {
     _puzzle = (Puzzle)_whatToDraw.DemoSettings;
 
-    var mostRunGroupsInARow = _puzzle.HorizontalRunGroups.Select(rg => rg.Lengths.Length).Max();
-    var mpstRunGroupsInACol = _puzzle.VerticalRunGroups.Select(rg => rg.Lengths.Length).Max();
-    _numMarginSquares = Math.Max(mostRunGroupsInARow, mpstRunGroupsInACol);
+    var showClues = (bool)_whatToDraw.DemoOptionalSettings;
+    if (showClues)
+    {
+      var maxNumRunGroupsHorizontally = _puzzle.HorizontalRunGroups.Select(rg => rg.Lengths.Length).Max();
+      var maxNumRunGroupsVertically = _puzzle.VerticalRunGroups.Select(rg => rg.Lengths.Length).Max();
+      _numMarginSquares = Math.Max(maxNumRunGroupsHorizontally, maxNumRunGroupsVertically);
+    }
+    else
+    {
+      _numMarginSquares = 0;
+    }
+
     _sizeWithMargin = _numMarginSquares + _puzzle.Size;
 
     _width = dirtyRect.Width;
@@ -89,6 +98,9 @@ public class NonogramDrawable : IDrawable
 
   private void DrawHorizontalRunLengths(ICanvas canvas)
   {
+    var showClues = (bool)_whatToDraw.DemoOptionalSettings;
+    if (!showClues) return;
+
     foreach (var runGroup in _puzzle.HorizontalRunGroups)
     {
       var horizontalRunGroup = runGroup as HorizontalRunGroup;
@@ -106,6 +118,9 @@ public class NonogramDrawable : IDrawable
 
   private void DrawVerticalRunLengths(ICanvas canvas)
   {
+    var showClues = (bool)_whatToDraw.DemoOptionalSettings;
+    if (!showClues) return;
+
     foreach (var runGroup in _puzzle.VerticalRunGroups)
     {
       var verticalRunGroup = runGroup as VerticalRunGroup;
