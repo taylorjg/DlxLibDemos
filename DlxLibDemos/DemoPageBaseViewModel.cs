@@ -14,7 +14,7 @@ public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
   private ISolver _solver;
   private IDemo _demo;
   private object _demoSettings;
-  private object _demoOptionalSettings;
+  private object _demoDrawingOptions;
   private IDrawable _drawable;
   private object[] _solutionInternalRows;
   private bool _isSolution;
@@ -103,13 +103,13 @@ public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
     }
   }
 
-  public object DemoOptionalSettings
+  public object DemoDrawingOptions
   {
-    get => _demoOptionalSettings;
+    get => _demoDrawingOptions;
     set
     {
-      _logger.LogInformation($"DemoOptionalSettings setter value: {value}");
-      SetProperty(ref _demoOptionalSettings, value);
+      _logger.LogInformation($"DemoDrawingOptions setter value: {value}");
+      SetProperty(ref _demoDrawingOptions, value);
       RaiseNeedRedraw();
     }
   }

@@ -3,7 +3,7 @@ namespace DlxLibDemos.Demos.Sudoku;
 public class SudokuStaticThumbnailWhatToDraw : IWhatToDraw
 {
   public object DemoSettings { get; private init; }
-  public object DemoOptionalSettings { get; private init; }
+  public object DemoDrawingOptions { get; private init; }
   public object[] SolutionInternalRows { get; private init; }
 
   public SudokuStaticThumbnailWhatToDraw()

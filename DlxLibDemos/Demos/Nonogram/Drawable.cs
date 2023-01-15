@@ -22,7 +22,7 @@ public class NonogramDrawable : IDrawable
   {
     _puzzle = (Puzzle)_whatToDraw.DemoSettings;
 
-    var showClues = (bool)_whatToDraw.DemoOptionalSettings;
+    var showClues = (bool)_whatToDraw.DemoDrawingOptions;
     if (showClues)
     {
       var maxNumRunGroupsHorizontally = _puzzle.HorizontalRunGroups.Select(rg => rg.Lengths.Length).Max();
@@ -98,7 +98,7 @@ public class NonogramDrawable : IDrawable
 
   private void DrawHorizontalRunLengths(ICanvas canvas)
   {
-    var showClues = (bool)_whatToDraw.DemoOptionalSettings;
+    var showClues = (bool)_whatToDraw.DemoDrawingOptions;
     if (!showClues) return;
 
     foreach (var runGroup in _puzzle.HorizontalRunGroups)
@@ -118,7 +118,7 @@ public class NonogramDrawable : IDrawable
 
   private void DrawVerticalRunLengths(ICanvas canvas)
   {
-    var showClues = (bool)_whatToDraw.DemoOptionalSettings;
+    var showClues = (bool)_whatToDraw.DemoDrawingOptions;
     if (!showClues) return;
 
     foreach (var runGroup in _puzzle.VerticalRunGroups)

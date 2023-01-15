@@ -127,7 +127,7 @@ public class DraughtboardPuzzleDrawable : IDrawable
 
   private void DrawLabel(ICanvas canvas, int row, int col, string label, Color colour)
   {
-    var showLabels = (bool)_whatToDraw.DemoOptionalSettings;
+    var showLabels = (bool)_whatToDraw.DemoDrawingOptions;
     if (!showLabels) return;
 
     var x = CalculateX(col);

@@ -27,7 +27,7 @@ public partial class KakuroDemoPageViewModel : DemoPageBaseViewModel
     {
       _logger.LogInformation($"ShowClues setter value: {value}");
       SetProperty(ref _showClues, value);
-      DemoOptionalSettings = _showClues;
+      DemoDrawingOptions = _showClues;
     }
   }
 }

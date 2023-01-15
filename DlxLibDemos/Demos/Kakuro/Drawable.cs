@@ -100,7 +100,7 @@ public class KakuroDrawable : IDrawable
 
   private void DrawClues(ICanvas canvas, Clue[] clues)
   {
-    var showLabels = (bool)_whatToDraw.DemoOptionalSettings;
+    var showLabels = (bool)_whatToDraw.DemoDrawingOptions;
     if (!showLabels) return;
 
     foreach (var clue in clues)

@@ -30,7 +30,7 @@ public partial class PentominoesDemoPageViewModel : DemoPageBaseViewModel
     {
       _logger.LogInformation($"ShowLabels setter value: {value}");
       SetProperty(ref _showLabels, value);
-      DemoOptionalSettings = _showLabels;
+      DemoDrawingOptions = _showLabels;
     }
   }
 }

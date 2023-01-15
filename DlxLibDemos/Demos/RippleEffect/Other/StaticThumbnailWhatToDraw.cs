@@ -3,7 +3,7 @@ namespace DlxLibDemos.Demos.RippleEffect;
 public class RippleEffectStaticThumbnailWhatToDraw : IWhatToDraw
 {
   public object DemoSettings { get; private init; }
-  public object DemoOptionalSettings { get; private init; }
+  public object DemoDrawingOptions { get; private init; }
   public object[] SolutionInternalRows { get; private init; }
 
   public RippleEffectStaticThumbnailWhatToDraw()

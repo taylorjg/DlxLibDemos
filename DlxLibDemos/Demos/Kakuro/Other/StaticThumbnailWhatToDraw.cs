@@ -3,7 +3,7 @@ namespace DlxLibDemos.Demos.Kakuro;
 public class KakuroStaticThumbnailWhatToDraw : IWhatToDraw
 {
   public object DemoSettings { get; private init; }
-  public object DemoOptionalSettings { get; private init; }
+  public object DemoDrawingOptions { get; private init; }
   public object[] SolutionInternalRows { get; private init; }
 
   public KakuroStaticThumbnailWhatToDraw()
@@ -23,7 +23,7 @@ public class KakuroStaticThumbnailWhatToDraw : IWhatToDraw
       ".13.31.13."
     };
 
-    DemoOptionalSettings = true;
+    DemoDrawingOptions = true;
     SolutionInternalRows = ParseSolution(puzzle, solution);
   }
 

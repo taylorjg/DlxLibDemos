@@ -3,7 +3,7 @@ namespace DlxLibDemos.Demos.FlowFree;
 public class FlowFreeStaticThumbnailWhatToDraw : IWhatToDraw
 {
   public object DemoSettings { get; private init; }
-  public object DemoOptionalSettings { get; private init; }
+  public object DemoDrawingOptions { get; private init; }
   public object[] SolutionInternalRows { get; private init; }
 
   public FlowFreeStaticThumbnailWhatToDraw()
@@ -11,7 +11,7 @@ public class FlowFreeStaticThumbnailWhatToDraw : IWhatToDraw
     var puzzle = Puzzles.ThePuzzles.First();
 
     DemoSettings = puzzle;
-    DemoOptionalSettings = false;
+    DemoDrawingOptions = false;
     SolutionInternalRows = MakeSolution(puzzle);
   }
 
