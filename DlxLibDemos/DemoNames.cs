@@ -12,5 +12,6 @@ public static class DemoNames
   public const string FlowFree = "Flow Free";
   public const string Kakuro = "Kakuro";
   public const string Nonogram = "Nonogram";
+  public const string Crossword = "Crossword";
   public const string SelfVisualisation = "Self Visualisation";
 }

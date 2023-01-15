@@ -11,6 +11,7 @@ using DlxLibDemos.Demos.RippleEffect;
 using DlxLibDemos.Demos.FlowFree;
 using DlxLibDemos.Demos.Nonogram;
 using DlxLibDemos.Demos.Kakuro;
+using DlxLibDemos.Demos.Crossword;
 // using DlxLibDemos.Demos.SelfVisualisation;
 
 namespace DlxLibDemos;
@@ -93,6 +94,11 @@ public partial class HomePageViewModel : ObservableObject
           DemoNames.Nonogram,
           "NonogramDemoPage",
           _serviceProvider.GetService<NonogramThumbnailDrawable>()
+        ),
+        new AvailableDemo(
+          DemoNames.Crossword,
+          "CrosswordDemoPage",
+          _serviceProvider.GetService<CrosswordThumbnailDrawable>()
         ),
         // new AvailableDemo(
         //   DemoNames.SelfVisualisation,
