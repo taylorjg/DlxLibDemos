@@ -41,13 +41,12 @@ public class RippleEffectStaticThumbnailWhatToDraw : IWhatToDraw
           var cell = new Coords(row, col);
           var isInitialValue = puzzle.InitialValues.Any(initialValue => initialValue.Cell == cell);
           var room = puzzle.Rooms.First(room => room.Cells.Contains(cell));
-          var roomIndex = room.RoomStartIndex;
           var solutionInternalRow = new RippleEffectInternalRow(
             puzzle,
             cell,
             value,
             isInitialValue,
-            roomIndex);
+            room);
           solutionInternalRows.Add(solutionInternalRow);
         }
       }

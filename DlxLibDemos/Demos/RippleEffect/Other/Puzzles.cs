@@ -119,7 +119,7 @@ public static class Puzzles
     }
 
     var rooms = new List<Room>();
-    var roomStartIndex = 0;
+    var startIndex = 0;
 
     foreach (var entry in dict)
     {
@@ -128,9 +128,9 @@ public static class Puzzles
       var initialValuesInThisRoom = initialValues
         .Where(initialValue => cells.Contains(initialValue.Cell))
         .ToArray();
-      var room = new Room(label, cells, initialValuesInThisRoom, roomStartIndex);
+      var room = new Room(label, cells, initialValuesInThisRoom, startIndex);
       rooms.Add(room);
-      roomStartIndex += cells.Length;
+      startIndex += cells.Length;
     }
 
     return rooms.ToArray();

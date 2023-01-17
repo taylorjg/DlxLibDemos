@@ -4,5 +4,5 @@ public record Room(
   string Label,
   Coords[] Cells,
   InitialValue[] InitialValues,
-  int RoomStartIndex
+  int StartIndex
 );

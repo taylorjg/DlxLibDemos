@@ -27,7 +27,7 @@ public class RippleEffectDemo : IDemo
       foreach (var initialValue in room.InitialValues)
       {
         var (cell, value) = initialValue;
-        var internalRow = new RippleEffectInternalRow(puzzle, cell, value, true, room.RoomStartIndex);
+        var internalRow = new RippleEffectInternalRow(puzzle, cell, value, true, room);
         internalRows.Add(internalRow);
       }
 
@@ -41,7 +41,7 @@ public class RippleEffectDemo : IDemo
       {
         foreach (var value in valuesToSolve)
         {
-          var internalRow = new RippleEffectInternalRow(puzzle, cell, value, false, room.RoomStartIndex);
+          var internalRow = new RippleEffectInternalRow(puzzle, cell, value, false, room);
           internalRows.Add(internalRow);
         }
       }
@@ -84,7 +84,7 @@ public class RippleEffectDemo : IDemo
   {
     var size = internalRow.Puzzle.Size;
     var columns = Enumerable.Repeat(0, size * size).ToArray();
-    var index = internalRow.RoomStartIndex + internalRow.Value - 1;
+    var index = internalRow.Room.StartIndex + internalRow.Value - 1;
     columns[index] = 1;
     return columns;
   }
