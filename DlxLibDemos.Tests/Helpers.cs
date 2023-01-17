@@ -2,7 +2,7 @@ namespace DlxLibDemos.Tests;
 
 public static class Helpers
 {
-  public static object[] FindFirstSolution(IDemo demo, object demoSettings)
+  public static object[] FindFirstSolution(IDemo demo, object demoSettings = null)
   {
     var cancellationTokenSource = new CancellationTokenSource();
     var internalRows = demo.BuildInternalRows(demoSettings, cancellationTokenSource.Token);
