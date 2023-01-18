@@ -46,14 +46,26 @@ public class KakuroStaticThumbnailWhatToDraw : IWhatToDraw
       }
     }
 
-    return puzzle.HorizontalRuns
+    var internalRowsForHorizontalRuns = puzzle.HorizontalRuns
       .Select(run =>
       {
         var values = run.CoordsList
           .Select(coords => dict[coords])
           .ToArray();
         return new KakuroInternalRow(puzzle, run, values);
-      })
+      });
+
+    var internalRowsForVerticalRuns = puzzle.VerticalRuns
+      .Select(run =>
+      {
+        var values = run.CoordsList
+          .Select(coords => dict[coords])
+          .ToArray();
+        return new KakuroInternalRow(puzzle, run, values);
+      });
+
+    return internalRowsForHorizontalRuns
+      .Concat(internalRowsForVerticalRuns)
       .ToArray();
   }
 }

@@ -16,26 +16,35 @@ public class RippleEffectThumbnailTests
     var demo = new RippleEffectDemo(mockLogger);
     var solutionInternalRows2 = Helpers.FindFirstSolution(demo, thumbnail.DemoSettings);
 
+    var internalRows1 = solutionInternalRows1
+      .Cast<RippleEffectInternalRow>()
+      .OrderBy(ir => ir.Room.StartIndex)
+      .OrderBy(ir => ir.Value)
+      .ToArray();
+
+    var internalRows2 = solutionInternalRows2
+      .Cast<RippleEffectInternalRow>()
+      .OrderBy(ir => ir.Room.StartIndex)
+      .OrderBy(ir => ir.Value)
+      .ToArray();
+
     var comparer = new RippleEffectInternalRowComparer();
-    Assert.Equal(solutionInternalRows1, solutionInternalRows2, comparer);
+    Assert.Equal(internalRows1, internalRows2, comparer);
   }
 
-  private class RippleEffectInternalRowComparer : IEqualityComparer<object>
+  private class RippleEffectInternalRowComparer : IEqualityComparer<RippleEffectInternalRow>
   {
-    public new bool Equals(object x, object y)
+    public bool Equals(RippleEffectInternalRow x, RippleEffectInternalRow y)
     {
-      var internalRow1 = x as RippleEffectInternalRow;
-      var internalRow2 = x as RippleEffectInternalRow;
-
       return (
-        internalRow1.Cell == internalRow2.Cell &&
-        internalRow1.IsInitialValue == internalRow2.IsInitialValue &&
-        internalRow1.Value == internalRow2.Value &&
-        internalRow1.Room == internalRow2.Room
+        x.Cell == y.Cell &&
+        x.IsInitialValue == y.IsInitialValue &&
+        x.Value == y.Value &&
+        x.Room == y.Room
       );
     }
 
-    public int GetHashCode([DisallowNull] object obj)
+    public int GetHashCode([DisallowNull] RippleEffectInternalRow obj)
     {
       throw new NotImplementedException();
     }
