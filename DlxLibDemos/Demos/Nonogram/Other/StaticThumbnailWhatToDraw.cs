@@ -30,15 +30,24 @@ public class NonogramStaticThumbnailWhatToDraw : IWhatToDraw
 
   private static NonogramInternalRow[] ParseSolution(Puzzle puzzle, string[] solution)
   {
-    var dict = ParseHorizontalRuns(puzzle, solution);
+    var horizontalRunsDict = ParseHorizontalRuns(puzzle, solution);
+    var verticalRunsDict = ParseVerticalRuns(puzzle, solution);
 
     var solutionInternalRows = new List<NonogramInternalRow>();
 
-    foreach (var index in Enumerable.Range(0, puzzle.HorizontalRunGroups.Length))
+    foreach (var runGroup in puzzle.HorizontalRunGroups)
     {
-      var horizontalRunGroup = puzzle.HorizontalRunGroups[index] as HorizontalRunGroup;
-      var runCoordsLists = dict[horizontalRunGroup.Row];
+      var horizontalRunGroup = runGroup as HorizontalRunGroup;
+      var runCoordsLists = horizontalRunsDict[horizontalRunGroup.Row];
       var internalRow = new NonogramInternalRow(puzzle, horizontalRunGroup, runCoordsLists);
+      solutionInternalRows.Add(internalRow);
+    }
+
+    foreach (var runGroup in puzzle.VerticalRunGroups)
+    {
+      var verticalRunGroup = runGroup as VerticalRunGroup;
+      var runCoordsLists = verticalRunsDict[verticalRunGroup.Col];
+      var internalRow = new NonogramInternalRow(puzzle, verticalRunGroup, runCoordsLists);
       solutionInternalRows.Add(internalRow);
     }
 
@@ -68,6 +77,34 @@ public class NonogramStaticThumbnailWhatToDraw : IWhatToDraw
         accumulatedLength += length;
       }
       dict[row] = runCoordsLists.ToArray();
+    }
+
+    return dict;
+  }
+
+  private static Dictionary<int, RunCoordsList[]> ParseVerticalRuns(Puzzle puzzle, string[] solution)
+  {
+    var size = solution.Length;
+    var dict = new Dictionary<int, RunCoordsList[]>();
+
+    foreach (var verticalRunGroup in puzzle.VerticalRunGroups)
+    {
+      var col = (verticalRunGroup as VerticalRunGroup).Col;
+      var rows = Enumerable.Range(0, size);
+      var overallCoordsList = rows
+        .Where(row => solution[row][col] == 'X')
+        .Select(row => new Coords(row, col))
+        .ToArray();
+      var accumulatedLength = 0;
+      var runCoordsLists = new List<RunCoordsList>();
+      foreach (var length in verticalRunGroup.Lengths)
+      {
+        var coordsList = overallCoordsList.Skip(accumulatedLength).Take(length).ToArray();
+        var runCoordsList = new RunCoordsList(coordsList.ToArray());
+        runCoordsLists.Add(runCoordsList);
+        accumulatedLength += length;
+      }
+      dict[col] = runCoordsLists.ToArray();
     }
 
     return dict;
