@@ -135,10 +135,10 @@ public class CrosswordDrawable : IDrawable
 
     foreach (var internalRow in internalRows)
     {
-      foreach (var index in Enumerable.Range(0, internalRow.Answer.Clue.CoordsList.Length))
+      var coordsList = internalRow.Clue.CoordsList;
+      var answer = internalRow.Answer;
+      foreach (var (coords, letter) in coordsList.Zip(answer))
       {
-        var coords = internalRow.Answer.Clue.CoordsList[index];
-        var letter = internalRow.Answer.answer[index];
         DrawLetter(canvas, coords, letter);
       }
     }

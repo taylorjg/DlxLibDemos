@@ -19,8 +19,8 @@ public class CrosswordStaticThumbnailWhatToDraw : IWhatToDraw
     return puzzle.Clues
       .Select(clue =>
       {
-        var answer = new Answer(clue, clue.Candidates.First());
-        return new CrosswordInternalRow(puzzle, answer);
+        var answer = clue.Candidates.First();
+        return new CrosswordInternalRow(puzzle, clue, answer);
       })
       .ToArray();
   }
