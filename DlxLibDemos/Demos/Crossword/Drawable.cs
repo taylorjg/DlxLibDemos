@@ -9,6 +9,7 @@ public class CrosswordDrawable : IDrawable
   private float _squareHeight;
   private float _gridLineFullThickness;
   private float _gridLineHalfThickness;
+  private Puzzle _puzzle;
 
   public CrosswordDrawable(IWhatToDraw whatToDraw)
   {
@@ -17,15 +18,19 @@ public class CrosswordDrawable : IDrawable
 
   public void Draw(ICanvas canvas, RectF dirtyRect)
   {
+    _puzzle = Puzzles.ThePuzzles.First();
+
     _width = dirtyRect.Width;
     _height = dirtyRect.Height;
     _gridLineFullThickness = _width / 400;
     _gridLineHalfThickness = _gridLineFullThickness / 2;
-    _squareWidth = (_width - _gridLineFullThickness) / 10;
-    _squareHeight = (_height - _gridLineFullThickness) / 10;
+    _squareWidth = (_width - _gridLineFullThickness) / _puzzle.Size;
+    _squareHeight = (_height - _gridLineFullThickness) / _puzzle.Size;
 
     DrawBackground(canvas);
     DrawGrid(canvas);
+    DrawBlocks(canvas);
+    DrawClueNumbers(canvas);
   }
 
   private void DrawBackground(ICanvas canvas)
@@ -50,7 +55,7 @@ public class CrosswordDrawable : IDrawable
 
   private void DrawHorizontalGridLines(ICanvas canvas)
   {
-    foreach (var row in Enumerable.Range(0, 10 + 1))
+    foreach (var row in Enumerable.Range(0, _puzzle.Size + 1))
     {
       var x1 = _gridLineHalfThickness;
       var x2 = _width - _gridLineHalfThickness;
@@ -63,7 +68,7 @@ public class CrosswordDrawable : IDrawable
 
   private void DrawVerticalGridLines(ICanvas canvas)
   {
-    foreach (var col in Enumerable.Range(0, 10 + 1))
+    foreach (var col in Enumerable.Range(0, _puzzle.Size + 1))
     {
       var x = CalculateX(col);
       var y1 = _gridLineHalfThickness;
@@ -72,6 +77,83 @@ public class CrosswordDrawable : IDrawable
       canvas.StrokeSize = _gridLineFullThickness;
       canvas.DrawLine(x, y1, x, y2);
     }
+  }
+
+  private void DrawBlocks(ICanvas canvas)
+  {
+    foreach (var block in _puzzle.Blocks)
+    {
+      DrawBlock(canvas, block);
+    }
+  }
+
+  private void DrawBlock(ICanvas canvas, Coords coords)
+  {
+    var x = CalculateX(coords.Col);
+    var y = CalculateY(coords.Row);
+    var w = _squareWidth;
+    var h = _squareHeight;
+
+    canvas.FillColor = Colors.Black;
+    canvas.FillRectangle(x, y, w, h);
+  }
+
+  private void DrawLetter(ICanvas canvas, Coords coords, char letter)
+  {
+    var (row, col) = coords;
+    var letterString = letter.ToString();
+    var x = CalculateX(col);
+    var y = CalculateY(row);
+    var width = _squareWidth;
+    var height = _squareHeight;
+    canvas.FontColor = Colors.Black;
+    canvas.FontSize = _squareWidth * 0.6f;
+    canvas.DrawString(
+      letterString,
+      x,
+      y,
+      width,
+      height,
+      HorizontalAlignment.Center,
+      VerticalAlignment.Center
+    );
+  }
+
+  private void DrawClueNumbers(ICanvas canvas)
+  {
+    foreach (var kvp in _puzzle.AcrossClues)
+    {
+      var (clueNumber, coordsList) = kvp;
+      DrawClueNumber(canvas, coordsList[0], clueNumber);
+    }
+
+    foreach (var kvp in _puzzle.DownClues)
+    {
+      var (clueNumber, coordsList) = kvp;
+      DrawClueNumber(canvas, coordsList[0], clueNumber);
+    }
+  }
+
+  private void DrawClueNumber(ICanvas canvas, Coords coords, int clueNumber)
+  {
+    var (row, col) = coords;
+    var clueNumberString = clueNumber.ToString();
+    var x = CalculateX(col);
+    var y = CalculateY(row);
+    var factor = 4;
+    var width = _squareWidth / factor;
+    var height = _squareHeight / factor;
+    canvas.FontColor = Colors.Black;
+    canvas.FontSize = _squareWidth * 0.2f;
+    canvas.DrawString(
+      clueNumberString,
+      x + width / 4,
+      y + height / 4,
+      width,
+      height,
+      HorizontalAlignment.Left,
+      VerticalAlignment.Center
+    );
   }
 
   private float CalculateX(int col) => col * _squareWidth + _gridLineHalfThickness;
