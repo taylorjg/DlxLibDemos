@@ -1,3 +1,3 @@
 namespace DlxLibDemos.Demos.Crossword;
 
-public record CrosswordInternalRow(Puzzle Puzzle);
+public record CrosswordInternalRow(Puzzle Puzzle, Answer Answer);

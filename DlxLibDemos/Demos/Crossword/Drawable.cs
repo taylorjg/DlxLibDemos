@@ -31,6 +31,7 @@ public class CrosswordDrawable : IDrawable
     DrawGrid(canvas);
     DrawBlocks(canvas);
     DrawClueNumbers(canvas);
+    DrawAnswers(canvas);
   }
 
   private void DrawBackground(ICanvas canvas)
@@ -98,39 +99,11 @@ public class CrosswordDrawable : IDrawable
     canvas.FillRectangle(x, y, w, h);
   }
 
-  private void DrawLetter(ICanvas canvas, Coords coords, char letter)
-  {
-    var (row, col) = coords;
-    var letterString = letter.ToString();
-    var x = CalculateX(col);
-    var y = CalculateY(row);
-    var width = _squareWidth;
-    var height = _squareHeight;
-    canvas.FontColor = Colors.Black;
-    canvas.FontSize = _squareWidth * 0.6f;
-    canvas.DrawString(
-      letterString,
-      x,
-      y,
-      width,
-      height,
-      HorizontalAlignment.Center,
-      VerticalAlignment.Center
-    );
-  }
-
   private void DrawClueNumbers(ICanvas canvas)
   {
-    foreach (var kvp in _puzzle.AcrossClues)
+    foreach (var clue in _puzzle.Clues)
     {
-      var (clueNumber, coordsList) = kvp;
-      DrawClueNumber(canvas, coordsList[0], clueNumber);
-    }
-
-    foreach (var kvp in _puzzle.DownClues)
-    {
-      var (clueNumber, coordsList) = kvp;
-      DrawClueNumber(canvas, coordsList[0], clueNumber);
+      DrawClueNumber(canvas, clue.CoordsList.First(), clue.ClueNumber);
     }
   }
 
@@ -152,6 +125,42 @@ public class CrosswordDrawable : IDrawable
       width,
       height,
       HorizontalAlignment.Left,
+      VerticalAlignment.Center
+    );
+  }
+
+  private void DrawAnswers(ICanvas canvas)
+  {
+    var internalRows = _whatToDraw.SolutionInternalRows.Cast<CrosswordInternalRow>();
+
+    foreach (var internalRow in internalRows)
+    {
+      foreach (var index in Enumerable.Range(0, internalRow.Answer.Clue.CoordsList.Length))
+      {
+        var coords = internalRow.Answer.Clue.CoordsList[index];
+        var letter = internalRow.Answer.answer[index];
+        DrawLetter(canvas, coords, letter);
+      }
+    }
+  }
+
+  private void DrawLetter(ICanvas canvas, Coords coords, char letter)
+  {
+    var (row, col) = coords;
+    var letterString = letter.ToString().ToUpper();
+    var x = CalculateX(col);
+    var y = CalculateY(row);
+    var width = _squareWidth;
+    var height = _squareHeight;
+    canvas.FontColor = Colors.Black;
+    canvas.FontSize = _squareWidth * 0.6f;
+    canvas.DrawString(
+      letterString,
+      x,
+      y,
+      width,
+      height,
+      HorizontalAlignment.Center,
       VerticalAlignment.Center
     );
   }

@@ -52,7 +52,7 @@ public static class Puzzles
         { 18, new[]{ "trail" } },
         { 19, new[]{ "cougar" } },
         { 21, new[]{ "epics" } },
-        { 23, new[]{ "tempt" } },
+        { 23, new[]{ "tempt" } }
       }
     )
   };
@@ -68,14 +68,25 @@ public static class Puzzles
     var blocks = FindBlocks(grid);
     var (acrossClues, downClues) = FindClues(grid);
 
-    return new Puzzle(
-      name,
-      size,
-      blocks,
-      acrossClues,
-      downClues,
-      acrossClueCandidates,
-      downClueCandidates);
+    var clues = new List<Clue>();
+
+    foreach (var kvp in acrossClues)
+    {
+      var (clueNumber, coordsList) = kvp;
+      var candidates = acrossClueCandidates[clueNumber];
+      var clue = new Clue(ClueType.Across, clueNumber, coordsList, candidates);
+      clues.Add(clue);
+    }
+
+    foreach (var kvp in downClues)
+    {
+      var (clueNumber, coordsList) = kvp;
+      var candidates = downClueCandidates[clueNumber];
+      var clue = new Clue(ClueType.Down, clueNumber, coordsList, candidates);
+      clues.Add(clue);
+    }
+
+    return new Puzzle(name, size, blocks, clues.ToArray());
   }
 
   private static Coords[] FindBlocks(string[] grid)
@@ -112,6 +123,19 @@ public static class Puzzles
 
     var nextClueNumber = 1;
 
+    Coords[] FindCoordsList(Coords coords, Func<Coords, Coords> advance)
+    {
+      var coordsList = new List<Coords> { coords };
+      var currentCoords = coords;
+      for (; ; )
+      {
+        currentCoords = advance(currentCoords);
+        if (isBlock(currentCoords.Row, currentCoords.Col)) break;
+        coordsList.Add(currentCoords);
+      }
+      return coordsList.ToArray();
+    }
+
     foreach (var row in Enumerable.Range(0, size))
     {
       foreach (var col in Enumerable.Range(0, size))
@@ -121,12 +145,14 @@ public static class Puzzles
         var newDownClue = upIsBlock(row, col) && !downIsBlock(row, col);
         if (newAcrossClue)
         {
-          var coordsList = new[] { new Coords(row, col) };
+          var coords = new Coords(row, col);
+          var coordsList = FindCoordsList(coords, coords => coords.Right());
           acrossClues[nextClueNumber] = coordsList;
         }
         if (newDownClue)
         {
-          var coordsList = new[] { new Coords(row, col) };
+          var coords = new Coords(row, col);
+          var coordsList = FindCoordsList(coords, coords => coords.Down());
           downClues[nextClueNumber] = coordsList;
         }
         if (newAcrossClue || newDownClue) nextClueNumber++;
