@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<local:DemoPageBaseView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                        xmlns:local="clr-namespace:DlxLibDemos"
+                        x:Class="DlxLibDemos.Demos.Crossword.CrosswordDemoPageView"
+                        Title="{x:Static local:DemoNames.Crossword}">
+
+  <HorizontalStackLayout Spacing="10">
+    <Label
+      Text="Show Clue Numbers:"
+      VerticalOptions="Center" />
+
+    <Switch
+      IsToggled="{Binding ShowClueNumbers}"
+      VerticalOptions="Center" />
+  </HorizontalStackLayout>
+
+</local:DemoPageBaseView>
