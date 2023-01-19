@@ -3,10 +3,9 @@ namespace DlxLibDemos.Demos.Crossword;
 public static class Puzzles
 {
   public static Puzzle[] ThePuzzles = new[] {
-    // QUICK CROSSWORD NO: 30,199
     // https://puzzles.telegraph.co.uk/print_crossword?id=49026
     MakePuzzle(
-      "Puzzle 1",
+      "Telegraph Quick 30,199",
       new[] {
         "......X....XX",
         ".X.X.X.X.X.X.",
@@ -23,36 +22,36 @@ public static class Puzzles
         "XX....X......"
       },
       new Dictionary<int, string[]> {
-        { 1, new[]{ "heifer" } },
-        { 4, new[]{ "loot" } },
-        { 9, new[]{ "inn" } },
-        { 10, new[]{ "heypresto" } },
-        { 11, new[]{ "durable" } },
-        { 12, new[]{ "shove" } },
-        { 13, new[]{ "empty" } },
-        { 15, new[]{ "lanky" } },
-        { 20, new[]{ "agree" } },
-        { 22, new[]{ "risotto" } },
-        { 24, new[]{ "primitive" } },
-        { 25, new[]{ "mug" } },
-        { 26, new[]{ "dusk" } },
-        { 27, new[]{ "jester" } }
+        { 1, new[]{ "heifer" } }, // young cow
+        { 4, new[]{ "loot" } }, // swag
+        { 9, new[]{ "inn" } }, // hotel
+        { 10, new[]{ "heypresto" } }, // voila
+        { 11, new[]{ "durable" } }, // long-lasting
+        { 12, new[]{ "shove" } }, // push
+        { 13, new[]{ "empty" } }, // vacant
+        { 15, new[]{ "lanky" } }, // tall and thin
+        { 20, new[]{ "agree" } }, // be of one mind
+        { 22, new[]{ "risotto" } }, // rice dish
+        { 24, new[]{ "primitive" } }, //  crude
+        { 25, new[]{ "mug", "ass" } }, // fool
+        { 26, new[]{ "dusk" } }, // twilight
+        { 27, new[]{ "jester" } } // clown
       },
       new Dictionary<int, string[]> {
-        { 1, new[]{ "hairdo" } },
-        { 2, new[]{ "inner" } },
-        { 3, new[]{ "exhibit" } },
-        { 5, new[]{ "ogres" } },
-        { 6, new[]{ "tussock" } },
-        { 7, new[]{ "dyfed" } },
-        { 8, new[]{ "yokel" } },
-        { 14, new[]{ "married" } },
-        { 16, new[]{ "austere" } },
-        { 17, new[]{ "happy" } },
-        { 18, new[]{ "trail" } },
-        { 19, new[]{ "cougar" } },
-        { 21, new[]{ "epics" } },
-        { 23, new[]{ "tempt" } }
+        { 1, new[]{ "hairdo" } }, // perm, e.g.
+        { 2, new[]{ "inner", "heart" } }, // central
+        { 3, new[]{ "exhibit" } }, // put on display
+        { 5, new[]{ "ogres" } }, // trolls
+        { 6, new[]{ "tussock" } }, // tuft
+        { 7, new[]{ "dyfed" } }, // welsh county
+        { 8, new[]{ "yokel" } }, // bumpkin
+        { 14, new[]{ "married" } }, // wed
+        { 16, new[]{ "austere" } }, // stern
+        { 17, new[]{ "happy" } }, // pleased
+        { 18, new[]{ "trail" } }, // lag
+        { 19, new[]{ "cougar" } }, // puma
+        { 21, new[]{ "epics" } }, // spice (anag)
+        { 23, new[]{ "tempt" } } // entice
       }
     )
   };
@@ -86,7 +85,17 @@ public static class Puzzles
       clues.Add(clue);
     }
 
-    return new Puzzle(name, size, blocks, clues.ToArray());
+    var allAcrossSquares = clues
+      .Where(clue => clue.ClueType == ClueType.Across)
+      .SelectMany(clue => clue.CoordsList);
+
+    var allDownSquares = clues
+      .Where(clue => clue.ClueType == ClueType.Down)
+      .SelectMany(clue => clue.CoordsList);
+
+    var crossCheckingSquares = allAcrossSquares.Intersect(allDownSquares).ToArray();
+
+    return new Puzzle(name, size, blocks, clues.ToArray(), crossCheckingSquares);
   }
 
   private static Coords[] FindBlocks(string[] grid)

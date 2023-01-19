@@ -63,6 +63,7 @@ It would also be good to add some new demos e.g.:
   * ~~Flow Free~~
   * ~~Kakuro~~ (new - no old WPF counterpart - but see [here](https://github.com/taylorjg/kakuro))
   * ~~Nonogram~~ (new - no old WPF counterpart)
+  * Crossword (new - no old WPF counterpart)
   * Self Visualisation (new - no old WPF counterpart - but I do have a web version [here](https://github.com/taylorjg/dlxlib-self-visualisation))
 * ~~Display version information~~
 * ~~Do the solving on a background thread~~

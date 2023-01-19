@@ -31,7 +31,7 @@ public class CrosswordDrawable : IDrawable
     DrawGrid(canvas);
     DrawBlocks(canvas);
     DrawClueNumbers(canvas);
-    DrawAnswers(canvas);
+    DrawCandidates(canvas);
   }
 
   private void DrawBackground(ICanvas canvas)
@@ -129,15 +129,15 @@ public class CrosswordDrawable : IDrawable
     );
   }
 
-  private void DrawAnswers(ICanvas canvas)
+  private void DrawCandidates(ICanvas canvas)
   {
     var internalRows = _whatToDraw.SolutionInternalRows.Cast<CrosswordInternalRow>();
 
     foreach (var internalRow in internalRows)
     {
       var coordsList = internalRow.Clue.CoordsList;
-      var answer = internalRow.Answer;
-      foreach (var (coords, letter) in coordsList.Zip(answer))
+      var letters = internalRow.Candidate.ToCharArray();
+      foreach (var (coords, letter) in coordsList.Zip(letters))
       {
         DrawLetter(canvas, coords, letter);
       }
@@ -147,7 +147,7 @@ public class CrosswordDrawable : IDrawable
   private void DrawLetter(ICanvas canvas, Coords coords, char letter)
   {
     var (row, col) = coords;
-    var letterString = letter.ToString().ToUpper();
+    var letterString = char.ToUpper(letter).ToString();
     var x = CalculateX(col);
     var y = CalculateY(row);
     var width = _squareWidth;
