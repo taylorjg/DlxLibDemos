@@ -24,34 +24,34 @@ public static class Puzzles
       new Dictionary<int, string[]> {
         { 1, new[]{ "heifer" } }, // young cow
         { 4, new[]{ "loot" } }, // swag
-        { 9, new[]{ "inn" } }, // hotel
+        { 9, new[]{ "inn", "spa" } }, // hotel
         { 10, new[]{ "heypresto" } }, // voila
-        { 11, new[]{ "durable" } }, // long-lasting
-        { 12, new[]{ "shove" } }, // push
-        { 13, new[]{ "empty" } }, // vacant
-        { 15, new[]{ "lanky" } }, // tall and thin
-        { 20, new[]{ "agree" } }, // be of one mind
-        { 22, new[]{ "risotto" } }, // rice dish
-        { 24, new[]{ "primitive" } }, //  crude
-        { 25, new[]{ "mug", "ass" } }, // fool
+        { 11, new[]{ "durable", "chronic", "abiding", "settled" } }, // long-lasting
+        { 12, new[]{ "shove", "drive", "nudge" } }, // push
+        { 13, new[]{ "empty", "clear" } }, // vacant
+        { 15, new[]{ "lanky", "rangy", "gaunt", "weedy" } }, // tall and thin
+        { 20, new[]{ "agree", "allow", "grant", "admit" } }, // be of one mind
+        { 22, new[]{ "risotto", "biryani" } }, // rice dish
+        { 24, new[]{ "primitive", "inelegant" } }, //  crude
+        { 25, new[]{ "mug", "ass", "nit" } }, // fool
         { 26, new[]{ "dusk" } }, // twilight
-        { 27, new[]{ "jester" } } // clown
+        { 27, new[]{ "jester", "gagman", "mummer" } } // clown
       },
       new Dictionary<int, string[]> {
         { 1, new[]{ "hairdo" } }, // perm, e.g.
-        { 2, new[]{ "inner", "heart" } }, // central
-        { 3, new[]{ "exhibit" } }, // put on display
+        { 2, new[]{ "inner", "chief", "focal", "prime" } }, // central
+        { 3, new[]{ "exhibit", "display" } }, // put on display
         { 5, new[]{ "ogres" } }, // trolls
-        { 6, new[]{ "tussock" } }, // tuft
+        { 6, new[]{ "tussock", "plumage", "topknot" } }, // tuft
         { 7, new[]{ "dyfed" } }, // welsh county
         { 8, new[]{ "yokel" } }, // bumpkin
         { 14, new[]{ "married" } }, // wed
-        { 16, new[]{ "austere" } }, // stern
-        { 17, new[]{ "happy" } }, // pleased
-        { 18, new[]{ "trail" } }, // lag
+        { 16, new[]{ "austere", "ascetic", "serious" } }, // stern
+        { 17, new[]{ "happy", "merry", "jolly", "perky", "sunny" } }, // pleased
+        { 18, new[]{ "trail", "dally", "tarry" } }, // lag
         { 19, new[]{ "cougar" } }, // puma
         { 21, new[]{ "epics" } }, // spice (anag)
-        { 23, new[]{ "tempt" } } // entice
+        { 23, new[]{ "tempt", "court" } } // entice
       }
     )
   };
