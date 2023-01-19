@@ -5,4 +5,14 @@
                         x:Class="DlxLibDemos.Demos.Crossword.CrosswordDemoPageView"
                         Title="{x:Static local:DemoNames.Crossword}">
 
+  <HorizontalStackLayout Spacing="10">
+    <Label
+      Text="Show Clue Numbers:"
+      VerticalOptions="Center" />
+
+    <Switch
+      IsToggled="{Binding ShowClueNumbers}"
+      VerticalOptions="Center" />
+  </HorizontalStackLayout>
+
 </local:DemoPageBaseView>

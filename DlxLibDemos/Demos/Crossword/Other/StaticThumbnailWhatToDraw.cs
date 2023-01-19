@@ -11,6 +11,7 @@ public class CrosswordStaticThumbnailWhatToDraw : IWhatToDraw
     var puzzle = Puzzles.ThePuzzles.First();
 
     DemoSettings = puzzle;
+    DemoDrawingOptions = true;
     SolutionInternalRows = MakeSolution(puzzle);
   }
 

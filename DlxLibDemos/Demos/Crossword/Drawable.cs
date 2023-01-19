@@ -101,6 +101,9 @@ public class CrosswordDrawable : IDrawable
 
   private void DrawClueNumbers(ICanvas canvas)
   {
+    var showClueNumbers = (bool)_whatToDraw.DemoDrawingOptions;
+    if (!showClueNumbers) return;
+
     foreach (var clue in _puzzle.Clues)
     {
       DrawClueNumber(canvas, clue.CoordsList.First(), clue.ClueNumber);
