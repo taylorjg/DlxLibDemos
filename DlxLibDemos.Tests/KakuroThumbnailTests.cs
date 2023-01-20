@@ -28,6 +28,7 @@ public class KakuroThumbnailTests
     public bool Equals(KakuroInternalRow x, KakuroInternalRow y)
     {
       return (
+        x.Puzzle == y.Puzzle &&
         x.Run == y.Run &&
         x.Values.SequenceEqual(y.Values)
       );

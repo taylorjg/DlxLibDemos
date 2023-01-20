@@ -31,6 +31,7 @@ public class NonogramThumbnailTests
       var flatCoordsList2 = y.RunCoordsLists.SelectMany(rcl => rcl.CoordsList);
 
       return (
+        x.Puzzle == y.Puzzle &&
         x.RunGroup == y.RunGroup &&
         flatCoordsList1.SequenceEqual(flatCoordsList2)
       );

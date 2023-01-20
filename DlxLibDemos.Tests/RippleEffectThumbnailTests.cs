@@ -28,25 +28,6 @@ public class RippleEffectThumbnailTests
       .OrderBy(ir => ir.Value)
       .ToArray();
 
-    var comparer = new RippleEffectInternalRowComparer();
-    Assert.Equal(internalRows1, internalRows2, comparer);
-  }
-
-  private class RippleEffectInternalRowComparer : IEqualityComparer<RippleEffectInternalRow>
-  {
-    public bool Equals(RippleEffectInternalRow x, RippleEffectInternalRow y)
-    {
-      return (
-        x.Cell == y.Cell &&
-        x.IsInitialValue == y.IsInitialValue &&
-        x.Value == y.Value &&
-        x.Room == y.Room
-      );
-    }
-
-    public int GetHashCode([DisallowNull] RippleEffectInternalRow obj)
-    {
-      throw new NotImplementedException();
-    }
+    Assert.Equal(internalRows1, internalRows2);
   }
 }
