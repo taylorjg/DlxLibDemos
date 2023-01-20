@@ -8,7 +8,7 @@ public class PentominoesThumbnailTests
   [Fact]
   public void ThumbnailSolutionIsSameAsDemoSolution()
   {
-    var thumbnail = new PentominoesStaticThumbnailWhatToDraw();
+    var thumbnail = new PentominoesThumbnailWhatToDraw();
     var solutionInternalRows1 = thumbnail.SolutionInternalRows;
 
     var mockLogger = new NullLogger<PentominoesDemo>();

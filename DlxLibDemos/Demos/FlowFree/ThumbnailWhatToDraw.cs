@@ -1,12 +1,12 @@
 namespace DlxLibDemos.Demos.FlowFree;
 
-public class FlowFreeStaticThumbnailWhatToDraw : IWhatToDraw
+public class FlowFreeThumbnailWhatToDraw : IWhatToDraw
 {
   public object DemoSettings { get; private init; }
   public object DemoDrawingOptions { get; private init; }
   public object[] SolutionInternalRows { get; private init; }
 
-  public FlowFreeStaticThumbnailWhatToDraw()
+  public FlowFreeThumbnailWhatToDraw()
   {
     var puzzle = Puzzles.ThePuzzles.First();
 

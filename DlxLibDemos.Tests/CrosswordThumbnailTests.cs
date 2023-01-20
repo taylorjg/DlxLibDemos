@@ -8,7 +8,7 @@ public class CrosswordThumbnailTests
   [Fact]
   public void ThumbnailSolutionIsSameAsDemoSolution()
   {
-    var thumbnail = new CrosswordStaticThumbnailWhatToDraw();
+    var thumbnail = new CrosswordThumbnailWhatToDraw();
     var solutionInternalRows1 = thumbnail.SolutionInternalRows;
 
     var mockLogger = new NullLogger<CrosswordDemo>();

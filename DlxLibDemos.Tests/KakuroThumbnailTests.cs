@@ -9,7 +9,7 @@ public class KakuroThumbnailTests
   [Fact]
   public void ThumbnailSolutionIsSameAsDemoSolution()
   {
-    var thumbnail = new KakuroStaticThumbnailWhatToDraw();
+    var thumbnail = new KakuroThumbnailWhatToDraw();
     var solutionInternalRows1 = thumbnail.SolutionInternalRows;
 
     var mockLogger = new NullLogger<KakuroDemo>();

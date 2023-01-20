@@ -8,7 +8,7 @@ public class NQueensThumbnailTests
   [Fact]
   public void ThumbnailSolutionIsSameAsDemoSolution()
   {
-    var thumbnail = new NQueensStaticThumbnailWhatToDraw();
+    var thumbnail = new NQueensThumbnailWhatToDraw();
     var solutionInternalRows1 = thumbnail.SolutionInternalRows;
 
     var mockLogger = new NullLogger<NQueensDemo>();

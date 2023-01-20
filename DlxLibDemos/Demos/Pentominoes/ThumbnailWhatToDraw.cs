@@ -1,12 +1,12 @@
 namespace DlxLibDemos.Demos.Pentominoes;
 
-public class PentominoesStaticThumbnailWhatToDraw : IWhatToDraw
+public class PentominoesThumbnailWhatToDraw : IWhatToDraw
 {
   public object DemoSettings { get; private init; }
   public object DemoDrawingOptions { get; private init; }
   public object[] SolutionInternalRows { get; private init; }
 
-  public PentominoesStaticThumbnailWhatToDraw()
+  public PentominoesThumbnailWhatToDraw()
   {
     DemoDrawingOptions = false;
     SolutionInternalRows = MakeSolution();

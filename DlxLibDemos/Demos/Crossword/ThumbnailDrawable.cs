@@ -3,7 +3,7 @@ namespace DlxLibDemos.Demos.Crossword;
 public class CrosswordThumbnailDrawable : CrosswordDrawable
 {
   public CrosswordThumbnailDrawable()
-    : base(new CrosswordStaticThumbnailWhatToDraw())
+    : base(new CrosswordThumbnailWhatToDraw())
   {
   }
 }

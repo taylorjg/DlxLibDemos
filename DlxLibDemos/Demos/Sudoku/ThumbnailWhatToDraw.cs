@@ -1,12 +1,12 @@
 namespace DlxLibDemos.Demos.Sudoku;
 
-public class SudokuStaticThumbnailWhatToDraw : IWhatToDraw
+public class SudokuThumbnailWhatToDraw : IWhatToDraw
 {
   public object DemoSettings { get; private init; }
   public object DemoDrawingOptions { get; private init; }
   public object[] SolutionInternalRows { get; private init; }
 
-  public SudokuStaticThumbnailWhatToDraw()
+  public SudokuThumbnailWhatToDraw()
   {
     var puzzle = Puzzles.ThePuzzles.First();
 

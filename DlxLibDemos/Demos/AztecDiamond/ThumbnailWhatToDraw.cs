@@ -1,12 +1,12 @@
 namespace DlxLibDemos.Demos.AztecDiamond;
 
-public class AztecDiamondStaticThumbnailWhatToDraw : IWhatToDraw
+public class AztecDiamondThumbnailWhatToDraw : IWhatToDraw
 {
   public object DemoSettings { get; private init; }
   public object DemoDrawingOptions { get; private init; }
   public object[] SolutionInternalRows { get; private init; }
 
-  public AztecDiamondStaticThumbnailWhatToDraw()
+  public AztecDiamondThumbnailWhatToDraw()
   {
     SolutionInternalRows = MakeSolution();
   }

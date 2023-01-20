@@ -9,7 +9,7 @@ public class RippleEffectThumbnailTests
   [Fact]
   public void ThumbnailSolutionIsSameAsDemoSolution()
   {
-    var thumbnail = new RippleEffectStaticThumbnailWhatToDraw();
+    var thumbnail = new RippleEffectThumbnailWhatToDraw();
     var solutionInternalRows1 = thumbnail.SolutionInternalRows;
 
     var mockLogger = new NullLogger<RippleEffectDemo>();

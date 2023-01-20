@@ -8,7 +8,7 @@ public class TetraSticksThumbnailTests
   [Fact]
   public void ThumbnailSolutionIsSameAsDemoSolution()
   {
-    var thumbnail = new TetraSticksStaticThumbnailWhatToDraw();
+    var thumbnail = new TetraSticksThumbnailWhatToDraw();
     var solutionInternalRows1 = thumbnail.SolutionInternalRows;
 
     var mockLogger = new NullLogger<TetraSticksDemo>();

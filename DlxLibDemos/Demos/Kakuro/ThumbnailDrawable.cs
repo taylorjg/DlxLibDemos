@@ -3,7 +3,7 @@ namespace DlxLibDemos.Demos.Kakuro;
 public class KakuroThumbnailDrawable : KakuroDrawable
 {
   public KakuroThumbnailDrawable()
-    : base(new KakuroStaticThumbnailWhatToDraw())
+    : base(new KakuroThumbnailWhatToDraw())
   {
   }
 }

@@ -1,12 +1,12 @@
 namespace DlxLibDemos.Demos.Nonogram;
 
-public class NonogramStaticThumbnailWhatToDraw : IWhatToDraw
+public class NonogramThumbnailWhatToDraw : IWhatToDraw
 {
   public object DemoSettings { get; private init; }
   public object DemoDrawingOptions { get; private init; }
   public object[] SolutionInternalRows { get; private init; }
 
-  public NonogramStaticThumbnailWhatToDraw()
+  public NonogramThumbnailWhatToDraw()
   {
     var puzzle = Puzzles.ThePuzzles.First();
 

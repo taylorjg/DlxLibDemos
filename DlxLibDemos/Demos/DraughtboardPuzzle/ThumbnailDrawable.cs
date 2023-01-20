@@ -3,7 +3,7 @@ namespace DlxLibDemos.Demos.DraughtboardPuzzle;
 public class DraughtboardPuzzleThumbnailDrawable : DraughtboardPuzzleDrawable
 {
   public DraughtboardPuzzleThumbnailDrawable()
-    : base(new DraughtboardPuzzleStaticThumbnailWhatToDraw())
+    : base(new DraughtboardPuzzleThumbnailWhatToDraw())
   {
   }
 }

@@ -1,12 +1,12 @@
 namespace DlxLibDemos.Demos.Crossword;
 
-public class CrosswordStaticThumbnailWhatToDraw : IWhatToDraw
+public class CrosswordThumbnailWhatToDraw : IWhatToDraw
 {
   public object DemoSettings { get; private init; }
   public object DemoDrawingOptions { get; private init; }
   public object[] SolutionInternalRows { get; private init; }
 
-  public CrosswordStaticThumbnailWhatToDraw()
+  public CrosswordThumbnailWhatToDraw()
   {
     var puzzle = Puzzles.ThePuzzles.First();
 

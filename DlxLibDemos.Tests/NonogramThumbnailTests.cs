@@ -9,7 +9,7 @@ public class NonogramThumbnailTests
   [Fact]
   public void ThumbnailSolutionIsSameAsDemoSolution()
   {
-    var thumbnail = new NonogramStaticThumbnailWhatToDraw();
+    var thumbnail = new NonogramThumbnailWhatToDraw();
     var solutionInternalRows1 = thumbnail.SolutionInternalRows;
 
     var mockLogger = new NullLogger<NonogramDemo>();

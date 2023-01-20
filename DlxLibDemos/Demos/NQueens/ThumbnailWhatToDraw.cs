@@ -1,12 +1,12 @@
 namespace DlxLibDemos.Demos.NQueens;
 
-public class NQueensStaticThumbnailWhatToDraw : IWhatToDraw
+public class NQueensThumbnailWhatToDraw : IWhatToDraw
 {
   public object DemoSettings { get; private init; }
   public object DemoDrawingOptions { get; private init; }
   public object[] SolutionInternalRows { get; private init; }
 
-  public NQueensStaticThumbnailWhatToDraw()
+  public NQueensThumbnailWhatToDraw()
   {
     DemoSettings = 8;
 

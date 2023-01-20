@@ -9,7 +9,7 @@ public class FlowFreeThumbnailTests
   [Fact]
   public void ThumbnailSolutionIsSameAsDemoSolution()
   {
-    var thumbnail = new FlowFreeStaticThumbnailWhatToDraw();
+    var thumbnail = new FlowFreeThumbnailWhatToDraw();
     var solutionInternalRows1 = thumbnail.SolutionInternalRows;
 
     var mockLogger = new NullLogger<FlowFreeDemo>();

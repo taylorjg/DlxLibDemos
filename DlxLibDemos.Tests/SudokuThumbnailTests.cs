@@ -8,7 +8,7 @@ public class SudokuThumbnailTests
   [Fact]
   public void ThumbnailSolutionIsSameAsDemoSolution()
   {
-    var thumbnail = new SudokuStaticThumbnailWhatToDraw();
+    var thumbnail = new SudokuThumbnailWhatToDraw();
     var solutionInternalRows1 = thumbnail.SolutionInternalRows;
 
     var mockLogger = new NullLogger<SudokuDemo>();

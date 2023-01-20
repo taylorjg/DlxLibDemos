@@ -8,7 +8,7 @@ public class DraughtboardPuzzleThumbnailTests
   [Fact]
   public void ThumbnailSolutionIsSameAsDemoSolution()
   {
-    var thumbnail = new DraughtboardPuzzleStaticThumbnailWhatToDraw();
+    var thumbnail = new DraughtboardPuzzleThumbnailWhatToDraw();
     var solutionInternalRows1 = thumbnail.SolutionInternalRows;
 
     var mockLogger = new NullLogger<DraughtboardPuzzleDemo>();

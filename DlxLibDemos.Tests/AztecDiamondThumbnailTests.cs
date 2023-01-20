@@ -8,7 +8,7 @@ public class AztecDiamondThumbnailTests
   [Fact]
   public void ThumbnailSolutionIsSameAsDemoSolution()
   {
-    var thumbnail = new AztecDiamondStaticThumbnailWhatToDraw();
+    var thumbnail = new AztecDiamondThumbnailWhatToDraw();
     var solutionInternalRows1 = thumbnail.SolutionInternalRows;
 
     var mockLogger = new NullLogger<AztecDiamondDemo>();

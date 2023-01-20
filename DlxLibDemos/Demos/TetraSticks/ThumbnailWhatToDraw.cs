@@ -1,12 +1,12 @@
 namespace DlxLibDemos.Demos.TetraSticks;
 
-public class TetraSticksStaticThumbnailWhatToDraw : IWhatToDraw
+public class TetraSticksThumbnailWhatToDraw : IWhatToDraw
 {
   public object DemoSettings { get; private init; }
   public object DemoDrawingOptions { get; private init; }
   public object[] SolutionInternalRows { get; private init; }
 
-  public TetraSticksStaticThumbnailWhatToDraw()
+  public TetraSticksThumbnailWhatToDraw()
   {
     DemoSettings = TetraSticksDemoPageViewModel.TheMissingLetters.First();
     SolutionInternalRows = MakeSolution();

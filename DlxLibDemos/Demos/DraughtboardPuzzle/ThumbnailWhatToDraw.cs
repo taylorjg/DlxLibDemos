@@ -1,12 +1,12 @@
 namespace DlxLibDemos.Demos.DraughtboardPuzzle;
 
-public class DraughtboardPuzzleStaticThumbnailWhatToDraw : IWhatToDraw
+public class DraughtboardPuzzleThumbnailWhatToDraw : IWhatToDraw
 {
   public object DemoSettings { get; private init; }
   public object DemoDrawingOptions { get; private init; }
   public object[] SolutionInternalRows { get; private init; }
 
-  public DraughtboardPuzzleStaticThumbnailWhatToDraw()
+  public DraughtboardPuzzleThumbnailWhatToDraw()
   {
     DemoDrawingOptions = false;
     SolutionInternalRows = MakeSolution();

@@ -20,7 +20,7 @@ public class AztecDiamondDemo : IDemo
   public object[] BuildInternalRows(object demoSettings, CancellationToken cancellationToken)
   {
     var internalRows = AllPossiblePiecePlacements().Where(IsValidPiecePlacement).ToArray();
-    var solutionInternalRows = new AztecDiamondStaticThumbnailWhatToDraw().SolutionInternalRows;
+    var solutionInternalRows = new AztecDiamondThumbnailWhatToDraw().SolutionInternalRows;
 
     var preSolvePiece = (int index) =>
     {
