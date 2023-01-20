@@ -7,7 +7,7 @@ namespace DlxLibDemos.Tests;
 public class NonogramThumbnailTests
 {
   [Fact]
-  public void ThumbnailHardcodedSolutionIsSameAsDemoCalculatedSolution()
+  public void ThumbnailSolutionIsSameAsDemoSolution()
   {
     var thumbnail = new NonogramStaticThumbnailWhatToDraw();
     var solutionInternalRows1 = thumbnail.SolutionInternalRows;

@@ -6,7 +6,7 @@ namespace DlxLibDemos.Tests;
 public class AztecDiamondThumbnailTests
 {
   [Fact]
-  public void ThumbnailHardcodedSolutionIsSameAsDemoCalculatedSolution()
+  public void ThumbnailSolutionIsSameAsDemoSolution()
   {
     var thumbnail = new AztecDiamondStaticThumbnailWhatToDraw();
     var solutionInternalRows1 = thumbnail.SolutionInternalRows;

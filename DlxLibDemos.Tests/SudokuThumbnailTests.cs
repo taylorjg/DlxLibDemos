@@ -6,7 +6,7 @@ namespace DlxLibDemos.Tests;
 public class SudokuThumbnailTests
 {
   [Fact]
-  public void ThumbnailHardcodedSolutionIsSameAsDemoCalculatedSolution()
+  public void ThumbnailSolutionIsSameAsDemoSolution()
   {
     var thumbnail = new SudokuStaticThumbnailWhatToDraw();
     var solutionInternalRows1 = thumbnail.SolutionInternalRows;

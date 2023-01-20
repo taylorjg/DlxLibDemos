@@ -6,7 +6,7 @@ namespace DlxLibDemos.Tests;
 public class NQueensThumbnailTests
 {
   [Fact]
-  public void ThumbnailHardcodedSolutionIsSameAsDemoCalculatedSolution()
+  public void ThumbnailSolutionIsSameAsDemoSolution()
   {
     var thumbnail = new NQueensStaticThumbnailWhatToDraw();
     var solutionInternalRows1 = thumbnail.SolutionInternalRows;

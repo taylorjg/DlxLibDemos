@@ -7,7 +7,7 @@ namespace DlxLibDemos.Tests;
 public class KakuroThumbnailTests
 {
   [Fact]
-  public void ThumbnailHardcodedSolutionIsSameAsDemoCalculatedSolution()
+  public void ThumbnailSolutionIsSameAsDemoSolution()
   {
     var thumbnail = new KakuroStaticThumbnailWhatToDraw();
     var solutionInternalRows1 = thumbnail.SolutionInternalRows;
