@@ -4,8 +4,7 @@ public static class Helpers
 {
   public static object[] FindFirstSolution(IDemo demo, object demoSettings = null)
   {
-    var cancellationTokenSource = new CancellationTokenSource();
-    var internalRows = demo.BuildInternalRows(demoSettings, cancellationTokenSource.Token);
+    var internalRows = demo.BuildInternalRows(demoSettings, default(CancellationToken));
     var matrix = internalRows.Select(demo.InternalRowToMatrixRow).ToArray();
     var maybeNumPrimaryColumns = demo.GetNumPrimaryColumns(demoSettings);
     var dlx = new DlxLib.Dlx();

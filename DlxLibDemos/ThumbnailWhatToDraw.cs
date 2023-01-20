@@ -26,8 +26,7 @@ public class ThumbnailWhatToDraw : IWhatToDraw
   {
     get
     {
-      var cancellationTokenSource = new CancellationTokenSource();
-      var internalRows = _demo.BuildInternalRows(DemoSettings, cancellationTokenSource.Token);
+      var internalRows = _demo.BuildInternalRows(DemoSettings, default(CancellationToken));
       var matrix = internalRows.Select(_demo.InternalRowToMatrixRow).ToArray();
       var maybeNumPrimaryColumns = _demo.GetNumPrimaryColumns(DemoSettings);
       var dlx = new DlxLib.Dlx();
