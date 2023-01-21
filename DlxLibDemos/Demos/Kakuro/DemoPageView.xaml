@@ -9,8 +9,6 @@
     <Label
       Text="Show Clues:"
       VerticalOptions="Center" />
-
-    <!-- IsEnabled="{Binding SolutionAvailable}" -->
     <Switch
       IsToggled="{Binding ShowClues}"
       VerticalOptions="Center" />
