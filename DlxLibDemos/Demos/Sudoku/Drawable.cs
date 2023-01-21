@@ -75,11 +75,11 @@ public class SudokuDrawable : IDrawable
   private void DrawInitialValues(ICanvas canvas)
   {
     var selectedPuzzle = (Puzzle)_whatToDraw.DemoSettings;
-    var internalRows = selectedPuzzle.InternalRows;
+    var initialValues = selectedPuzzle.InitialValues;
 
-    foreach (var internalRow in internalRows)
+    foreach (var initialValue in initialValues)
     {
-      DrawDigit(canvas, internalRow.Coords, internalRow.Value, true);
+      DrawDigit(canvas, initialValue.Coords, initialValue.Value, true);
     }
   }
 

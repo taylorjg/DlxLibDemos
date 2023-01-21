@@ -20,13 +20,13 @@ public class SudokuDemo : IDemo
   public object[] BuildInternalRows(object demoSettings, CancellationToken cancellationToken)
   {
     var puzzle = (Puzzle)demoSettings;
-    var internalRows = puzzle.InternalRows;
+    var initialValues = puzzle.InitialValues;
     return AllCoords.SelectMany(coords =>
     {
-      var internalRow = internalRows.FirstOrDefault(internalRow => internalRow.Coords == coords);
-      return (internalRow != null)
-        ? new[] { internalRow }
-        : BuildInternalRowsForUnknownValue(coords);
+      var initialValue = initialValues.FirstOrDefault(iv => iv.Coords == coords);
+      return (initialValue != null)
+        ? BuildInternalRowsForInitialValue(initialValue)
+        : BuildInternalRowsForCoords(coords);
     }).ToArray();
   }
 
@@ -50,7 +50,12 @@ public class SudokuDemo : IDemo
 
   private static readonly int[] AllValues = Enumerable.Range(1, 9).ToArray();
 
-  private SudokuInternalRow[] BuildInternalRowsForUnknownValue(Coords coords)
+  private SudokuInternalRow[] BuildInternalRowsForInitialValue(InitialValue initialValue)
+  {
+    return new[] { new SudokuInternalRow(initialValue.Coords, initialValue.Value, true) };
+  }
+
+  private SudokuInternalRow[] BuildInternalRowsForCoords(Coords coords)
   {
     return AllValues.Select(value => new SudokuInternalRow(coords, value, false)).ToArray();
   }

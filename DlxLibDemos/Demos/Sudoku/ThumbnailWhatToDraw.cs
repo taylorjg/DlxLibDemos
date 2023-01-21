@@ -40,7 +40,7 @@ public class SudokuThumbnailWhatToDraw : IWhatToDraw
         if (int.TryParse(ch.ToString(), out int value))
         {
           var coords = new Coords(row, col);
-          var isInitialValue = puzzle.InternalRows.Any(internalRow => internalRow.Coords == coords);
+          var isInitialValue = puzzle.InitialValues.Any(initialValue => initialValue.Coords == coords);
           var solutionInternalRow = new SudokuInternalRow(coords, value, isInitialValue);
           solutionInternalRows.Add(solutionInternalRow);
         }

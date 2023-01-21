@@ -6,7 +6,7 @@ public static class Puzzles
   {
     new Puzzle(
       "Daily Telegraph 27744",
-      ParseStrings(new string[]
+      ParseGrid(new string[]
       {
         "6 4 9 7 3",
         "  3    6 ",
@@ -20,7 +20,7 @@ public static class Puzzles
       })),
     new Puzzle(
       "Daily Telegraph 27808",
-      ParseStrings(new string[]
+      ParseGrid(new string[]
       {
         "   8    7",
         "  6 9 1  ",
@@ -34,7 +34,7 @@ public static class Puzzles
       })),
     new Puzzle(
       "Manchester Evening News 6th May 2016 No. 1",
-      ParseStrings(new string[]
+      ParseGrid(new string[]
       {
         "8   2 6  ",
         " 92  4  7",
@@ -48,7 +48,7 @@ public static class Puzzles
       })),
     new Puzzle(
       "Manchester Evening News 6th May 2016 No. 2",
-      ParseStrings(new string[]
+      ParseGrid(new string[]
       {
         " 4 13   5",
         "1  25    ",
@@ -60,9 +60,10 @@ public static class Puzzles
         "9       3",
         " 13  4 6 "
       })),
+    // https://abcnews.go.com/blogs/headlines/2012/06/can-you-solve-the-hardest-ever-sudoku
     new Puzzle(
       "World's hardest Sudoku",
-      ParseStrings(new string[]
+      ParseGrid(new string[]
       {
         "8        ",
         "  36     ",
@@ -76,16 +77,20 @@ public static class Puzzles
       }))
   };
 
-  private static SudokuInternalRow[] ParseStrings(string[] strings) =>
-    strings.SelectMany((s, row) =>
-      s.SelectMany((ch, col) =>
-      {
-        if (int.TryParse(ch.ToString(), out int value) && value >= 1 && value <= 9)
+  private static InitialValue[] ParseGrid(string[] grid) =>
+    grid
+      .SelectMany((gridRow, row) =>
+        gridRow.SelectMany((ch, col) =>
         {
-          var coords = new Coords(row, col);
-          var internalRow = new SudokuInternalRow(coords, value, true);
-          return new[] { internalRow };
-        }
-        return new SudokuInternalRow[0];
-      })).ToArray();
+          var initialValues = new List<InitialValue>();
+          if (int.TryParse(ch.ToString(), out int value) && value >= 1 && value <= 9)
+          {
+            var coords = new Coords(row, col);
+            var initialValue = new InitialValue(coords, value);
+            initialValues.Add(initialValue);
+          }
+          return initialValues;
+        })
+      )
+      .ToArray();
 }
