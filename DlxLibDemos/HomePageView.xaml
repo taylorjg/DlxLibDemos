@@ -27,6 +27,7 @@
                                     Command="{Binding BindingContext.NavigateToDemoCommand, Source={x:Reference page}}"
                                     CommandParameter="{Binding Route}" />
                             </Border.GestureRecognizers>
+                            <Frame>
                                 <Grid RowDefinitions="*" ColumnDefinitions="Auto,*" Margin="5" Padding="10">
                                     <GraphicsView
                                         HorizontalOptions="Center"
@@ -46,6 +47,7 @@
                                         Command="{Binding BindingContext.NavigateToDemoCommand, Source={x:Reference page}}"
                                         CommandParameter="{Binding Route}" />
                                 </Grid>
+                            </Frame>
                         </Border>
                     </DataTemplate>
                 </BindableLayout.ItemTemplate>
