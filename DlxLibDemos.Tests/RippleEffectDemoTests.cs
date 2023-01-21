@@ -22,11 +22,11 @@ public class RippleEffectDemoTests
   {
     var size = puzzle.Size;
     Assert.Equal(size * size, internalRows.Length);
-    CheckAdjacenyConstraints(puzzle, internalRows);
+    CheckProximityConstraints(puzzle, internalRows);
     CheckRoomValues(puzzle, internalRows);
   }
 
-  private static void CheckAdjacenyConstraints(Puzzle puzzle, RippleEffectInternalRow[] internalRows)
+  private static void CheckProximityConstraints(Puzzle puzzle, RippleEffectInternalRow[] internalRows)
   {
     void CheckAdjacencyConstraint(Coords cell, int value, Func<Coords, Coords> advance)
     {
