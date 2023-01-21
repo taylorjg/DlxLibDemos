@@ -27,20 +27,20 @@
                                     Command="{Binding BindingContext.NavigateToDemoCommand, Source={x:Reference page}}"
                                     CommandParameter="{Binding Route}" />
                             </Border.GestureRecognizers>
-                            <Frame BackgroundColor="#212121" CornerRadius="0">
-                                <Grid RowDefinitions="*" ColumnDefinitions="Auto,*" Margin="5" Padding="10">
+                            <Frame BackgroundColor="#212121" CornerRadius="0" Margin="0" Padding="0">
+                                <Grid RowDefinitions="*" ColumnDefinitions="Auto,*" Margin="0" Padding="0">
                                     <GraphicsView
-                                        HorizontalOptions="Center"
-                                        VerticalOptions="Center"
                                         Grid.Column="0"
-                                        WidthRequest="100"
-                                        HeightRequest="100"
-                                        Margin="10"
+                                        HorizontalOptions="Start"
+                                        VerticalOptions="Center"
+                                        WidthRequest="150"
+                                        HeightRequest="150"
+                                        Margin="25,0,0,0"
                                         Background="Transparent"
                                         Drawable="{Binding ThumbnailDrawable}" />
                                     <Button
                                         Grid.Column="1"
-                                        Margin="50,0,0,0"
+                                        Margin="25,0,25,0"
                                         HorizontalOptions="Center"
                                         VerticalOptions="Center"
                                         Text="{Binding Name}"

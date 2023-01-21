@@ -24,7 +24,7 @@ public partial class HomePageView : ContentPage
     _logger.LogInformation($"[OnGraphicsViewSizeChanged] scrollViewWidth {scrollViewWidth}; scrollViewHeight: {scrollViewHeight}");
 
     const int TILE_WIDTH = 400;
-    const int MINIMUM_TILE_HEIGHT = 150;
+    const int MAXIMUM_TILE_HEIGHT = 250;
     const int GAP = 10;
 
     var availableDemoCount = _viewModel.AvailableDemos.Length;
@@ -33,7 +33,7 @@ public partial class HomePageView : ContentPage
     var numTilesHigh = Math.Max((int)(availableDemoCount / numTilesWide), 1);
     _logger.LogInformation($"[OnGraphicsViewSizeChanged] numTilesWide {numTilesWide}; numTilesHigh: {numTilesHigh}");
 
-    var approxFlexLayoutHeight = numTilesHigh * MINIMUM_TILE_HEIGHT + (numTilesHigh - 1) * GAP;
+    var approxFlexLayoutHeight = numTilesHigh * MAXIMUM_TILE_HEIGHT + (numTilesHigh - 1) * GAP;
     _logger.LogInformation($"[OnGraphicsViewSizeChanged] approxFlexLayoutHeight {approxFlexLayoutHeight}");
     MyFlexLayout.HeightRequest = Math.Max(approxFlexLayoutHeight, scrollViewHeight);
   }
