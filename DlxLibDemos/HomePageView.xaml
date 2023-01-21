@@ -27,7 +27,7 @@
                                     Command="{Binding BindingContext.NavigateToDemoCommand, Source={x:Reference page}}"
                                     CommandParameter="{Binding Route}" />
                             </Border.GestureRecognizers>
-                            <Frame>
+                            <Frame BackgroundColor="#212121" CornerRadius="0">
                                 <Grid RowDefinitions="*" ColumnDefinitions="Auto,*" Margin="5" Padding="10">
                                     <GraphicsView
                                         HorizontalOptions="Center"
