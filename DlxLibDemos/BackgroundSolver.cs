@@ -104,8 +104,8 @@ public class BackgroundSolver : ISolver
     }
     catch (Exception ex)
     {
-      _logger.LogInformation("Exception caught whilst solving");
-      _logger.LogInformation(ex.ToString());
+      _logger.LogError("Exception caught whilst solving");
+      _logger.LogError(ex.ToString());
     }
   }
 }
