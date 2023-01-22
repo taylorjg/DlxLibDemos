@@ -14,27 +14,28 @@ public partial class HomePageView : ContentPage
     _logger.LogInformation("constructor");
     InitializeComponent();
     BindingContext = viewModel;
-    MyScrollView.SizeChanged += OnMyScrollViewSizeChanged;
+    SizeChanged += OnSizeChanged;
   }
 
-  private void OnMyScrollViewSizeChanged(object sender, EventArgs e)
+  private void OnSizeChanged(object sender, EventArgs e)
   {
-    var scrollViewWidth = MyScrollView.Width;
-    var scrollViewHeight = MyScrollView.Height;
-    _logger.LogInformation($"[OnGraphicsViewSizeChanged] scrollViewWidth {scrollViewWidth}; scrollViewHeight: {scrollViewHeight}");
-
     const int TILE_WIDTH = 400;
-    const int MAXIMUM_TILE_HEIGHT = 250;
-    const int GAP = 10;
+    const int TILE_HEIGHT = 220;
+    const int H_GAP = 10;
+    const int V_GAP = 10;
 
-    var availableDemoCount = _viewModel.AvailableDemos.Length;
+    var tileCount = _viewModel.AvailableDemos.Length;
 
-    var numTilesWide = Math.Max((int)(scrollViewWidth / TILE_WIDTH), 1);
-    var numTilesHigh = Math.Max((int)(availableDemoCount / numTilesWide), 1);
-    _logger.LogInformation($"[OnGraphicsViewSizeChanged] numTilesWide {numTilesWide}; numTilesHigh: {numTilesHigh}");
+    var numTilesWide = (int)Math.Floor(Width / (TILE_WIDTH + H_GAP));
+    var numTilesHigh = (int)Math.Ceiling((double)tileCount / numTilesWide);
+    _logger.LogInformation($"[OnGraphicsViewSizeChanged] {new { numTilesWide, numTilesHigh }}");
 
-    var approxFlexLayoutHeight = numTilesHigh * MAXIMUM_TILE_HEIGHT + (numTilesHigh - 1) * GAP;
-    _logger.LogInformation($"[OnGraphicsViewSizeChanged] approxFlexLayoutHeight {approxFlexLayoutHeight}");
-    MyFlexLayout.HeightRequest = Math.Max(approxFlexLayoutHeight, scrollViewHeight);
+    var approxFlexLayoutWidth = numTilesWide * TILE_WIDTH + (numTilesWide * 2) * H_GAP;
+    var approxFlexLayoutHeight = numTilesHigh * TILE_HEIGHT + (numTilesHigh * 2) * V_GAP;
+    _logger.LogInformation($"[OnGraphicsViewSizeChanged] {new { approxFlexLayoutWidth, approxFlexLayoutHeight }}");
+
+    TilesScrollView.WidthRequest = approxFlexLayoutWidth;
+    TilesFlexLayout.WidthRequest = approxFlexLayoutWidth;
+    TilesFlexLayout.HeightRequest = approxFlexLayoutHeight;
   }
 }

@@ -4,21 +4,20 @@
              x:Class="DlxLibDemos.HomePageView"
              x:Name="page">
 
-    <Grid Margin="20">
-        <ScrollView x:Name="MyScrollView" Margin="0,0,0,50">
+    <Grid ColumnDefinitions="*,Auto,*">
+        <ScrollView Grid.Column="1" x:Name="TilesScrollView" Margin="0,50,0,50">
             <FlexLayout
-                x:Name="MyFlexLayout"
+                x:Name="TilesFlexLayout"
                 BindableLayout.ItemsSource="{Binding AvailableDemos}"
                 Wrap="Wrap"
-                JustifyContent="SpaceEvenly"
+                JustifyContent="Start"
             >
                 <BindableLayout.ItemTemplate>
                     <DataTemplate>
                         <Border Stroke="White"
                                 StrokeThickness="4"
                                 WidthRequest="400"
-                                MinimumHeightRequest="150"
-                                MaximumHeightRequest="250"
+                                HeightRequest="220"
                                 Margin="5"
                                 Padding="10">
                             <Border.GestureRecognizers>
@@ -54,6 +53,7 @@
             </FlexLayout>
         </ScrollView>
         <Label
+            Grid.Column="2"
             Margin="0,0,5,5"
             VerticalOptions="End"
             HorizontalOptions="End"
