@@ -107,6 +107,19 @@ public static class MauiProgram
     builder.Services.AddTransient<CrosswordDemo>();
     builder.Services.AddTransient<SelfVisualisationDemo>();
 
+    builder.Services.AddTransient<SudokuDemoConfig>();
+    builder.Services.AddTransient<PentominoesDemoConfig>();
+    builder.Services.AddTransient<NQueensDemoConfig>();
+    builder.Services.AddTransient<DraughtboardPuzzleDemoConfig>();
+    builder.Services.AddTransient<TetraSticksDemoConfig>();
+    builder.Services.AddTransient<AztecDiamondDemoConfig>();
+    builder.Services.AddTransient<RippleEffectDemoConfig>();
+    builder.Services.AddTransient<FlowFreeDemoConfig>();
+    builder.Services.AddTransient<KakuroDemoConfig>();
+    builder.Services.AddTransient<NonogramDemoConfig>();
+    builder.Services.AddTransient<CrosswordDemoConfig>();
+    builder.Services.AddTransient<SelfVisualisationDemoConfig>();
+
     Routing.RegisterRoute("SudokuDemoPage", typeof(SudokuDemoPageView));
     Routing.RegisterRoute("PentominoesDemoPage", typeof(PentominoesDemoPageView));
     Routing.RegisterRoute("NQueensDemoPage", typeof(NQueensDemoPageView));

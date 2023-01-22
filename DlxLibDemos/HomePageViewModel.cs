@@ -12,102 +12,50 @@ using DlxLibDemos.Demos.FlowFree;
 using DlxLibDemos.Demos.Nonogram;
 using DlxLibDemos.Demos.Kakuro;
 using DlxLibDemos.Demos.Crossword;
-// using DlxLibDemos.Demos.SelfVisualisation;
 
 namespace DlxLibDemos;
-
-public record AvailableDemo(
-  string Name,
-  string Route,
-  IDrawable ThumbnailDrawable
-);
 
 public partial class HomePageViewModel : ObservableObject
 {
   private ILogger<HomePageViewModel> _logger;
   private INavigationService _navigationService;
-  private IServiceProvider _serviceProvider;
+  private IDemoConfig[] _availableDemos;
 
   public HomePageViewModel(
     ILogger<HomePageViewModel> logger,
     INavigationService navigationService,
-    IServiceProvider serviceProvider
+    SudokuDemoConfig sudokuDemoConfig,
+    PentominoesDemoConfig pentominoesDemoConfig,
+    NQueensDemoConfig nQueensDemoConfig,
+    DraughtboardPuzzleDemoConfig draughtboardPuzzleDemoConfig,
+    TetraSticksDemoConfig tetraSticksDemoConfig,
+    AztecDiamondDemoConfig aztecDiamondDemoConfig,
+    RippleEffectDemoConfig rippleEffectDemoConfig,
+    FlowFreeDemoConfig flowFreeDemoConfig,
+    KakuroDemoConfig kakuroDemoConfig,
+    NonogramDemoConfig nonogramDemoConfig,
+    CrosswordDemoConfig crosswordDemoConfig
   )
   {
     _logger = logger;
     _navigationService = navigationService;
-    _serviceProvider = serviceProvider;
+    _availableDemos = new IDemoConfig[] {
+      sudokuDemoConfig,
+      pentominoesDemoConfig,
+      nQueensDemoConfig,
+      draughtboardPuzzleDemoConfig,
+      tetraSticksDemoConfig,
+      aztecDiamondDemoConfig,
+      rippleEffectDemoConfig,
+      flowFreeDemoConfig,
+      kakuroDemoConfig,
+      nonogramDemoConfig,
+      crosswordDemoConfig
+    };
     _logger.LogInformation("constructor");
   }
 
-  public AvailableDemo[] AvailableDemos
-  {
-    get
-    {
-      return new[] {
-        new AvailableDemo(
-          DemoNames.Sudoku,
-          "SudokuDemoPage",
-          _serviceProvider.GetService<SudokuThumbnailDrawable>()
-        ),
-        new AvailableDemo(
-          DemoNames.Pentominoes,
-          "PentominoesDemoPage",
-          _serviceProvider.GetService<PentominoesThumbnailDrawable>()
-        ),
-        new AvailableDemo(
-          DemoNames.NQueens,
-          "NQueensDemoPage",
-          _serviceProvider.GetService<NQueensThumbnailDrawable>()
-        ),
-        new AvailableDemo(
-          DemoNames.DraughtboardPuzzle,
-          "DraughtboardPuzzleDemoPage",
-          _serviceProvider.GetService<DraughtboardPuzzleThumbnailDrawable>()
-        ),
-        new AvailableDemo(
-          DemoNames.TetraSticks,
-          "TetraSticksDemoPage",
-          _serviceProvider.GetService<TetraSticksThumbnailDrawable>()
-        ),
-        new AvailableDemo(
-          DemoNames.AztecDiamond,
-          "AztecDiamondDemoPage",
-          _serviceProvider.GetService<AztecDiamondThumbnailDrawable>()
-        ),
-        new AvailableDemo(
-          DemoNames.RippleEffect,
-          "RippleEffectDemoPage",
-          _serviceProvider.GetService<RippleEffectThumbnailDrawable>()
-        ),
-        new AvailableDemo(
-          DemoNames.FlowFree,
-          "FlowFreeDemoPage",
-          _serviceProvider.GetService<FlowFreeThumbnailDrawable>()
-        ),
-        new AvailableDemo(
-          DemoNames.Kakuro,
-          "KakuroDemoPage",
-          _serviceProvider.GetService<KakuroThumbnailDrawable>()
-        ),
-        new AvailableDemo(
-          DemoNames.Nonogram,
-          "NonogramDemoPage",
-          _serviceProvider.GetService<NonogramThumbnailDrawable>()
-        ),
-        new AvailableDemo(
-          DemoNames.Crossword,
-          "CrosswordDemoPage",
-          _serviceProvider.GetService<CrosswordThumbnailDrawable>()
-        ),
-        // new AvailableDemo(
-        //   DemoNames.SelfVisualisation,
-        //   "SelfVisualisationDemoPage",
-        //   _serviceProvider.GetService<SelfVisualisationThumbnailDrawable>()
-        // )
-      };
-    }
-  }
+  public IDemoConfig[] AvailableDemos { get => _availableDemos; }
 
   [RelayCommand]
   private Task NavigateToDemo(string route)
