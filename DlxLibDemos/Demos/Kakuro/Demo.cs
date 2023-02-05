@@ -132,7 +132,7 @@ public class KakuroDemo : IDemo
 
   private int[] MakeVerticalRunColumns(Puzzle puzzle, Run run)
   {
-    var columns = Enumerable.Repeat(0, puzzle.HorizontalRuns.Length).ToArray();
+    var columns = Enumerable.Repeat(0, puzzle.VerticalRuns.Length).ToArray();
     if (run.RunType == RunType.Vertical)
     {
       var index = FindVerticalRunIndex(puzzle, run);
