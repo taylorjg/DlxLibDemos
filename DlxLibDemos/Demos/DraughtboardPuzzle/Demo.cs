@@ -50,8 +50,8 @@ public class DraughtboardPuzzleDemo : IDemo
       var row = internalRow.Location.Row + coords.Row;
       var col = internalRow.Location.Col + coords.Col;
       if (row >= 8 || col >= 8) return false;
-      var shouldBeWhite = (row + col) % 2 != 0;
-      if (shouldBeWhite && square.Colour != Colour.White) return false;
+      var requiredColour = (row + col) % 2 != 0 ? Colour.White : Colour.Black;
+      if (square.Colour != requiredColour) return false;
     }
     return true;
   }

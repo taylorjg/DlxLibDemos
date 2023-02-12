@@ -151,7 +151,7 @@ public class NonogramDemo : IDemo
 
     if (runGroup.RunGroupType == runGroupType)
     {
-      var allBlockCoords = Enumerable.Range(0, size).Select(col => runGroup.MakeCoords(col)).ToArray();
+      var allBlockCoords = Enumerable.Range(0, size).Select(runGroup.MakeCoords).ToArray();
       var unselectedBlockCoords = allBlockCoords.Except(selectedBlockCoords);
       foreach (var coords in selectedBlockCoords) MarkOn(columns, size, coords);
       foreach (var coords in unselectedBlockCoords) MarkOff(columns, size, coords);
