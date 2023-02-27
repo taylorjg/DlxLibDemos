@@ -317,22 +317,19 @@ public partial class DemoPageBaseViewModel : ObservableObject, IWhatToDraw
     {
       if (_cancellationTokenSource.IsCancellationRequested) return;
 
-      var progressMessage = message as ProgressMessage;
-      if (progressMessage != null)
+      if (message is ProgressMessage progressMessage)
       {
         SearchStepCount = progressMessage.SearchStepCount;
         return;
       }
 
-      var solutionFoundMessage = message as SolutionFoundMessage;
-      if (solutionFoundMessage != null)
+      if (message is SolutionFoundMessage solutionFoundMessage)
       {
         SearchStepCount = solutionFoundMessage.SearchStepCount;
         SolutionCount = solutionFoundMessage.SolutionCount;
       }
 
-      var finishedMessage = message as FinishedMessage;
-      if (finishedMessage != null)
+      if (message is FinishedMessage finishedMessage)
       {
         SearchStepCount = finishedMessage.SearchStepCount;
         SolutionCount = finishedMessage.SolutionCount;
